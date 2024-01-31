@@ -1,12 +1,12 @@
 ---
-marp: false
-title: A Beginner's Guide to Pulumi
+marp: true
+title: Beginner's Guide to Pulumi: Infrastructure as Code with Code
 paginate: true
 theme: gaia
 author: Al Rodriguez
 ---
 
-# A Beginner's Guide to Pulumi
+# Beginner's Guide to Pulumi: Infrastructure as Code with Code
 
 with AL Rodriguez
 
@@ -20,6 +20,7 @@ with AL Rodriguez
 - programmerAL.com
 - NOT affiliated with Pulumi
 
+TODO: Update the QR Code
 ![bg right 80%](presentation-images/presentation_link_qrcode.png)
 
 ---
@@ -182,4 +183,5 @@ await Deployment.RunAsync(() =>
 - @ProgrammerAL
 - programmerAL.com
 
+TODO: Update the QR Code
 ![bg right 80%](presentation-images/presentation_link_qrcode.png)
