@@ -20,18 +20,16 @@ with AL Rodriguez
 - programmerAL.com
 - NOT affiliated with Pulumi
 
-TODO: Update the QR Code
 ![bg right 80%](presentation-images/presentation_link_qrcode.png)
 
 ---
 
 # What this session is
 
+- Outline of Infrastructure as Code (IaC)
 - Introduction to Pulumi
-- Assumes you know nothing about it
-  - Or you've heard about it but never looked into it
-- Uses C# and Azure
-  - But the concepts apply to other languages and clouds supported by Pulumi
+- Demo with C# and Azure
+  - Concepts apply to other languages/clouds supported by Pulumi
 
 ---
 
@@ -39,13 +37,24 @@ TODO: Update the QR Code
 
 ---
 
+# Infrastructure as Code (IaC)
+
+- Automation to avoid manual steps
+  - Manual steps always mess up eventually
+- Easily repeatable
+  - Create multiple environments with ease
+
+---
+
 # What is Pulumi?
 
-- Tooling for managing cloud infrastructure
+- Tooling for Cloud IaC
   - Create/Read/Update/Delete services
-  - IaC - Infrastructure as Code
   - DSC - Desired State Configuration
-- Open Sourced
+- Use your choice or programming language
+  - No YAML
+  - No custom DSL
+- Code is Open Sourced
   - _Can_ be free if you self host
 - Procedural and Imperative
 
@@ -82,7 +91,7 @@ await Deployment.RunAsync(() =>
 
 # What Pulumi isn't
 
-- It's not a Cross-Platform abstraction
+- NOT a Cross-Platform abstraction
   - Clouds are target specifically
   - Ex: Cloud storage different between AWS S3 and Azure Blob Storage
 
@@ -183,5 +192,4 @@ await Deployment.RunAsync(() =>
 - @ProgrammerAL
 - programmerAL.com
 
-TODO: Update the QR Code
 ![bg right 80%](presentation-images/presentation_link_qrcode.png)
