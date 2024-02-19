@@ -39,10 +39,21 @@ with AL Rodriguez
 
 # Infrastructure as Code (IaC)
 
+- Codify your environments
 - Automation to avoid manual steps
   - Manual steps always mess up eventually
 - Easily repeatable
   - Create multiple environments with ease
+
+---
+
+
+# What's different about IaC code?
+
+- Different type of application
+  - Like everything else: Web UI, Backend Server, Embedded, Video Game, IaC
+- Still code
+  - YAML, JSON, Custom DSL, or Your Choice of Language
 
 ---
 
@@ -54,16 +65,7 @@ with AL Rodriguez
 - Use your choice or programming language
   - No YAML
   - No custom DSL
-- Code is Open Sourced
-  - _Can_ be free if you self host
 - Procedural and Imperative
-
----
-
-# What else is Pulumi?
-
-- Written in your choice of language
-- Cloud Specific
 
 ---
 
@@ -125,6 +127,10 @@ await Deployment.RunAsync(() =>
 
 ---
 
+# More Pulumi and IaC concepts
+
+---
+
 #
 
 ![bg contain](presentation-images/pulumi-state-flow.png)
@@ -155,9 +161,10 @@ await Deployment.RunAsync(() =>
 # Config Secrets
 
 - Encrypted in config
+  - Encryption key stored on Pulumi servers (by default)
 - Per Stack
 - Loaded as an Output value
-- Plan-Text viewable via Pulumi CLI
+- Plain-Text viewable via Pulumi CLI
   - When signed in
 
 ---
