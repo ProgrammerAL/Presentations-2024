@@ -1,0 +1,16 @@
+{
+  "IsEncrypted": false,
+  "Host": {
+    "CORS": "*"
+  },
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+
+    "ServiceConfig__Environment": "alrodri-local",
+    "ServiceConfig__Version": "local",
+    "StorageConfig__TableEndpoint": "DefaultEndpointsProtocol=https;AccountName=persistentstgd15de8bb;AccountKey=nS/vLp9w9ASCclsqaz2i/GaAEZS48hKumPcpQCh91H9Fs5b0ql8hUo+VQsvi4jtnCG6o3BHlNPXF+ASt2SpS1w==;EndpointSuffix=core.windows.net",
+    "StorageConfig__TableName": "Comments",
+    "StorageConfig__SqlConnectionString": "Server=tcp:sql-server8435a3fa.database.windows.net,1433;Initial Catalog=mydatabase;Persist Security Info=False;User ID=MySqlAdminUser;Password=aksjn&JHLB!!BNHJKasd;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+  }
+}

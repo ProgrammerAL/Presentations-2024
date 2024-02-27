@@ -1,0 +1,16 @@
+{
+  "IsEncrypted": false,
+  "Host": {
+    "CORS": "*"
+  },
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+
+    "ServiceConfig__Environment": "alrodri-local",
+    "ServiceConfig__Version": "local",
+    "StorageConfig__TableEndpoint": "https://persistentstgd15de8bb.table.core.windows.net",
+    "StorageConfig__TableName": "Comments",
+    "StorageConfig__SqlConnectionString": "Server=tcp:sql-server8435a3fa.database.windows.net,1433;Initial Catalog=mydatabase;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication=Active Directory Default"
+  }
+}

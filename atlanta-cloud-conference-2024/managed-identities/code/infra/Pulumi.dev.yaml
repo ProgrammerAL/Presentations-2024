@@ -1,0 +1,10 @@
+config:
+  FeedbackSystem-AzManagedIds:azure-resource-group-name: dev-feedback-rg
+  FeedbackSystem-AzManagedIds:functions-package-path: ../app-original/published-apps/functions.zip
+  FeedbackSystem-AzManagedIds:location: eastus
+  FeedbackSystem-AzManagedIds:static-site-path: ../app-original/published-apps/webapp
+  FeedbackSystem-AzManagedIds:sql-admin-password: aksjn&JHLB!!BNHJKasd
+  FeedbackSystem-AzManagedIds:service-config: 
+    Version: dev-version-123
+    Environment: dev
+  pulumi:template: azure-csharp
