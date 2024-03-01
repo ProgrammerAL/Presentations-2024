@@ -75,7 +75,19 @@ with AL Rodriguez
   - Only works for Azure Managed Services
 - You don't see Client Secret
 - Assigned to services
-  - "System Assigned" and "User Assigned"
+
+---
+
+# How to Create a Managed Identity
+
+- Enable on individual services
+  - AKA System Assigned
+  - 1 instance exists
+  - Deleted if service is deleted
+- Create a service
+  - AKS User Assigned
+  - Separate service
+  - Can be assigned to multiple services
 
 ---
 
