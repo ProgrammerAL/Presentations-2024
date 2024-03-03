@@ -27,7 +27,8 @@ public record PersistentStorageResources(
     public record SqlStorageInfra(
         AzureNative.Sql.Server SqlServer,
         AzureNative.Sql.Database SqlDatabase,
-        AzureNative.Sql.FirewallRule AlowAllFirewallRule
+        AzureNative.Sql.FirewallRule AlowAllFirewallRule,
+        Output<string> SqlConnectionString
         );
 }
 
@@ -120,6 +121,20 @@ public record PersistentStorageBuilder(
             FirewallRuleName = "AllowAllWindowsAzureIps",
         });
 
-        return new PersistentStorageResources.SqlStorageInfra(sqlServer, sqlDatabase, sqlFirewallRule);
+        var sqlConnectionString = Output.All(
+            sqlServer.FullyQualifiedDomainName,
+            sqlServer.AdministratorLogin!,
+            sqlDatabase.Name
+            ).Apply(x =>
+            {
+                var serverDomainName = x[0];
+                var adminUser = x[1];
+                var adminPassword = GlobalConfig.PersistenceConfig.SqlAdminPassword;
+                var dbName = x[2];
+
+                return $"Server=tcp:{serverDomainName},1433;Initial Catalog={dbName};Persist Security Info=False;User ID={adminUser};Password={adminPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            });
+
+        return new PersistentStorageResources.SqlStorageInfra(sqlServer, sqlDatabase, sqlFirewallRule, sqlConnectionString);
     }
 }

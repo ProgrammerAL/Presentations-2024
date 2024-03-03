@@ -22,7 +22,7 @@ namespace PulumiInfra.Builders;
 
 public record ApiResources(ApiResources.ServiceStorageInfra ServiceStorage, ApiResources.FunctionInfra Function)
 {
-    public record ServiceStorageInfra(StorageAccount StorageAccount);
+    public record ServiceStorageInfra(StorageAccount StorageAccount, BlobContainer FuncsContainer, Blob FuncsBlob);
     public record FunctionInfra(WebApp WebApp, Output<string> HttpsEndpoint);
 }
 
@@ -60,10 +60,26 @@ public record ApiBuilder(
             }
         });
 
-        return new ApiResources.ServiceStorageInfra(storageAccount);
+        var container = new BlobContainer("funcscontainer", new BlobContainerArgs
+        {
+            ResourceGroupName = ResourceGroup.Name,
+            AccountName = storageAccount.Name,
+            PublicAccess = PublicAccess.None,
+        });
+
+        var blob = new Blob("funcs-blob", new BlobArgs
+        {
+            BlobName = "functions.zip",
+            ResourceGroupName = ResourceGroup.Name,
+            AccountName = storageAccount.Name,
+            ContainerName = container.Name,
+            Type = BlobType.Block,
+        });
+
+        return new ApiResources.ServiceStorageInfra(storageAccount, container, blob);
     }
 
-    private ApiResources.FunctionInfra GenerateFunctionsInfrastructure(ApiResources.ServiceStorageInfra storageInfra)
+    private ApiResources.FunctionInfra GenerateFunctionsInfrastructure(ServiceStorageInfra storageInfra)
     {
         //Create the App Service Plan
         var appServicePlan = new AppServicePlan("functions-app-service-plan", new AppServicePlanArgs
@@ -80,7 +96,7 @@ public record ApiBuilder(
         });
 
         var storageAccountConnectionString = GetStorageAccountConnectionString(storageInfra);
-
+        
         var functionAppSiteConfig = new SiteConfigArgs
         {
             LinuxFxVersion = "DOTNET-ISOLATED|8.0",
@@ -102,6 +118,16 @@ public record ApiBuilder(
                 },
                 new NameValuePairArgs
                 {
+                    Name = "AzureWebJobsStorage",
+                    Value = storageAccountConnectionString,
+                },
+                new NameValuePairArgs
+                {
+                    Name = "WEBSITE_RUN_FROM_PACKAGE",
+                    Value = storageInfra.FuncsBlob.Url,
+                },
+                new NameValuePairArgs
+                {
                     Name = "SCM_DO_BUILD_DURING_DEPLOYMENT",
                     Value = "0"
                 },
@@ -117,13 +143,18 @@ public record ApiBuilder(
                 },
                 new NameValuePairArgs
                 {
-                    Name = "StorageConfig__Endpoint",
-                    Value = storageAccountConnectionString,
+                    Name = "StorageConfig__TableEndpoint",
+                    Value = PersistenceResources.StorageInfra.StorageConnectionString,
                 },
                 new NameValuePairArgs
                 {
                     Name = "StorageConfig__TableName",
                     Value = "Comments",
+                },
+                new NameValuePairArgs
+                {
+                    Name = "StorageConfig__SqlConnectionString",
+                    Value = PersistenceResources.SqlInfra.SqlConnectionString,
                 }
             }
         };

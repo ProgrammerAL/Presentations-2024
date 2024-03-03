@@ -1,11 +1,17 @@
 # Setup Instructions
 
-## For demo using Connection Strings
+## Initial setup for demo using Connection Strings
 
-1. Run `pulumi up` in the `~/code/infra` folder
+1. Run `pulumi up` in the `~/code/infra` folder (keep this window open to make it easy to get outputs for later step)
 1. Add the SQL and Storage connection strings to the code from the Pulumi Outputs
 1. In the Azure Portal, sign in to the SQL Database using the `MySqlAdminUser` account with the `aksjn&JHLB!!BNHJKasd` password
 1. Run the `~/code/DbScripts/DbInit.sql` file in the newly created SQL Database
+1. For local demo, update the `~/code/app-original/FeedbackFunctionsApp/local.settings.json` file with the pulumi outputs from running `pulumi up` above
+   1. Update `StorageConfig__TableEndpoint` from the `StorageConnectionString` pulumi output
+   1. Update `StorageConfig__SqlConnectionString` from the `SqlConnectionString` pulumi output
+1. Run the `~/code/app-original/package-for-deployment.ps1` PowerShell script. This creates the files that will be published to Azure for the demo.
+1. Open the `~/code/app-original/FeedbackApp.sln` solution file
+1. Right-Click/Publish the `FeedbackFunctionsApp`
 
 ## For demo using Managed Identities
 

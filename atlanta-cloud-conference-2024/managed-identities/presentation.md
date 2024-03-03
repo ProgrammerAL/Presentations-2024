@@ -38,11 +38,11 @@ with AL Rodriguez
 
 # Secrets Leak
 
-- "Assume Breach"
 - HaveIBeenPwned.com
 - Committed to Source Control
   - https://www.csoonline.com/article/571363/how-corporate-data-and-secrets-leak-from-github-repositories.html
-- Can't avoid them 100%
+- Can try to avoid using secrets
+  - But not 100%
 
 ---
 
@@ -50,9 +50,19 @@ with AL Rodriguez
 
 - An "App" in Azure Entra
 - Permissions assigned to it
-  - Like a User
+  - Like a User or Service Account
 - Client Id and Client Secret
   - Anything can use this
+
+---
+
+# Managed Identities
+
+- Identity object you assign permissions to
+  - A type of Service Principal
+  - Only works for Azure Managed Services
+- You don't see Client Secret
+- Assigned to services
 
 ---
 
@@ -68,35 +78,26 @@ with AL Rodriguez
 
 ---
 
-# Managed Identities
-
-- Identity object you assign permissions to
-  - A type of Service Principal
-  - Only works for Azure Managed Services
-- You don't see Client Secret
-- Assigned to services
-
----
-
 # How to Create a Managed Identity
 
-- Enable on individual services
-  - AKA System Assigned
-  - 1 instance exists
-  - Deleted if service is deleted
 - Create a service
-  - AKS User Assigned
+  - AKA User Assigned
   - Separate service
   - Can be assigned to multiple services
+- Enable on individual services
+  - AKA System Assigned
+  - Exists as part of the parent service
+  - Deleted if service is deleted
 
 ---
 
 # C# Code Changes
 
 - Use `new Microsoft.Data.SqlClient.DefaultAzureCredential()`
-  - Reference `Azure.Identity` NuGet package
-- Instead of `new TableClient(MyConnectionString)`
-- Use `new ConnectionClient(new DefaultAzureCredential())`
-  - Plus assign permissions
+
+1. Reference `Azure.Identity` NuGet package
+1. Instead of `new TableClient(MyConnectionString)`
+1. Use `new TableClient("https...", new DefaultAzureCredential())`
+1. Note: Not for everything. ex: Managed SQL Server uses a sligthly different connection string
 
 #
