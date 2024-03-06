@@ -41,18 +41,19 @@ with AL Rodriguez
 - HaveIBeenPwned.com
 - Committed to Source Control
   - https://www.csoonline.com/article/571363/how-corporate-data-and-secrets-leak-from-github-repositories.html
-- Can try to avoid using secrets
-  - But not 100%
+- Can't always avoid using secrets
 
 ---
 
 # Azure Service Principals
 
-- An "App" in Azure Entra
+- An "App" in Microsot Entra ID (formerly Azure AD)
 - Permissions assigned to it
   - Like a User or Service Account
-- Client Id and Client Secret
-  - Anything can use this
+- Service Principal credentials given to apps to use
+- Credentials are: 
+  - Client Id and Client Secret
+  - Plain text values - anything can use them
 
 ---
 
@@ -62,19 +63,31 @@ with AL Rodriguez
   - A type of Service Principal
   - Only works for Azure Managed Services
 - You don't see Client Secret
-- Assigned to services
+- An account assigned to services
 
 ---
 
-# Managed Services
+# Managed means...
 
+- Microsoft does the hard work
 - Specific to Azure
-- "Managed" means Microsoft does the hard work
-- PaaS Services
+- Authenticate to "Managed" PaaS Services like:
   - Managed SQL Server
   - Storage Accounts
   - Service Bus
+  - Key Vault
   - Etc
+
+---
+
+# Which Azure services can use Managed Identities?
+
+- Azure App Service
+- Azure Functions
+- Azure Container Apps
+- Azure Kubernetes Service (AKS)
+- Azure Container Instances
+- Full list at: https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/managed-identities-status
 
 ---
 
@@ -94,10 +107,10 @@ with AL Rodriguez
 # C# Code Changes
 
 - Use `new Microsoft.Data.SqlClient.DefaultAzureCredential()`
+  - Note: Some cases are a little different. Ex: Managed SQL Server uses a sligthly different connection string
 
 1. Reference `Azure.Identity` NuGet package
 1. Instead of `new TableClient(MyConnectionString)`
 1. Use `new TableClient("https...", new DefaultAzureCredential())`
-1. Note: Not for everything. ex: Managed SQL Server uses a sligthly different connection string
 
 #
