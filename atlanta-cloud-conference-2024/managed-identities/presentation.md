@@ -41,6 +41,8 @@ with AL Rodriguez
 - HaveIBeenPwned.com
 - Committed to Source Control
   - https://www.csoonline.com/article/571363/how-corporate-data-and-secrets-leak-from-github-repositories.html
+- Persistent Threats to Microsoft after 1 leaked secret
+  - https://msrc.microsoft.com/blog/2024/03/update-on-microsoft-actions-following-attack-by-nation-state-actor-midnight-blizzard/
 - Can't always avoid using secrets
 
 ---
