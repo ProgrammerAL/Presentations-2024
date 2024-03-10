@@ -23,6 +23,13 @@ with AL Rodriguez
 
 ---
 
+# Today's Goal
+
+- Learn what Azure Managed Identities are
+- Convert app using Connection Strings to use Managed Identities
+
+---
+
 # What are Secrets?
 
 - Tokens/Passwords/Connection Strings
@@ -53,7 +60,7 @@ with AL Rodriguez
 - Permissions assigned to it
   - Like a User or Service Account
 - Service Principal credentials given to apps to use
-- Credentials are: 
+- Credentials are:
   - Client Id and Client Secret
   - Plain text values - anything can use them
 
@@ -69,11 +76,11 @@ with AL Rodriguez
 
 ---
 
-# Managed means...
+# "Managed" means...
 
 - Microsoft does the hard work
 - Specific to Azure
-- Authenticate to "Managed" PaaS Services like:
+- Managed Identitied authenticate to "Managed" PaaS Services like:
   - Managed SQL Server
   - Storage Accounts
   - Service Bus
