@@ -2,6 +2,7 @@
 
 ## Initial setup for demo using Connection Strings
 
+1. In a terminal, open up the `~/code/app-original` folder and run `pwsh ./package-for-deployment.ps1` to create the packages that will be deployed by Pulumi in the next step
 1. Run `pulumi up` in the `~/code/infra` folder (keep this window open to make it easy to get outputs for later step)
 1. Add the SQL and Storage connection strings to the code from the Pulumi Outputs
 1. In the Azure Portal, sign in to the SQL Database using the `MySqlAdminUser` account with the `aksjn&JHLB!!BNHJKasd` password
