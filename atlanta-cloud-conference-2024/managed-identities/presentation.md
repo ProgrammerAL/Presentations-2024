@@ -10,7 +10,7 @@ author: Al Rodriguez
 
 with AL Rodriguez
 
-<!-- ![bg right 80%](presentation-images/presentation_link_qrcode.png) -->
+![bg right 80%](presentation-images/presentation_link_qrcode.png)
 
 ---
 
@@ -19,7 +19,7 @@ with AL Rodriguez
 - @ProgrammerAL
 - ProgrammerAL.com
 
-<!-- ![bg right 80%](presentation-images/presentation_link_qrcode.png) -->
+![bg right 80%](presentation-images/presentation_link_qrcode.png)
 
 ---
 
@@ -115,4 +115,9 @@ with AL Rodriguez
 1. Instead of `new TableClient(MyConnectionString)`
 1. Use `new TableClient("https...", new DefaultAzureCredential())`
 
-#
+# Online Info
+
+- @ProgrammerAL
+- programmerAL.com
+
+![bg right 80%](presentation-images/presentation_link_qrcode.png)
