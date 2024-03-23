@@ -122,6 +122,8 @@ with AL Rodriguez
 1. Instead of `new TableClient(MyConnectionString)`
 1. Use `new TableClient("https...", new DefaultAzureCredential())`
 
+---
+
 # Online Info
 
 - @ProgrammerAL
