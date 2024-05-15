@@ -1,9 +1,11 @@
 config:
+  atlcloudconf24-iac:aaa:
+    secure: AAABAN3sOK/G9EeLDFQm4j52YMhLF1UlS0vay/1Rd81G06SKlaY=
   atlcloudconf24-iac:azure-resource-group-name: dev-atlcloudconf24-iac-rg
   atlcloudconf24-iac:functions-package-path: ../src/published-apps/functions.zip
   atlcloudconf24-iac:location: eastus
-  atlcloudconf24-iac:static-site-path: ../src/published-apps/webapp
   atlcloudconf24-iac:service-config:
-    Version: dev-version-123
     Environment: dev
+    Version: dev-version-123
+  atlcloudconf24-iac:static-site-path: ../src/published-apps/webapp
   pulumi:template: azure-csharp

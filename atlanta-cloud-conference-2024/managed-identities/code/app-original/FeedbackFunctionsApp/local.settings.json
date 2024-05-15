@@ -9,8 +9,8 @@
 
     "ServiceConfig__Environment": "alrodri-local",
     "ServiceConfig__Version": "local",
-    "StorageConfig__TableEndpoint": "DefaultEndpointsProtocol=https;AccountName=persistentstg3d93729c;AccountKey=C+yOuaXpGzFTkAzq5nSg+8BFzPyXXKWZPod29Cyms5vy+K5ZL3t+Qx7sFbl8y2bIceQ+LnXS07Hg+AStUiSv8Q==;EndpointSuffix=core.windows.net",
+    "StorageConfig__TableEndpoint": "https://persistentstgbf542be1.table.core.windows.net",
     "StorageConfig__TableName": "Comments",
-    "StorageConfig__SqlConnectionString": "Server=tcp:sql-serverf87ea9fb.database.windows.net,1433;Initial Catalog=mydatabase;Persist Security Info=False;User ID=MySqlAdminUser;Password=aksjn&JHLB!!BNHJKasd;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+    "StorageConfig__SqlConnectionString": "Server=tcp:sql-server0718d15f.database.windows.net,1433;Initial Catalog=mydatabase;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication=Active Directory Default;"
   }
 }

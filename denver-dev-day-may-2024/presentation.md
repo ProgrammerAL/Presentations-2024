@@ -1,12 +1,12 @@
 ---
 marp: true
-title: Infrastructure as Code: Getting STarted with Real Code and Pulumi
+title: IaC for Developers with Pulumi
 paginate: true
 theme: gaia
 author: Al Rodriguez
 ---
 
-# Beginner's Guide to Pulumi: Infrastructure as Code with Code
+# IaC for Developers with Pulumi
 
 with AL Rodriguez
 
@@ -37,6 +37,25 @@ with AL Rodriguez
 
 ---
 
+# Server History Lesson
+
+- Physical Hardware
+- Physical Hardware running VMs
+- Co-located hardware running VMs
+- VMs in a "cloud"
+- Cloud with IaaS/PaaS/etc services <--today!
+
+---
+
+# Benefits of Automated Cloud
+
+- On-Demand
+- Add/Remove cloud resources as needed
+- Scriptable
+- Updated with a PR
+
+---
+
 # Infrastructure as Code (IaC)
 
 - Codify your environments
@@ -47,6 +66,21 @@ with AL Rodriguez
 
 ---
 
+# IaC Tools
+
+- Azure ARM/Bicep
+- AWS Cloudformation
+- Terraform
+- Pulumi
+
+---
+
+# Why should devs care?
+
+- DevOps
+- 
+
+---
 
 # What's different about IaC code?
 

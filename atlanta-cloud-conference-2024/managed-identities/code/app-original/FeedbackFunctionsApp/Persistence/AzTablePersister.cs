@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Azure.Data.Tables;
+using Azure.Identity;
 
 using Microsoft.Extensions.Options;
 
@@ -28,8 +29,8 @@ public class AzTablePersister : IAzTablePersister
     {
         var itemKey = Guid.NewGuid().ToString();
 
-        var tableConnectionString = _storageConfig.Value.TableEndpoint;
-        var tableClient = new TableClient(tableConnectionString, _storageConfig.Value.TableName);
+        var tableConnectionUrl = new Uri(_storageConfig.Value.TableEndpoint);
+        var tableClient = new TableClient(tableConnectionUrl, tableName: "Comments", new DefaultAzureCredential());
 
         await tableClient.CreateIfNotExistsAsync();
 
