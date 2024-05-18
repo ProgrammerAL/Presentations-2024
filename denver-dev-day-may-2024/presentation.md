@@ -33,10 +33,6 @@ with AL Rodriguez
 
 ---
 
-![bg contain](presentation-images/padme-meme.jpg)
-
----
-
 # Server History Lesson
 
 - Physical Hardware
@@ -44,6 +40,19 @@ with AL Rodriguez
 - Co-located hardware running VMs
 - VMs in a "cloud"
 - Cloud with IaaS/PaaS/etc services <--today!
+- Skynet <-- coming soon!
+
+---
+
+# Cloud needs Automation
+
+- On-Demand Resources
+  - NOT Pristine and Pampered
+- Tangent: Azure wouldn't exist without PowerShell
+
+---
+
+![bg contain](presentation-images/padme-meme.jpg)
 
 ---
 
@@ -77,17 +86,19 @@ with AL Rodriguez
 
 # Why should devs care?
 
-- DevOps
-- 
+- Devs know their apps
+  - What services their apps need
+- Con: More work shifted-left
 
 ---
 
 # What's different about IaC code?
 
-- Different type of application
-  - Like everything else: Web UI, Backend Server, Embedded, Video Game, IaC
+- Web UI, Backend Server, Embedded, Video Game, etc
+  - New Type: IaC
 - Still code
   - YAML, JSON, Custom DSL, or Your Choice of Language
+- LIke a script
 
 ---
 
@@ -103,22 +114,70 @@ with AL Rodriguez
 
 ---
 
-# C# Example Code
-
 ```csharp
-using System.Threading.Tasks;
 using Pulumi;
-using Pulumi.Aws.S3;
+using Pulumi.AzureNative.Cache;
+using Pulumi.AzureNative.Cache.Inputs;
+using Pulumi.AzureNative.Web;
+using Pulumi.AzureNative.Web.Inputs;
+using System.Collections.Generic;
 
-await Deployment.RunAsync(() =>
+return await Deployment.RunAsync(() =>
 {
-    // Create an AWS resource (S3 Bucket)
-    var bucket = new Bucket("my-bucket");
+    // Create an Azure Resource Group
+    var resourceGroup = new Pulumi.AzureNative.Resources.ResourceGroup("resourceGroup");
 
-    // Export the name of the bucket
-    return new Dictionary<string, object>
+    // Create an Azure Redis Cache instance
+    var redisCache = new Redis("redisCache", new RedisArgs
     {
-        { "bucketName", bucket.Id },
+        ResourceGroupName = resourceGroup.Name,
+        Location = resourceGroup.Location, // Use the same location as the resource group
+        Sku = new SkuArgs
+        {
+            Name = SkuName.Basic, // Choose the SKU for Redis cache
+            Family = SkuFamily.C,
+            Capacity = 0 // Basic Tier, 250MB Cache
+        }
+    });
+
+    // Create an App Service Plan for the App Service
+    var appServicePlan = new AppServicePlan("appServicePlan", new AppServicePlanArgs
+    {
+        ResourceGroupName = resourceGroup.Name,
+        Location = resourceGroup.Location,
+        Kind = "App",
+        Sku = new SkuDescriptionArgs
+        {
+            Name = "B1",
+            Tier = "Basic"
+        }
+    });
+
+    // Create the App Service instance
+    var appService = new WebApp("appService", new WebAppArgs
+    {
+        ResourceGroupName = resourceGroup.Name,
+        Location = resourceGroup.Location,
+        ServerFarmId = appServicePlan.Id,
+        SiteConfig = new SiteConfigArgs
+        {
+            // Storing the connection string to the Redis cache as an app setting
+            AppSettings = new[]
+            {
+                new NameValuePairArgs
+                {
+                    Name = "RedisCacheConnection",
+                    Value = Output.Format($"{redisCache.HostName}:6380,password={redisCache.PrimaryKey},ssl=True,abortConnect=False")
+                }
+            }
+        }
+    });
+
+    // Export the App Service URL and the Redis cache primary key
+    return new Dictionary<string, object?>
+    {
+        ["appServiceUrl"] = appService.DefaultHostName.Apply(hostName => $"https://{hostName}"),
+        ["redisCachePrimaryKey"] = redisCache.PrimaryKey
     };
 });
 ```
