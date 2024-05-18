@@ -81,15 +81,6 @@
 </ul>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="9" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="26">
-<h1 id="iac-tools">IaC Tools</h1>
-<ul>
-<li>Azure ARM/Bicep</li>
-<li>AWS Cloudformation</li>
-<li>Terraform</li>
-<li>Pulumi</li>
-</ul>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="10" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="26">
 <h1 id="why-should-devs-care">Why should devs care?</h1>
 <ul>
 <li>Devs know their apps
@@ -100,7 +91,7 @@
 <li>Con: More work shifted-left</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="11" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="26">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="10" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="26">
 <h1 id="whats-different-about-iac-code">What's different about IaC code?</h1>
 <ul>
 <li>Web UI, Backend Server, Embedded, Video Game, etc
@@ -113,7 +104,16 @@
 <li>YAML, JSON, Custom DSL, or Your Choice of Language</li>
 </ul>
 </li>
-<li>LIke a script</li>
+<li>Like a script</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="11" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="26">
+<h1 id="iac-tools">IaC Tools</h1>
+<ul>
+<li>Azure ARM/Bicep</li>
+<li>AWS Cloudformation</li>
+<li>Terraform</li>
+<li>Pulumi</li>
 </ul>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="12" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="12" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="26">
@@ -125,13 +125,17 @@
 <li>DSC - Desired State Configuration</li>
 </ul>
 </li>
-<li>Use your choice or programming language
+<li>Use your choice or programming language*
 <ul>
 <li>No YAML</li>
 <li>No custom DSL</li>
 </ul>
 </li>
-<li>Procedural and Imperative</li>
+<li>Procedural code
+<ul>
+<li>Imperative runtime</li>
+</ul>
+</li>
 </ul>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="13" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="13" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="26">
@@ -145,10 +149,10 @@
 <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> Deployment.RunAsync(() =&gt;
 {
     <span class="hljs-comment">// Create an Azure Resource Group</span>
-    <span class="hljs-keyword">var</span> resourceGroup = <span class="hljs-keyword">new</span> Pulumi.AzureNative.Resources.ResourceGroup(<span class="hljs-string">&quot;resourceGroup&quot;</span>);
+    <span class="hljs-keyword">var</span> resourceGroup = <span class="hljs-keyword">new</span> Pulumi.AzureNative.Resources.ResourceGroup(<span class="hljs-string">&quot;myresourceGroup&quot;</span>);
 
     <span class="hljs-comment">// Create an Azure Redis Cache instance</span>
-    <span class="hljs-keyword">var</span> redisCache = <span class="hljs-keyword">new</span> Redis(<span class="hljs-string">&quot;redisCache&quot;</span>, <span class="hljs-keyword">new</span> RedisArgs
+    <span class="hljs-keyword">var</span> redisCache = <span class="hljs-keyword">new</span> Redis(<span class="hljs-string">&quot;myredisCache&quot;</span>, <span class="hljs-keyword">new</span> RedisArgs
     {
         ResourceGroupName = resourceGroup.Name,
         Location = resourceGroup.Location, <span class="hljs-comment">// Use the same location as the resource group</span>
@@ -161,7 +165,7 @@
     });
 
     <span class="hljs-comment">// Create an App Service Plan for the App Service</span>
-    <span class="hljs-keyword">var</span> appServicePlan = <span class="hljs-keyword">new</span> AppServicePlan(<span class="hljs-string">&quot;appServicePlan&quot;</span>, <span class="hljs-keyword">new</span> AppServicePlanArgs
+    <span class="hljs-keyword">var</span> appServicePlan = <span class="hljs-keyword">new</span> AppServicePlan(<span class="hljs-string">&quot;myappServicePlan&quot;</span>, <span class="hljs-keyword">new</span> AppServicePlanArgs
     {
         ResourceGroupName = resourceGroup.Name,
         Location = resourceGroup.Location,
@@ -174,7 +178,7 @@
     });
 
     <span class="hljs-comment">// Create the App Service instance</span>
-    <span class="hljs-keyword">var</span> appService = <span class="hljs-keyword">new</span> WebApp(<span class="hljs-string">&quot;appService&quot;</span>, <span class="hljs-keyword">new</span> WebAppArgs
+    <span class="hljs-keyword">var</span> appService = <span class="hljs-keyword">new</span> WebApp(<span class="hljs-string">&quot;myappService&quot;</span>, <span class="hljs-keyword">new</span> WebAppArgs
     {
         ResourceGroupName = resourceGroup.Name,
         Location = resourceGroup.Location,

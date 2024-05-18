@@ -75,15 +75,6 @@ with AL Rodriguez
 
 ---
 
-# IaC Tools
-
-- Azure ARM/Bicep
-- AWS Cloudformation
-- Terraform
-- Pulumi
-
----
-
 # Why should devs care?
 
 - Devs know their apps
@@ -98,7 +89,16 @@ with AL Rodriguez
   - New Type: IaC
 - Still code
   - YAML, JSON, Custom DSL, or Your Choice of Language
-- LIke a script
+- Like a script
+
+---
+
+# IaC Tools
+
+- Azure ARM/Bicep
+- AWS Cloudformation
+- Terraform
+- Pulumi
 
 ---
 
@@ -107,13 +107,13 @@ with AL Rodriguez
 - Tooling for Cloud IaC
   - Create/Read/Update/Delete services
   - DSC - Desired State Configuration
-- Use your choice or programming language
+- Use your choice or programming language*
   - No YAML
   - No custom DSL
-- Procedural and Imperative
+- Procedural code
+  - Imperative runtime
 
 ---
-
 ```csharp
 using Pulumi;
 using Pulumi.AzureNative.Cache;
@@ -125,10 +125,10 @@ using System.Collections.Generic;
 return await Deployment.RunAsync(() =>
 {
     // Create an Azure Resource Group
-    var resourceGroup = new Pulumi.AzureNative.Resources.ResourceGroup("resourceGroup");
+    var resourceGroup = new Pulumi.AzureNative.Resources.ResourceGroup("myresourceGroup");
 
     // Create an Azure Redis Cache instance
-    var redisCache = new Redis("redisCache", new RedisArgs
+    var redisCache = new Redis("myredisCache", new RedisArgs
     {
         ResourceGroupName = resourceGroup.Name,
         Location = resourceGroup.Location, // Use the same location as the resource group
@@ -141,7 +141,7 @@ return await Deployment.RunAsync(() =>
     });
 
     // Create an App Service Plan for the App Service
-    var appServicePlan = new AppServicePlan("appServicePlan", new AppServicePlanArgs
+    var appServicePlan = new AppServicePlan("myappServicePlan", new AppServicePlanArgs
     {
         ResourceGroupName = resourceGroup.Name,
         Location = resourceGroup.Location,
@@ -154,7 +154,7 @@ return await Deployment.RunAsync(() =>
     });
 
     // Create the App Service instance
-    var appService = new WebApp("appService", new WebAppArgs
+    var appService = new WebApp("myappService", new WebAppArgs
     {
         ResourceGroupName = resourceGroup.Name,
         Location = resourceGroup.Location,
@@ -181,7 +181,6 @@ return await Deployment.RunAsync(() =>
     };
 });
 ```
-
 ---
 
 # What Pulumi isn't
@@ -244,10 +243,13 @@ return await Deployment.RunAsync(() =>
 
 # Config
 
-- YAML Files
-- Per Stack
-- Individual Key-Value pairs
-  - Or objects
+- Build in Config
+  - YAML Files
+  - Per Stack
+  - Individual Key-Value pairs
+    - Or objects
+- Or whatever you want*
+  - Custom code
 
 ---
 
