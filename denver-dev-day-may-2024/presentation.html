@@ -27,7 +27,7 @@
 <li>Introduction to Pulumi</li>
 <li>Demo with C# and Azure
 <ul>
-<li>Concepts apply to other languages/clouds supported by Pulumi</li>
+<li>Concepts apply to other languages/clouds</li>
 </ul>
 </li>
 </ul>
@@ -35,9 +35,9 @@
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="4" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="4" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="26">
 <h1 id="server-history-lesson">Server History Lesson</h1>
 <ul>
-<li>Physical Hardware</li>
-<li>Physical Hardware running VMs</li>
-<li>Co-located hardware running VMs</li>
+<li>Physical hardware</li>
+<li>VMs on physical hardware</li>
+<li>VMs on Co-located hardware</li>
 <li>VMs in a &quot;cloud&quot;</li>
 <li>Cloud with IaaS/PaaS/etc services &lt;--today!</li>
 <li>Skynet &lt;-- coming soon!</li>
@@ -67,6 +67,7 @@
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="8" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="8" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="26">
 <h1 id="infrastructure-as-code-iac">Infrastructure as Code (IaC)</h1>
 <ul>
+<li>IaC is a concept, not a technology</li>
 <li>Codify your environments</li>
 <li>Automation to avoid manual steps
 <ul>
@@ -85,26 +86,24 @@
 <ul>
 <li>Devs know their apps
 <ul>
-<li>What services their apps need</li>
+<li>What cloud resources their apps need</li>
+<li>When the cloud resources need to be added</li>
 </ul>
 </li>
 <li>Con: More work shifted-left</li>
 </ul>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="10" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="26">
-<h1 id="whats-different-about-iac-code">What's different about IaC code?</h1>
+<h1 id="how-do-i-write-iac-code">How do I write IaC code?</h1>
 <ul>
-<li>Web UI, Backend Server, Embedded, Video Game, etc
-<ul>
-<li>New Type: IaC</li>
-</ul>
-</li>
+<li>Reminder: IaC is a concept</li>
+<li>Like a script</li>
+<li>Usually Desired State Config (DSC)</li>
 <li>Still code
 <ul>
 <li>YAML, JSON, Custom DSL, or Your Choice of Language</li>
 </ul>
 </li>
-<li>Like a script</li>
 </ul>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="11" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="26">
@@ -287,11 +286,20 @@
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="21" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="21" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="26">
 <h1 id="config">Config</h1>
 <ul>
+<li>Build in Config
+<ul>
 <li>YAML Files</li>
 <li>Per Stack</li>
 <li>Individual Key-Value pairs
 <ul>
 <li>Or objects</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Or whatever you want*
+<ul>
+<li>Custom code</li>
 </ul>
 </li>
 </ul>

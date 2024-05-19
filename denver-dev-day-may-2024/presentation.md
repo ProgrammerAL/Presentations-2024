@@ -29,15 +29,15 @@ with AL Rodriguez
 - Outline of Infrastructure as Code (IaC)
 - Introduction to Pulumi
 - Demo with C# and Azure
-  - Concepts apply to other languages/clouds supported by Pulumi
+  - Concepts apply to other languages/clouds
 
 ---
 
 # Server History Lesson
 
-- Physical Hardware
-- Physical Hardware running VMs
-- Co-located hardware running VMs
+- Physical hardware
+- VMs on physical hardware
+- VMs on Co-located hardware
 - VMs in a "cloud"
 - Cloud with IaaS/PaaS/etc services <--today!
 - Skynet <-- coming soon!
@@ -67,6 +67,7 @@ with AL Rodriguez
 
 # Infrastructure as Code (IaC)
 
+- IaC is a concept, not a technology
 - Codify your environments
 - Automation to avoid manual steps
   - Manual steps always mess up eventually
@@ -75,21 +76,30 @@ with AL Rodriguez
 
 ---
 
+# What do I need to know for IaC?
+
+- Cloud(s)
+- 
+- IaC Tools
+
+---
+
 # Why should devs care?
 
 - Devs know their apps
-  - What services their apps need
+  - What cloud resources their apps need
+  - When the cloud resources need to be added
 - Con: More work shifted-left
 
 ---
 
-# What's different about IaC code?
+# How do I write IaC code?
 
-- Web UI, Backend Server, Embedded, Video Game, etc
-  - New Type: IaC
+- Reminder: IaC is a concept
+- Like a script
+- Usually Desired State Config (DSC)
 - Still code
   - YAML, JSON, Custom DSL, or Your Choice of Language
-- Like a script
 
 ---
 
