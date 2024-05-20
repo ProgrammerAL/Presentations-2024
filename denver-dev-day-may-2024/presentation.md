@@ -76,14 +76,6 @@ with AL Rodriguez
 
 ---
 
-# What do I need to know for IaC?
-
-- Cloud(s)
-- 
-- IaC Tools
-
----
-
 # Why should devs care?
 
 - Devs know their apps
@@ -109,6 +101,14 @@ with AL Rodriguez
 - AWS Cloudformation
 - Terraform
 - Pulumi
+
+---
+
+# What do I need to know to do IaC?
+
+- Cloud(s)
+- IaC Tool(s)
+- Programming Language(s)*
 
 ---
 
@@ -280,6 +280,13 @@ return await Deployment.RunAsync(() =>
 - Usable in:
   - Stack References
   - `Pulumi.README.md` files
+
+---
+
+# Resource References
+
+- "Get" Functions
+- Loaded as Read Only variables
 
 ---
 
