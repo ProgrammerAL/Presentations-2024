@@ -67,7 +67,7 @@ with AL Rodriguez
 
 # Infrastructure as Code (IaC)
 
-- IaC is a concept, not a technology
+- A concept, not a technology
 - Codify your environments
 - Automation to avoid manual steps
   - Manual steps always mess up eventually
