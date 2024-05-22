@@ -64,6 +64,13 @@ with AL Rodriguez
 
 ---
 
+# How is IaC run?
+
+- CI/CD pipeline
+- Manually from someone's machine
+
+---
+
 # Why should devs care?
 
 - Devs know their apps
