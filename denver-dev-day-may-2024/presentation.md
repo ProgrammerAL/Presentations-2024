@@ -26,7 +26,8 @@ with AL Rodriguez
 
 # What this session is
 
-- Outline of Infrastructure as Code (IaC)
+- Overview of Infrastructure as Code (IaC)
+  - For Developers
 - Introduction to Pulumi
 - Demo with C# and Azure
   - Concepts apply to other languages/clouds
@@ -40,15 +41,10 @@ with AL Rodriguez
 - VMs on Co-located hardware
 - VMs in a "cloud"
 - Cloud with IaaS/PaaS/etc services <--today!
-- Skynet <-- coming soon!
 
 ---
 
-# Cloud needs Automation
-
-- On-Demand Resources
-  - NOT Pristine and Pampered
-- Tangent: Azure wouldn't exist without PowerShell
+![bg contain](presentation-images/epic-handshake-meme.jpg)
 
 ---
 
@@ -56,23 +52,15 @@ with AL Rodriguez
 
 ---
 
-# Benefits of Automated Cloud
-
-- On-Demand
-- Add/Remove cloud resources as needed
-- Scriptable
-- Updated with a PR
-
----
-
 # Infrastructure as Code (IaC)
 
 - A concept, not a technology
-- Codify your environments
-- Automation to avoid manual steps
-  - Manual steps always mess up eventually
-- Easily repeatable
-  - Create multiple environments with ease
+- Usually Desired State Config (DSC)
+- Code!
+  - Repeatable
+  - Create more environments with ease
+  - Updated with a PR
+  - YAML, JSON, Custom DSL, or Your Choice of Language
 
 ---
 
@@ -85,26 +73,16 @@ with AL Rodriguez
 
 ---
 
-# How do I write IaC code?
-
-- Reminder: IaC is a concept
-- Like a script
-- Usually Desired State Config (DSC)
-- Still code
-  - YAML, JSON, Custom DSL, or Your Choice of Language
-
----
-
-# IaC Tools
+# Cloud IaC Tools
 
 - Azure ARM/Bicep
 - AWS Cloudformation
-- Terraform
+- Terraform/OpenTofu
 - Pulumi
 
 ---
 
-# What do I need to know to do IaC?
+# What do I need to know for IaC?
 
 - Cloud(s)
 - IaC Tool(s)
@@ -115,13 +93,11 @@ with AL Rodriguez
 # What is Pulumi?
 
 - Tooling for Cloud IaC
-  - Create/Read/Update/Delete services
-  - DSC - Desired State Configuration
+  - Create/Read/Update/Delete cloud services
 - Use your choice or programming language*
-  - No YAML
-  - No custom DSL
 - Procedural code
   - Imperative runtime
+  - DSC - Desired State Configuration
 
 ---
 ```csharp
@@ -136,19 +112,6 @@ return await Deployment.RunAsync(() =>
 {
     // Create an Azure Resource Group
     var resourceGroup = new Pulumi.AzureNative.Resources.ResourceGroup("myresourceGroup");
-
-    // Create an Azure Redis Cache instance
-    var redisCache = new Redis("myredisCache", new RedisArgs
-    {
-        ResourceGroupName = resourceGroup.Name,
-        Location = resourceGroup.Location, // Use the same location as the resource group
-        Sku = new SkuArgs
-        {
-            Name = SkuName.Basic, // Choose the SKU for Redis cache
-            Family = SkuFamily.C,
-            Capacity = 0 // Basic Tier, 250MB Cache
-        }
-    });
 
     // Create an App Service Plan for the App Service
     var appServicePlan = new AppServicePlan("myappServicePlan", new AppServicePlanArgs
@@ -169,25 +132,12 @@ return await Deployment.RunAsync(() =>
         ResourceGroupName = resourceGroup.Name,
         Location = resourceGroup.Location,
         ServerFarmId = appServicePlan.Id,
-        SiteConfig = new SiteConfigArgs
-        {
-            // Storing the connection string to the Redis cache as an app setting
-            AppSettings = new[]
-            {
-                new NameValuePairArgs
-                {
-                    Name = "RedisCacheConnection",
-                    Value = Output.Format($"{redisCache.HostName}:6380,password={redisCache.PrimaryKey},ssl=True,abortConnect=False")
-                }
-            }
-        }
     });
 
     // Export the App Service URL and the Redis cache primary key
     return new Dictionary<string, object?>
     {
         ["appServiceUrl"] = appService.DefaultHostName.Apply(hostName => $"https://{hostName}"),
-        ["redisCachePrimaryKey"] = redisCache.PrimaryKey
     };
 });
 ```
@@ -195,7 +145,7 @@ return await Deployment.RunAsync(() =>
 
 # What Pulumi isn't
 
-- NOT a Cross-Platform abstraction
+- NOT an abstraction over clouds
   - Clouds are target specifically
   - Ex: Cloud storage different between AWS S3 and Azure Blob Storage
 
@@ -233,44 +183,18 @@ return await Deployment.RunAsync(() =>
 
 ---
 
-#
-
-![bg contain](presentation-images/pulumi-state-flow.png)
-
----
-
-# Input and Output Objects
-
-- Object for a resource to be created
-- Inputs
-  - Become Outputs
-- Outputs
-  - Will have a value eventually...in the future
-    - Ex: GUID id of a storage account
-  - Used to modify a dependency in code
-
----
-
 # Config
 
-- Build in Config
+- Built in Config
   - YAML Files
   - Per Stack
   - Individual Key-Value pairs
     - Or objects
-- Or whatever you want*
-  - Custom code
-
----
-
-# Config Secrets
-
 - Encrypted in config
   - Encryption key stored on Pulumi servers (by default)
-- Per Stack
-- Loaded as an Output value
-- Plain-Text viewable via Pulumi CLI
-  - When signed in
+- Or whatever you want*
+  - Custom code
+- OR Pulumi ESC
 
 ---
 
@@ -287,6 +211,24 @@ return await Deployment.RunAsync(() =>
 
 - "Get" Functions
 - Loaded as Read Only variables
+
+---
+
+#
+
+![bg contain](presentation-images/pulumi-state-flow.png)
+
+---
+
+# Input and Output Objects
+
+- Object for a resource to be created
+- Inputs
+  - Become Outputs
+- Outputs
+  - Will have a value eventually...in the future
+    - Ex: GUID id of a storage account
+  - Used to modify a dependency in code
 
 ---
 
