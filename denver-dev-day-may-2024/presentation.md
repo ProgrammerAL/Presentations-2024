@@ -34,6 +34,14 @@ with AL Rodriguez
 
 ---
 
+# How do you deploy Infra?
+
+- Other team handles it?
+- Automated/Manual/Mixed?
+- CI/CD Pipelines?
+
+---
+
 # Server History Lesson
 
 - Physical hardware
@@ -178,11 +186,13 @@ return await Deployment.RunAsync(() =>
 
 ---
 
-# Demo 1 Time!
+# Demo Time!
 
 - Code
 - Pulumi CLI
 - Web Portal
+
+![bg right 80%](diagrams/demo-app.svg)
 
 ---
 
@@ -197,7 +207,7 @@ return await Deployment.RunAsync(() =>
   - Per Stack
   - Individual Key-Value pairs
     - Or objects
-- Encrypted in config
+- Secrets are encrypted in config
   - Encryption key stored on Pulumi servers (by default)
 - Or whatever you want*
   - Custom code
@@ -243,15 +253,6 @@ return await Deployment.RunAsync(() =>
 
 - Generate Pulumi Code using that thing everyone's talking about
 - https://www.pulumi.com/ai
-
----
-
-# Demo 2 Time!
-
-- Pulumi Code
-- Demo App
-
-![bg right 80%](diagrams/demo-app.svg)
 
 ---
 
