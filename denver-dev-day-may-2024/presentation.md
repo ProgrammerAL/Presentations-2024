@@ -17,7 +17,7 @@ with AL Rodriguez
 # Me (AL)
 
 - @ProgrammerAL
-- programmerAL.com
+- ProgrammerAL.com
 - NOT affiliated with Pulumi
 
 ![bg right 80%](presentation-images/presentation_link_qrcode.png)
@@ -26,7 +26,7 @@ with AL Rodriguez
 
 # What this session is
 
-- Overview of Infrastructure as Code (IaC)
+- Overview of Cloud Infrastructure as Code (IaC)
   - For Developers
 - Introduction to Pulumi
 - Demo with C# and Azure
@@ -34,7 +34,7 @@ with AL Rodriguez
 
 ---
 
-# How do you deploy Infra?
+# How do you deploy infrastructure?
 
 - Other team handles it?
 - Automated/Manual/Mixed?
@@ -168,8 +168,7 @@ return await Deployment.RunAsync(() =>
 
 # Programming Languages Supported
 
-- Many programming languages supported and being added
-  ![w:500 h:400](presentation-images/pulumi-languages-and-sdks.png)
+![w:700 h:500](presentation-images/pulumi-languages-and-sdks.png)
 
 ---
 

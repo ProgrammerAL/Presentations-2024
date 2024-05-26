@@ -29,7 +29,8 @@ public record GlobalConfig(
 
         var staticSiteConfig = new StaticSiteConfigDto
         {
-            StaticSitePath = config.Require("static-site-path")
+            StaticSitePath = config.Require("static-site-path"),
+            BlogPostUrl = config.Require("blog-post-url")
         };
 
         return new GlobalConfig(

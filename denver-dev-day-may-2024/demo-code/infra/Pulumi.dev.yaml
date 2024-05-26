@@ -2,6 +2,7 @@ config:
   DenverDevDayMay2024-FeedbackSystem:azure-resource-group-name: denverdevdaymay2024-dev-feedback-rg
   DenverDevDayMay2024-FeedbackSystem:functions-package-path: ../src/published-apps/functions.zip
   DenverDevDayMay2024-FeedbackSystem:location: eastus
+  DenverDevDayMay2024-FeedbackSystem:blog-post-url: https://programmeral.com/posts/20240531-Presentation-DenverDevDayMay2024
   DenverDevDayMay2024-FeedbackSystem:static-site-path: ../src/published-apps/webapp
   DenverDevDayMay2024-FeedbackSystem:service-config:
     Version: dev-version-123

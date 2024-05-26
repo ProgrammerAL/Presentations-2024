@@ -1,15 +1,40 @@
 ﻿@page "/"
+@using FeedbackWebApp.Configs
 @using QRCoder
 @using SixLabors.ImageSharp
 @inject NavigationManager NavManager
+@inject ApiConfig ApiConfig
 
 <PageTitle>Home</PageTitle>
 
-<h1>Leave some feedback!</h1>
-<img src="@QrCodeImageUrl" />
+<style>
+    .grid-container {
+        display: grid;
+        grid-template-columns: 40% 40%;
+        column-gap: 40px;
+    }
+
+    .qr-image {
+        height: 600px;
+        width: 600px;
+    }
+</style>
+
+
+<div class="grid-container">
+    <div class="grid-item">
+        <h1>Leave some feedback!</h1>
+        <img class="qr-image" src="@FeedbackQrCodeImageUrl" />
+    </div>
+    <div class="grid-item">
+        <h1>Download the Content!</h1>
+        <img class="qr-image" src="@BlogPostQrCodeImageUrl" />
+    </div>
+</div>
 
 @code {
-    public string? QrCodeImageUrl { get; set; }
+    public string? FeedbackQrCodeImageUrl { get; set; }
+    public string? BlogPostQrCodeImageUrl { get; set; }
 
     protected override void OnInitialized()
     {
@@ -21,14 +46,20 @@
             baseUri = baseUri.Substring(0, baseUri.Length - 1);
         }
 
-        var payload = $"{baseUri}/comments";
         var qrGenerator = new QRCodeGenerator();
-        var qrCodeData = qrGenerator.CreateQrCode(payload, QRCodeGenerator.ECCLevel.Q);
+        var commentsUrl = $"{baseUri}/comments";
+        FeedbackQrCodeImageUrl = GenerateQrCode(qrGenerator, commentsUrl);
+        BlogPostQrCodeImageUrl = GenerateQrCode(qrGenerator, ApiConfig.BlogPostUrl);
+
+        base.OnInitialized();
+    }
+
+    private string GenerateQrCode(QRCodeGenerator qrGenerator, string text)
+    {
+        var qrCodeData = qrGenerator.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
         var graphic = new Base64QRCode(qrCodeData);
         var base64EncodedImage = graphic.GetGraphic(pixelsPerModule: 20, darkColor: Color.Black, lightColor: Color.Transparent, drawQuietZones: false, imgType: Base64QRCode.ImageType.Png);
 
-        QrCodeImageUrl = string.Format("data:image/png;base64,{0}", base64EncodedImage);
-
-        base.OnInitialized();
+        return string.Format("data:image/png;base64,{0}", base64EncodedImage);
     }
 }

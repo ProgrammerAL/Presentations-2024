@@ -121,6 +121,7 @@ public record StaticSiteBuilder(
         var jsonObject = new JsonObject
         {
             ["FeedbackEndpoint"] = $"{apiEndpoint}/api",
+            ["BlogPostUrl"] = GlobalConfig.StaticSiteConfig.BlogPostUrl,
         };
 
         appSettingsJson["ApiConfig"] = jsonObject;
