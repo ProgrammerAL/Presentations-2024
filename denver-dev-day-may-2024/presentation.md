@@ -117,8 +117,6 @@ with AL Rodriguez
 ---
 ```csharp
 using Pulumi;
-using Pulumi.AzureNative.Cache;
-using Pulumi.AzureNative.Cache.Inputs;
 using Pulumi.AzureNative.Web;
 using Pulumi.AzureNative.Web.Inputs;
 using System.Collections.Generic;
@@ -177,7 +175,7 @@ return await Deployment.RunAsync(() =>
 - All the big ones
   - AWS, Azure, GCP, etc
 - Other big but lesser known ones
-  - DigitalOcean, Fastly, Scaleway, etc
+  - DigitalOcean, Vercel, Cloudflare, Fastly, Scaleway, etc
 - Utility SaaS Providers
   - Auth0, RedisCloud, DNSimple, GitHub, etc
 - View all at: [pulumi.com/registry](https://www.pulumi.com/registry)
@@ -195,22 +193,7 @@ return await Deployment.RunAsync(() =>
 
 ---
 
-# More Pulumi and IaC concepts
-
----
-
-# Config
-
-- Built in Config
-  - YAML Files
-  - Per Stack
-  - Individual Key-Value pairs
-    - Or objects
-- Secrets are encrypted in config
-  - Encryption key stored on Pulumi servers (by default)
-- Or whatever you want*
-  - Custom code
-- OR Pulumi ESC
+# More IaC concepts for Devs
 
 ---
 
@@ -227,6 +210,10 @@ return await Deployment.RunAsync(() =>
 
 - "Get" Functions
 - Loaded as Read Only variables
+
+---
+
+# Pulumi Specific Stuff
 
 ---
 
