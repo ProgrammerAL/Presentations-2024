@@ -14,19 +14,18 @@ public interface IProductsRepository
 
 public class ProductsRepository : IProductsRepository
 {
-    private readonly IDbContextFactory<ServiceDbContext> _contextFactory;
+    private readonly ServiceDbContext _context;
 
-    public ProductsRepository(IDbContextFactory<ServiceDbContext> contextFactory)
+    public ProductsRepository(ServiceDbContext context)
     {
-        _contextFactory = contextFactory;
+        _context = context;
     }
 
     public async ValueTask CreateProductAsync(string id, string name, int cost, string currencyCountry)
     {
-        using var context = await _contextFactory.CreateDbContextAsync();
         //using (var activity = ActivitySources.PurchasesServiceSource.StartActivity("CreateProduct"))
         {
-            _ = await context.Products.AddAsync(new ProductEntity
+            _ = await _context.Products.AddAsync(new ProductEntity
             {
                 CreatedUtc = DateTime.UtcNow,
                 Enabled = true,
@@ -36,13 +35,12 @@ public class ProductsRepository : IProductsRepository
                 CurrencyCountry = currencyCountry
             });
 
-            _ = await context.SaveChangesAsync();
+            _ = await _context.SaveChangesAsync();
         }
     }
 
     public async ValueTask<IReadOnlyCollection<ProductEntity>> AllProductsAsync()
-    { 
-        using var context = await _contextFactory.CreateDbContextAsync();
-        return await context.Products.ToListAsync();
+    {
+        return await _context.Products.ToListAsync();
     }
 }

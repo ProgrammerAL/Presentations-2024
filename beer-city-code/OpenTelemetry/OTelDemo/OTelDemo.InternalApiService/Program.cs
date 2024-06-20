@@ -1,10 +1,6 @@
-using Microsoft.EntityFrameworkCore;
-
 using OTelDemo.InternalApiService.Controllers;
 using OTelDemo.InternalApiService.DB;
 using OTelDemo.InternalApiService.DB.Repositories;
-
-using ProgrammerAl.Presentations.OTel.ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,31 +13,19 @@ builder.Services.AddProblemDetails();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    options.CustomSchemaIds(x => x.FullName?.ToString() ?? Guid.NewGuid().ToString());
+    options.CustomSchemaIds(x => x.FullName?.Replace("+", ".").ToString() ?? Guid.NewGuid().ToString());
 });
 
-builder.AddSqlServerSqlClientConfig(
-    static settings => settings.DisableMetrics = true);
+builder.AddSqlServerDbContext<ServiceDbContext>("sqldb");
 
-builder.Services.AddPooledDbContextFactory<ServiceDbContext>((serviceProvider, optionsBuilder) =>
-{
-    var sqlDbConnectionString = "TODO: Set This";
-    optionsBuilder
-    .UseSqlServer(sqlDbConnectionString)
-    .EnableServiceProviderCaching(cacheServiceProvider: true)
-        .LogTo(DatabaseOpenTelemetryHelpers.TraceSqlServerExecutedQueryInfo,
-            events: ServiceDbContext.LoggingEventIds,
-            minimumLevel: Microsoft.Extensions.Logging.LogLevel.Information)
-        .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-});
-
-builder.Services.AddSingleton<IProductsRepository, ProductsRepository>();
+builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();
 
+GetEnvironmentVariablesEndpoint.RegisterApiEndpoint(app);
 CreateProductEndpoint.RegisterApiEndpoint(app);
 GetAllProductsEndpoint.RegisterApiEndpoint(app);
 GetEnabledProductsEndpoint.RegisterApiEndpoint(app);
@@ -52,6 +36,19 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<ServiceDbContext>();
+        context.Database.EnsureCreated();
+    }
+}
+else
+{
+    app.UseExceptionHandler("/Error", createScopeForErrors: true);
+    // The default HSTS value is 30 days.
+    // You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
 }
 
 app.Run();

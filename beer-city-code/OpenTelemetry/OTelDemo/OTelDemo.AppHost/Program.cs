@@ -1,7 +1,7 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var sqlServer = builder.AddSqlServer("sqlserver")
-                       .PublishAsAzureSqlDatabase();
+var sqlServer = builder.AddSqlServer("sql");
+
 var sqlDb = sqlServer.AddDatabase("sqldb");
 
 var internalApiService = builder.AddProject<Projects.OTelDemo_InternalApiService>("internal-api")
