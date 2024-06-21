@@ -10,8 +10,4 @@ var internalApiService = builder.AddProject<Projects.OTelDemo_InternalApiService
 var publicApiService = builder.AddProject<Projects.OTelDemo_PublicApiService>("public-api")
                               .WithReference(internalApiService);
 
-builder.AddProject<Projects.OTelDemo_Web>("webfrontend")
-    .WithExternalHttpEndpoints()
-    .WithReference(publicApiService);
-
 builder.Build().Run();

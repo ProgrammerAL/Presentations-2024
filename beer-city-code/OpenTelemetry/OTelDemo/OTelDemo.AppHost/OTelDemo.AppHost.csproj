@@ -12,7 +12,6 @@
   <ItemGroup>
     <ProjectReference Include="..\OTelDemo.PublicApiService\OTelDemo.PublicApiService.csproj" />
     <ProjectReference Include="..\OTelDemo.InternalApiService\OTelDemo.InternalApiService.csproj" />
-    <ProjectReference Include="..\OTelDemo.Web\OTelDemo.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>
