@@ -1,9 +1,12 @@
+using System.Diagnostics;
+
 using OTelDemo.PublicApiService.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add service defaults & Aspire components.
 builder.AddServiceDefaults();
+builder.ConfigureOpenTelemetry();
 
 // Add services to the container.
 builder.Services.AddProblemDetails();

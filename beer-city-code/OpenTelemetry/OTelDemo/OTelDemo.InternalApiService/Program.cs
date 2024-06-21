@@ -1,3 +1,6 @@
+using OpenTelemetry.Trace;
+
+using OTelDemo.InternalApiService;
 using OTelDemo.InternalApiService.Controllers;
 using OTelDemo.InternalApiService.DB;
 using OTelDemo.InternalApiService.DB.Repositories;
@@ -6,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add service defaults & Aspire components.
 builder.AddServiceDefaults();
+builder.ConfigureOpenTelemetry(ActivitySources.ActivitySourcesNameWildcard);
 
 // Add services to the container.
 builder.Services.AddProblemDetails();
@@ -19,6 +23,12 @@ builder.Services.AddSwaggerGen(options =>
 builder.AddSqlServerDbContext<ServiceDbContext>("sqldb");
 
 builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
+
+builder.Services.AddSingleton(x =>
+{
+    var tracerProvider = x.GetRequiredService<TracerProvider>();
+    return tracerProvider.GetTracer(ActivitySources.AppActivitySource.Name);
+});
 
 var app = builder.Build();
 
