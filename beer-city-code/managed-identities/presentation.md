@@ -6,7 +6,7 @@ theme: gaia
 author: Al Rodriguez
 ---
 
-# Managed Identities: Connect Without Connection Strings
+# Azure Managed Identities: Connect Without Connection Strings
 
 with AL Rodriguez
 
@@ -18,6 +18,7 @@ with AL Rodriguez
 
 - @ProgrammerAL
 - ProgrammerAL.com
+- Senior Azure Cloud Engineer at Microsoft
 
 ![bg right 80%](presentation-images/presentation_link_qrcode.png)
 
@@ -68,11 +69,9 @@ with AL Rodriguez
 
 # Managed Identities
 
-- Identity object you assign permissions to
-  - A type of Service Principal
-  - Only works for Azure Managed Services
-- You don't see Client Secret
-- An account assigned to services
+- Abstraction over a Service Principal
+- Only works for Azure Managed Services
+  - You don't see Client Secret
 
 ---
 
@@ -100,14 +99,12 @@ with AL Rodriguez
 
 ---
 
-# How to Create a Managed Identity
+# How to Create a Managed Identity in Azure
 
-- Create a service
-  - AKA User Assigned
+- User Assigned
   - Separate service
   - Can be assigned to multiple services
-- Enable on individual services
-  - AKA System Assigned
+- System Assigned
   - Exists as part of the parent service
   - Deleted if service is deleted
 
@@ -115,12 +112,20 @@ with AL Rodriguez
 
 # C# Code Changes
 
-- Use `new Microsoft.Data.SqlClient.DefaultAzureCredential()`
-  - Note: Some cases are a little different. Ex: Managed SQL Server uses a sligthly different connection string
-
 1. Reference `Azure.Identity` NuGet package
 1. Instead of `new TableClient(MyConnectionString)`
-1. Use `new TableClient("https...", new DefaultAzureCredential())`
+1. Use `new TableClient("https...", new Azure.Identity.DefaultAzureCredential())`
+  - Note: Some cases are a little different. Ex: Managed SQL Server uses a sligthly different connection string
+
+---
+
+# DefaultAzureCredential
+
+- Abstraction to load signed in credential
+- Can specify where credentials are loaded from
+  - Managed Identity
+  - Local Azure CLI
+  - and more
 
 ---
 
