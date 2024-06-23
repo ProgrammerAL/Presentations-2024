@@ -18,21 +18,9 @@ with AL Rodriguez
 
 - @ProgrammerAL
 - ProgrammerAL.com
+- Senior Azure Cloud Engineer at Microsoft
 
 ![bg right 80%](presentation-images/presentation_link_qrcode.png)
-
----
-
-# What is Observability?
-
-"Observability is about getting the right information at the right time into the hands of the people who have the ability and responsibility to do the right thing. Helping them make better technical and business decisions driven by real data, not guesses, or hunches, or shots in the dark. Time is the most precious resource you have — your own time, your engineering team’s time, your company’s time." - Charity Majors (@mipsytipsy) CTO of Honeycomb
-
----
-
-# Why Observability?
-
-- To diagnose productions issues
-- To query for business metrics
 
 ---
 
@@ -55,12 +43,27 @@ with AL Rodriguez
 # Limitations of Plain Text Logs
 
 - Data in files is hard to sift through
+  - And expensive
+- Hard to combine logs for a distributed application
 - Custom providers can make this way easier
   - Take a big dependency on the vendor
 - Example Scenario:
   - UI calls `Service A` which calls `Service B` which calls `Service C`
 	- An exception occurs in `Service B` because of response from `Service C`
 	- How do you debug that?
+
+---
+
+# What is Observability?
+
+"Observability is about getting the right information at the right time into the hands of the people who have the ability and responsibility to do the right thing. Helping them make better technical and business decisions driven by real data, not guesses, or hunches, or shots in the dark. Time is the most precious resource you have — your own time, your engineering team’s time, your company’s time." - Charity Majors (@mipsytipsy) CTO of Honeycomb
+
+---
+
+# Why Observability?
+
+- To diagnose productions issues
+- To query for business metrics
 
 ---
 
