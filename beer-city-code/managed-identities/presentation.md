@@ -55,6 +55,18 @@ with AL Rodriguez
 
 ---
 
+# Azure Key Vault
+
+- Meant for storing sensitive data like secrets
+- Who uses it?
+- How do you use it?
+- How do you connect to it?
+  - Connection String?
+  - Service Principal?
+  - Something else?
+
+---
+
 # Azure Service Principals
 
 - An "App" in Microsot Entra ID (formerly Azure AD)
