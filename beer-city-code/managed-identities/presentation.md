@@ -44,6 +44,13 @@ with AL Rodriguez
 
 ---
 
+# Security is done in Layers
+
+- Today's topic: 1 of those layers
+- Secrets Management
+
+---
+
 # Secrets Leak
 
 - HaveIBeenPwned.com
