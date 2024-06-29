@@ -24,6 +24,20 @@ with AL Rodriguez
 
 ---
 
+# What is Observability?
+
+"Observability is about getting the right information at the right time into the hands of the people who have the ability and responsibility to do the right thing. Helping them make better technical and business decisions driven by real data, not guesses, or hunches, or shots in the dark. Time is the most precious resource you have — your own time, your engineering team’s time, your company’s time." - Charity Majors (@mipsytipsy) CTO of Honeycomb
+
+---
+
+# Why Observability?
+
+- Developers need runtime data to diagnose bugs
+- I.T. Operations needs to know metrics like Requests Per Second, CPU and Memory usage
+- Project Managers want to know how often a shopping cart is abandoned
+
+---
+
 # 1957
 - Fortran programming language created
 - Plain text log messages go to console/text files
@@ -50,20 +64,6 @@ with AL Rodriguez
 - Example Scenario:
   - UI calls `Service A` which calls `Service B` which calls `Service C`
 	- An exception occurs in `Service B` because of response from `Service C`
-	- How do you debug that?
-
----
-
-# What is Observability?
-
-"Observability is about getting the right information at the right time into the hands of the people who have the ability and responsibility to do the right thing. Helping them make better technical and business decisions driven by real data, not guesses, or hunches, or shots in the dark. Time is the most precious resource you have — your own time, your engineering team’s time, your company’s time." - Charity Majors (@mipsytipsy) CTO of Honeycomb
-
----
-
-# Why Observability?
-
-- To diagnose productions issues
-- To query for business metrics
 
 ---
 
@@ -93,7 +93,7 @@ with AL Rodriguez
 
 ---
 
-# What kind of data does OTel collect?
+# What kind of does OTel care about?
 
 - Traces
   - Requests in the system
@@ -135,10 +135,12 @@ with AL Rodriguez
 # Trace Example
 
 - Trace is created when a request comes into the system
-- A span is made to wrap around call to database
-	- Span attributes for the database call like query, runtime, cost
-- Another span is created when making call out to 3rd party service
-	- Span stores time it took to run the HTTP request and the response HTTP status code, plus error if needed
+- OTel SDK creates a span when making HTTP call out to 3rd party service
+	- OTel SDK adds span atributes like Endpoint, Status Code, etc
+- OTel SDK creates a span when calling a database
+	- Custom code adds span attributes for the database call like query, runtime, cost
+- App creates custom Span to track important work
+  - Adds spans to track user id for a delete operation
 
 ---
 
