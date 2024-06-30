@@ -88,7 +88,7 @@ with AL Rodriguez
 
 - Open standard for collecting telemetry data about distributed services
 - Open Source, Vendor Neutral, Language Agnostic
-- APIs
+- APIs and SDKs
 - https://OpenTelemetry.io
 
 ---

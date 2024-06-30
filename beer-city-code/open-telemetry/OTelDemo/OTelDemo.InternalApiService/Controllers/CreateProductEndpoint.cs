@@ -17,7 +17,6 @@ public class CreateProductEndpoint
         async ([FromBody, Required] CreateProductEndpointRequestBody request,
             IProductsRepository productsRepository) =>
             {
-                await Task.CompletedTask;
                 var newId = Guid.NewGuid().ToString();
 
                 await productsRepository.CreateProductAsync(newId, request.Name, request.Cost.Value, request.CurrencyCountry);
