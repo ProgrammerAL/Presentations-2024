@@ -20,7 +20,12 @@ builder.Services.AddSwaggerGen(options =>
     options.CustomSchemaIds(x => x.FullName?.Replace("+", ".").ToString() ?? Guid.NewGuid().ToString());
 });
 
-builder.AddSqlServerDbContext<ServiceDbContext>("sqldb");
+builder.AddSqlServerDbContext<ServiceDbContext>(connectionName: "sqldb",
+    null,
+    configureDbContextOptions: x =>
+    { 
+        x.AddInterceptors(new OTelSpanInterceptor());
+    });
 
 builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
 
