@@ -144,6 +144,25 @@ with AL Rodriguez
 
 ---
 
+# OTel SDK - Environment Variables
+
+- Control SDK variables with Environment Variables
+- `OTEL_EXPORTER_OTLP_ENDPOINT`
+- `OTEL_EXPORTER_OTLP_HEADERS`
+- `OTEL_SERVICE_NAME`
+
+---
+
+# OTel Collector Agent
+
+- Separate process to push 
+- Reccomendation: Push OTel to locally run Collector Agent
+  - Agent can batch, do retries, etc
+
+![bg right 90%](presentation-images/otel-agent-sdk.png)
+
+---
+
 # TraceContext
 
 - Unique Id of the Trace
