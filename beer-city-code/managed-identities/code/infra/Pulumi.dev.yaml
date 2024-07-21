@@ -1,10 +1,10 @@
 config:
-  atlcloudconf24-AzManagedIds:azure-resource-group-name: dev-atlcloudconf24-AzManagedIds-rg
-  atlcloudconf24-AzManagedIds:functions-package-path: ../app-original/published-apps/functions.zip
-  atlcloudconf24-AzManagedIds:location: eastus
-  atlcloudconf24-AzManagedIds:static-site-path: ../app-original/published-apps/webapp
-  atlcloudconf24-AzManagedIds:sql-admin-password: aksjn&JHLB!!BNHJKasd
-  atlcloudconf24-AzManagedIds:service-config: 
+  beercityconf24-AzManagedIds:azure-resource-group-name: dev-beercityconf24-AzManagedIds-rg
+  beercityconf24-AzManagedIds:functions-package-path: ../app-original/published-apps/functions.zip
+  beercityconf24-AzManagedIds:location: eastus
+  beercityconf24-AzManagedIds:static-site-path: ../app-original/published-apps/webapp
+  beercityconf24-AzManagedIds:sql-admin-password: aksjn&JHLB!!BNHJKasd
+  beercityconf24-AzManagedIds:service-config: 
     Version: dev-version-123
     Environment: dev
   pulumi:template: azure-csharp

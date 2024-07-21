@@ -1,3 +1,3 @@
-name: atlcloudconf24-AzManagedIds
+name: beercityconf24-AzManagedIds
 runtime: dotnet
 description: A minimal Azure Native C# Pulumi program
