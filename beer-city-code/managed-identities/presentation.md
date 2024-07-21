@@ -28,6 +28,14 @@ with AL Rodriguez
 
 - Learn what Azure Managed Identities are
 - Convert app using Connection Strings to use Managed Identities
+- Azure-specific session
+
+---
+
+# Security is done in Layers
+
+- Today's topic: 1 of those layers
+- Secrets Management
 
 ---
 
@@ -41,13 +49,6 @@ with AL Rodriguez
   - Where they're stored
   - Access to them
   - Rotate them
-
----
-
-# Security is done in Layers
-
-- Today's topic: 1 of those layers
-- Secrets Management
 
 ---
 
@@ -129,15 +130,6 @@ with AL Rodriguez
 
 ---
 
-# C# Code Changes
-
-1. Reference `Azure.Identity` NuGet package
-1. Instead of `new TableClient(MyConnectionString)`
-1. Use `new TableClient("https...", new Azure.Identity.DefaultAzureCredential())`
-  - Note: Some cases are a little different. Ex: Managed SQL Server uses a sligthly different connection string
-
----
-
 # DefaultAzureCredential
 
 - Abstraction to load signed in credential
@@ -155,6 +147,15 @@ with AL Rodriguez
 
 - Similar to `DefaultAzureCredential`
 - Only add the ones you use
+
+---
+
+# C# Code Changes
+
+1. Reference `Azure.Identity` NuGet package
+1. Instead of `new TableClient(MyConnectionString)`
+1. Use `new TableClient("https...", new Azure.Identity.DefaultAzureCredential())`
+  - Note: Some cases are a little different. Ex: Managed SQL Server uses a sligthly different connection string
 
 ---
 

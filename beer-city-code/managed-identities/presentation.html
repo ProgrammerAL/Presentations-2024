@@ -25,9 +25,17 @@
 <ul>
 <li>Learn what Azure Managed Identities are</li>
 <li>Convert app using Connection Strings to use Managed Identities</li>
+<li>Azure-specific session</li>
 </ul>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="4" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="4" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="16">
+<h1 id="security-is-done-in-layers">Security is done in Layers</h1>
+<ul>
+<li>Today's topic: 1 of those layers</li>
+<li>Secrets Management</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="5" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="16">
 <h1 id="what-are-secrets">What are Secrets?</h1>
 <ul>
 <li>Tokens/Passwords/Connection Strings</li>
@@ -44,13 +52,6 @@
 <li>Rotate them</li>
 </ul>
 </li>
-</ul>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="5" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="16">
-<h1 id="security-is-done-in-layers">Security is done in Layers</h1>
-<ul>
-<li>Today's topic: 1 of those layers</li>
-<li>Secrets Management</li>
 </ul>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="6" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="6" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="16">
@@ -159,17 +160,6 @@
 </ul>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="13" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="13" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="16">
-<h1 id="c-code-changes">C# Code Changes</h1>
-<ol>
-<li>Reference <code>Azure.Identity</code> NuGet package</li>
-<li>Instead of <code>new TableClient(MyConnectionString)</code></li>
-<li>Use <code>new TableClient(&quot;https...&quot;, new Azure.Identity.DefaultAzureCredential())</code></li>
-</ol>
-<ul>
-<li>Note: Some cases are a little different. Ex: Managed SQL Server uses a sligthly different connection string</li>
-</ul>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="14" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="14" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="16">
 <h1 id="defaultazurecredential">DefaultAzureCredential</h1>
 <ul>
 <li>Abstraction to load signed in credential</li>
@@ -185,11 +175,22 @@
 <li>Can disable ones you don't use</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="15" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="15" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="16">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="14" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="14" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="16">
 <h1 id="chainedtokencredential">ChainedTokenCredential</h1>
 <ul>
 <li>Similar to <code>DefaultAzureCredential</code></li>
 <li>Only add the ones you use</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="15" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="15" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="16">
+<h1 id="c-code-changes">C# Code Changes</h1>
+<ol>
+<li>Reference <code>Azure.Identity</code> NuGet package</li>
+<li>Instead of <code>new TableClient(MyConnectionString)</code></li>
+<li>Use <code>new TableClient(&quot;https...&quot;, new Azure.Identity.DefaultAzureCredential())</code></li>
+</ol>
+<ul>
+<li>Note: Some cases are a little different. Ex: Managed SQL Server uses a sligthly different connection string</li>
 </ul>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="16" style="--paginate:true;--theme:gaia;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="16" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;presentation-images/presentation_link_qrcode.png&quot;);background-size:80%;"></figure></div></section></foreignObject><foreignObject width="50%" height="720"><section id="16" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="16" style="--paginate:true;--theme:gaia;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="16" data-marpit-advanced-background="content" data-marpit-advanced-background-split="right">
