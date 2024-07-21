@@ -141,10 +141,20 @@ with AL Rodriguez
 # DefaultAzureCredential
 
 - Abstraction to load signed in credential
-- Can specify where credentials are loaded from
+- Loads credentials from many places
   - Managed Identity
   - Local Azure CLI
+  - Local Azure PowerShell
+  - Environment Variables
   - and more
+- Can disable ones you don't use
+
+---
+
+# ChainedTokenCredential 
+
+- Similar to `DefaultAzureCredential`
+- Only add the ones you use
 
 ---
 
