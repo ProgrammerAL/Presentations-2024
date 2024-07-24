@@ -31,7 +31,6 @@ return await Pulumi.Deployment.RunAsync(async () =>
         { "Readme", Output.Create(System.IO.File.ReadAllText("./Pulumi.README.md")) },
         { "FunctionHttpsEndpoint", apiResources.Function.HttpsEndpoint },
         { "StaticSiteHttpsEndpoint", staticSiteResources.StorageInfra.SiteStorageAccount.PrimaryEndpoints.Apply(x => x.Web) },
-        { "SqlConnectionString", persistenceResources.SqlInfra.SqlConnectionString },
         { "StorageConnectionString", persistenceResources.StorageInfra.StorageConnectionString }
     };
 });

@@ -24,7 +24,6 @@ var host = new HostBuilder()
         AddConfigOptions<StorageConfig>(serviceCollection);
 
         serviceCollection.AddSingleton<IAzTablePersister, AzTablePersister>();
-        serviceCollection.AddSingleton<ISqlPersister, SqlPersister>();
     })
     .Build();
 

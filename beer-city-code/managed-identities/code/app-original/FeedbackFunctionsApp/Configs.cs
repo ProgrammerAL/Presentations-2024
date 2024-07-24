@@ -24,7 +24,4 @@ public class StorageConfig
 
     [Required, NotNull]
     public string? TableName { get; set; }
-
-    [Required, NotNull]
-    public string? SqlConnectionString { get; set; }
 }

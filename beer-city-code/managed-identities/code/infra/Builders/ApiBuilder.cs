@@ -150,11 +150,6 @@ public record ApiBuilder(
                 {
                     Name = "StorageConfig__TableName",
                     Value = "Comments",
-                },
-                new NameValuePairArgs
-                {
-                    Name = "StorageConfig__SqlConnectionString",
-                    Value = PersistenceResources.SqlInfra.SqlConnectionString,
                 }
             }
         };

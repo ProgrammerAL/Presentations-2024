@@ -11,12 +11,10 @@ namespace FeedbackFunctionsApp.Functions.StoreComment;
 public class StoreCommentsFunction
 {
     private readonly IAzTablePersister _tablePersister;
-    private readonly ISqlPersister _sqlPersister;
 
-    public StoreCommentsFunction(IAzTablePersister tablePersister, ISqlPersister sqlPersister)
+    public StoreCommentsFunction(IAzTablePersister tablePersister)
     {
         _tablePersister = tablePersister;
-        _sqlPersister = sqlPersister;
     }
 
     [Function("store-comments")]
@@ -30,7 +28,6 @@ public class StoreCommentsFunction
 
         var requestObject = requestDto.GenerateValidObject();
         await _tablePersister.StoreItemAsync(requestObject.Comments);
-        await _sqlPersister.StoreItemAsync(requestObject.Comments);
 
         return req.CreateResponse(HttpStatusCode.NoContent);
     }
