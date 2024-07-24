@@ -32,7 +32,7 @@ with AL Rodriguez
 
 ---
 
-# Security is done in Layers
+# Security has Layers
 
 - Today's topic: 1 of those layers
 - Secrets Management
@@ -59,7 +59,7 @@ with AL Rodriguez
   - https://www.csoonline.com/article/571363/how-corporate-data-and-secrets-leak-from-github-repositories.html
 - Python Personal Access Token leaked to a Docker Image
   - https://www.techradar.com/pro/security/github-token-leak-could-have-put-the-entire-python-language-at-risk
-- BUT! Can't always avoid using secrets
+- Disclaimer: Can't always avoid using secrets
 
 ---
 
