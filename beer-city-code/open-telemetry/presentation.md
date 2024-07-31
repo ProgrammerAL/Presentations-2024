@@ -157,36 +157,6 @@ with AL Rodriguez
 
 ---
 
-# OTel Collector Agent
-
-- Separate process to push 
-- Reccomendation: Push OTel to locally run Collector Agent
-  - Agent can batch, do retries, etc
-
-![bg right 90%](presentation-images/otel-agent-sdk.png)
-
----
-
-# TraceContext
-
-- Unique Id of the Trace
-- Libraries usually add/parse automatically
-  - Can add custom code to add/parse it
-- 00-c9dafef5b02172ce9f19a70ee83e9fc8-4f78ce7bf9cb7d22-01
-  - Separated by dashes:
-		- Version Format
-		- Trace Id
-		- Parent Id
-		- Trace Flags
-
----
-
-# TraceContext Visual
-
-![](presentation-images/trace-context-visual.png)
-
----
-
 # Demo Time
 
 ---
@@ -198,10 +168,13 @@ with AL Rodriguez
 
 ---
 
-# OTel in the UI
+# OTel Collector Agent
 
-- Possible
-- Still a Work in Progress
+- Separate process to push 
+- Reccomendation: Push OTel to locally run Collector Agent
+  - Agent can batch, do retries, etc
+
+![bg right 90%](presentation-images/otel-agent-sdk.png)
 
 ---
 
