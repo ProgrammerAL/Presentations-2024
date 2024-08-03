@@ -97,6 +97,12 @@ with AL Rodriguez
 
 ---
 
+# OTel is NOT Logging
+
+- Structured data
+
+---
+
 # What kind of does OTel care about?
 
 - Traces
