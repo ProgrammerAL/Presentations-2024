@@ -1,12 +1,12 @@
 ---
 marp: true
-title: DevOps like a Dev
+title: Doing DevOps like a Dev
 paginate: true
 theme: gaia
 author: Al Rodriguez
 ---
 
-# DevOps like a Dev
+# Doing DevOps like a Dev
 
 with AL Rodriguez
 
@@ -31,8 +31,7 @@ with AL Rodriguez
 # YAML is Everywhere
 
 - A Domain Specific Language (DSL)
-  - Custom to each provider
-- "Write-Once"
+- Custom to each provider
 
 ---
 
@@ -186,20 +185,9 @@ jobs:
   shared-job:
     steps:
       - name: Run tests
-        uses: ./.github/workflows/shared.yml
-```
----
-
-# YAML can reference other files
-
-```yaml
-name: Shared Workflow
-
-jobs:
-  shared-job:
-    steps:
-      - name: Run tests
-        uses: ./.github/workflows/shared.yml
+        uses: ./.github/workflows/tests.yml
+      - name: Publish
+        uses: ./.github/workflows/publish.yml
 ```
 ---
 
@@ -266,19 +254,10 @@ jobs:
 
 ---
 
-# PRs!
-
-- IaC is code
-- Put changes into source control
-  - Full history, source of truth, etc
-
----
-
 # Key Takeaways
 
 - More automation
 - Less config/DSLs
-  - No YAML hate
 
 ---
 
