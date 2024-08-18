@@ -20,36 +20,6 @@ with AL Rodriguez
 
 ---
 
-# DevOps History
-
-- First DevOps Days held in Ghent, Belgium in 2007
-- DevOps becomes a cool term
-- DevOps Engineer role is born
-
----
-
-# What is a DevOps Engineer TODAY?
-
-- No Single Definition
-- For This Session:
-  - CI/CD
-  - Cloud Stuff
-  - Containers!
-  - Kubernetes?
-
----
-
-# Who here does DevOps?
-
----
-
-# DevOps - Devs And Ops working together
-
-- Not throwing work over the wall
-- Almost the same team
-
----
-
 # Dev == Automation
 
 - Automate more
@@ -60,9 +30,9 @@ with AL Rodriguez
 
 # YAML is Everywhere
 
-- A DSL
-- Custom to each provider
-- Write-Once
+- A Domain Specific Language (DSL)
+  - Custom to each provider
+- "Write-Once"
 
 ---
 
@@ -192,6 +162,47 @@ jobs:
 ```
 ---
 
+# YAML can reference other files
+
+```yaml
+name: Main Workflow
+
+jobs:
+    steps:
+      - name: Run shared workflow
+        uses: ./.github/workflows/shared.yml
+        with:
+          param1: value1
+          param2: value2
+```
+---
+
+# YAML can reference other files
+
+```yaml
+name: Shared Workflow
+
+jobs:
+  shared-job:
+    steps:
+      - name: Run tests
+        uses: ./.github/workflows/shared.yml
+```
+---
+
+# YAML can reference other files
+
+```yaml
+name: Shared Workflow
+
+jobs:
+  shared-job:
+    steps:
+      - name: Run tests
+        uses: ./.github/workflows/shared.yml
+```
+---
+
 # YAML Tooling isn't as Mature as Other Dev Tools
 
 ```yaml
@@ -255,24 +266,19 @@ jobs:
 
 ---
 
+# PRs!
+
+- IaC is code
+- Put changes into source control
+  - Full history, source of truth, etc
+
+---
+
 # Key Takeaways
 
 - More automation
 - Less config/DSLs
-
----
-
-# PRs!
-
-- You're Devs too
-- Pull Requests
-
----
-
-# TODO:
-
-- PRs for Infra changes, like permissions
-  - Code has history, gets reviews, etc
+  - No YAML hate
 
 ---
 
