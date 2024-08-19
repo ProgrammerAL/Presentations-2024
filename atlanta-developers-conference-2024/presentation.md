@@ -42,7 +42,7 @@ The Pit of Success: in stark contrast to a summit, a peak, or a journey across a
 
 ---
 
-# Nullable References Types (NRTs)
+# Recommendation: Nullable References Types (NRTs)
 
 - Stop yelling at me!
   - They're good! I swear.
@@ -70,32 +70,33 @@ The Pit of Success: in stark contrast to a summit, a peak, or a journey across a
 
 --- 
 
-# Treat Warnings as Errors
+# Recommendation: Treat Warnings as Errors
 
+- Don't compile if warning found
+  - Ex: Not using method return
 - Single Line in `*.csproj` file
 - Can disable individual warnings
 
 ```xml
 <PropertyGroup>
-	<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-	<NoWarn>$(NoWarn);NU5104</NoWarn>
+  <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  <NoWarn>$(NoWarn);NU5104</NoWarn>
 <PropertyGroup>
 ```
 
 ---
 
-# Static Code Analysis
+# Recommendation: Static Code Analysis
 
-- Check Code for Violations
-- 
+- Check Code for common 
+- Sometimes fixes
 
 ---
 
-# .editorconfig Files
+# .editorconfig File
 
-- Static Code Analysis
-- Extensible
-- Open Standard / Configurable / etc
+- Extensible/ Open Standard / Configurable / etc
+- Single file checked into source control
 
 ---
 
@@ -104,7 +105,7 @@ The Pit of Success: in stark contrast to a summit, a peak, or a journey across a
 - Built-in ones
 - Add with NuGets
 - Build your own
-
+- May include code fixes
 
 ---
 
@@ -112,13 +113,67 @@ The Pit of Success: in stark contrast to a summit, a peak, or a journey across a
 
 ```xml
 <PropertyGroup>
+  <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
   <EnableNETAnalyzers>true</EnableNETAnalyzers>
   <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+  <EnableRequestDelegateGenerator>true</EnableRequestDelegateGenerator>
+  <EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
 </PropertyGroup>
 ```
 
+- Note: `Microsoft.CodeAnalysis.NetAnalyzers` Package or `<EnableNETAnalyzers>` replaced FxCop
+
 ---
 
+# Add Analyzers with NuGet Packages
+
+- `*.Analyzers` package
+- `SonarAnalyzer.CSharp`
+
+---
+
+# Custom Roslyn Analyzers
+
+- Make your own
+  - Specific to your projects
+- Example:
+  - All ASP.NET Controller Endpoints must include `[Authorize]` or `[AllowAnonymous]` attribute
+
+---
+
+# Recommendation: Code Generators
+
+- Like Roslyn An
+
+---
+
+# Protect Against NuGet CVEs
+
+```xml
+<PropertyGroup>
+  <NuGetAuditMode>all</NuGetAuditMode>
+  <NuGetAuditLevel>low</NuGetAuditLevel>
+</PropertyGroup>
+```
+
+- Adds build warnings
+  - https://learn.microsoft.com/en-us/nuget/concepts/auditing-packages
+
+---
+
+# .NET Aspire
+
+- Handy for local feedback
+- Set config with service discovery instead of hard coding
+
+---
+
+# Ahead of Time (AoT) Compilation
+
+- Can probably skip it for your apps
+- Consider it for public NuGets
+
+---
 
 # Online Info
 
