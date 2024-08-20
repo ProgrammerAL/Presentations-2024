@@ -35,177 +35,17 @@ with AL Rodriguez
 
 ---
 
-# YAML can get big
+# YAML "Runs" in the cloud
 
-```yaml
-name: CI/CD Pipeline
+- Long feedback loops
+- Can't test it locally
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  schedule:
-    - cron: '0 0 * * 0' # Runs every Sunday at midnight
-
-jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        dotnet-version: [6.0.x, 7.0.x]
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{ matrix.dotnet-version }}
-
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build
-        run: dotnet build --no-restore --configuration Release
-
-      - name: Test
-        run: dotnet test --no-build --verbosity normal
-
-      - name: Publish
-        if: github.ref == 'refs/heads/main'
-        run: dotnet publish --no-build --configuration Release --output ./publish
-
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 7.0.x
-
-      - name: Install .NET tools
-        run: dotnet tool install --global dotnet-format
-
-      - name: Run linters
-        run: dotnet format --check
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 7.0.x
-
-      - name: Deploy to Azure
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'your-app-name'
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ./publish
-
-  cache:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Cache .NET packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build
-        run: dotnet build --no-restore --configuration Release
-
-      - name: Test
-        run: dotnet test --no-build --verbosity normal
-
-  matrix:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [14.x, 16.x]
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install dependencies
-        run: npm install
-
-```
----
-
-# YAML can reference other files
-
-```yaml
-name: Main Workflow
-
-jobs:
-    steps:
-      - name: Run shared workflow
-        uses: ./.github/workflows/shared.yml
-        with:
-          param1: value1
-          param2: value2
-```
----
-
-# YAML can reference other files
-
-```yaml
-name: Shared Workflow
-
-jobs:
-  shared-job:
-    steps:
-      - name: Run tests
-        uses: ./.github/workflows/tests.yml
-      - name: Publish
-        uses: ./.github/workflows/publish.yml
-```
 ---
 
 # YAML Tooling isn't as Mature as Other Dev Tools
 
-```yaml
-on: [push]
-
-jobs:
-  publish:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: my-org/publish-docker@v1
-        with:
-          registry_username: ${{secrets.REGISTRY_USERNAME}}
-          registry_password: ${{secrets.REGISTRY_PASSWORD}}
-```
+- Basic syntax highlighting
+- Different IDE Extension per provider
 
 ---
 
@@ -241,6 +81,17 @@ jobs:
       - name: Cake - Build
         run: dotnet run --project build/build/Build.csproj -- --configuration=${{ env.CONFIGURATION }} --srcDirectoryPath=${{ env.SRC_DIRECTORY_PATH }} --BuildArtifactsPath=${{ env.BUILD_ARTIFACTS_PATH }}
 
+      - name: Upload Artifacts
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: "${{ env.SRC_DIRECTORY_PATH }}/build-out/assets.zip"
+          asset_name: assets.zip
+          asset_content_type: application/zip
+
       - name: Cake - Deploy
         run: dotnet run --project ${{ github.workspace }}/deploy/deploy/Deploy.csproj -- --configuration=${{ env.CONFIGURATION }} --WorkspacePath=${{ github.workspace }} --BuildArtifactsPath=${{ env.BUILD_ARTIFACTS_PATH }}
 ```
@@ -251,6 +102,72 @@ jobs:
 
 - Example: Cosmos DB Indexes
   - Work with Devs to know what indexes should be enabled/disabled
+
+---
+
+# C# Attributes Mark Indexes
+
+```csharp
+[IdConfiguredEntity(containerName: ContainerName)]
+public class UserEntity
+{
+    public const string ContainerName = "UserEntities";
+
+    [IncludePartitionKey]
+    [IncludeIndex]
+    public required string EntityId { get; set; }
+
+    public string id => Version.ToString();
+
+    [IncludeIndex]
+    public required string Email{ get; set; }
+
+    public required string Address { get; set; }
+    public required string PhoneNumber { get; set; }
+}
+```
+---
+
+# Cake Build Generates Indexes JSON file
+
+```csharp
+var assemblyPath = Directory.GetFiles(binPath, DbContextAssemblyFileName, SearchOption.AllDirectories).Single();
+var assembly = Assembly.LoadFrom(assemblyPath);
+
+var mapper = new CosmosDbIndexMapper();
+var dbMappedIndexes = mapper.MapIndexes(assembly);
+
+var metadata = new ApiBuildMetadata
+(
+    Version: context.Version,
+    BuildDate: DateTime.UtcNow,
+    BuildConfiguration: context.BuildConfiguration
+);
+
+var cosmosDbMetadata = new ApiCosmosDbMetadata(dbMappedIndexes);
+
+File.WriteAllText($"{context.ArcadeMachineManagementApiPaths.BuildMetadataOutputPath}/build-metadata.json", JsonSerializer.Serialize(metadata));
+File.WriteAllText($"{context.ArcadeMachineManagementApiPaths.BuildMetadataOutputPath}/cosmos-db-indexes-metadata.json", JsonSerializer.Serialize(cosmosDbMetadata));
+```
+
+---
+
+# CI/CD Deployment Pushes CosmosDB Indexes
+
+```csharp
+var filePath = File.ReadAllText(deploymentPackagesConfig.ArcadeMachineManagementServiceCosmosMetadata);
+var metadata = System.Text.Json.JsonSerializer.Deserialize<ApiCosmosDbMetadata>(filePath, new System.Text.Json.JsonSerializerOptions
+{
+    PropertyNameCaseInsensitive = true,
+});
+
+if (metadata is null)
+{ 
+    throw new Exception("Could not deserialize cosmos db metadata");
+}
+
+DbMappedIndexes = metadata.Indexes;
+```
 
 ---
 
