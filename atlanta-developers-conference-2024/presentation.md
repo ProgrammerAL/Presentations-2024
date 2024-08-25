@@ -70,6 +70,13 @@ The Pit of Success: in stark contrast to a summit, a peak, or a journey across a
 
 ---
 
+# Code Sample
+
+```csharp
+```
+
+---
+
 # Mitigating Extra Code for NRTs
 
 - Attributes
