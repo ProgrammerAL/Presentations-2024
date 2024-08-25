@@ -8,15 +8,9 @@ author: Al Rodriguez
 
 # Doing DevOps like a Dev
 
-with AL Rodriguez
-
----
-
-# Me (AL)
-
-- @ProgrammerAL
-- ProgrammerAL.com
-- Senior Azure Cloud Engineer at Microsoft
+with Senior Azure Cloud Engineer at Microsoft
+AL Rodriguez
+aka @ProgrammerAL
 
 ---
 
@@ -39,13 +33,6 @@ with AL Rodriguez
 
 - Long feedback loops
 - Can't test it locally
-
----
-
-# YAML Tooling isn't as Mature as Other Dev Tools
-
-- Basic syntax highlighting
-- Different IDE Extension per provider
 
 ---
 
@@ -100,8 +87,26 @@ jobs:
 
 # Automation Task: Automate Manual Processes for Deployment
 
-- Example: Cosmos DB Indexes
+- Cosmos DB Indexes
   - Work with Devs to know what indexes should be enabled/disabled
+
+---
+
+# Sample Document
+
+```json
+{
+  "locations": [
+    { "country": "Germany", "city": "Berlin" },
+    { "country": "France", "city": "Paris" }
+  ],
+  "headquarters": { "country": "Belgium", "employees": 250 },
+  "exports": [
+    { "city": "Moscow" },
+    { "city": "Athens" }
+  ]
+}
+```
 
 ---
 
@@ -117,7 +122,7 @@ public class UserEntity
     [IncludeIndex]
     public required string EntityId { get; set; }
 
-    public string id => Version.ToString();
+    public string id => EntityId;
 
     [IncludeIndex]
     public required string Email{ get; set; }
@@ -178,8 +183,10 @@ DbMappedIndexes = metadata.Indexes;
 
 ---
 
-# Online Info
+# Me (AL)
 
 - @ProgrammerAL
 - programmerAL.com
+- Senior Azure Cloud Engineer at Microsoft
 
+---

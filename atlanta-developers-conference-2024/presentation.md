@@ -22,9 +22,19 @@ with AL Rodriguez
 
 ---
 
+# Why are we here?
+
+- Discuss features of C#/.NET to enforce code quality
+  - Setup a Pit of Success
+- Present ***Recommendations***
+- Please limit your yelling
+
+---
+
 # Pit of Success
 
-```text
+
+```
 The Pit of Success: in stark contrast to a summit, a peak, or a journey across a desert to find victory through many trials and surprises, we want our customers to simply fall into winning practices by using our platform and frameworks. To the extent that we make it easy to get into trouble we fail.
            
 -Rico Mariani, MS Research MindSwap Oct 2003.
@@ -34,11 +44,10 @@ The Pit of Success: in stark contrast to a summit, a peak, or a journey across a
 
 ---
 
-# Why are we here?
+# Why a Pit of Success
 
-- Discuss features of C#/.NET to enforce code quality
-- Present ***Recommendations***
-- Please limit your yelling
+- Shift-Left
+- More work now, less work later
 
 ---
 
@@ -54,8 +63,10 @@ The Pit of Success: in stark contrast to a summit, a peak, or a journey across a
 # What are NRTs?
 
 - Nullable Reference Types
-- Requirement by compiler to check for null
-- If something can be null, compiler warning is made
+- Compiler says to check for null
+- If something can be null
+  - Compiler warning is made
+  - Or add code to specify it can be null
 
 ---
 
@@ -65,8 +76,15 @@ The Pit of Success: in stark contrast to a summit, a peak, or a journey across a
   - `[NotNullWhen]`, `[MemberNotNullWhen]`, etc
     - Avoid [NotNull] when possible. Useful for IoC
     - Full List: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/nullable-analysis
-- `required` keyword
+- `required` keyword can reduce attributes
 
+---
+
+# Check at Periphery of App
+
+- Add to entities coming into your code
+- Requiring data should be default
+  - Not always possible, more thinking now (shift-left)
 
 --- 
 
@@ -128,7 +146,9 @@ The Pit of Success: in stark contrast to a summit, a peak, or a journey across a
 # Add Analyzers with NuGet Packages
 
 - `*.Analyzers` package
-- `SonarAnalyzer.CSharp`
+  - `XUnit.Analyzers`
+  - `Roslynator.Analyzers`
+  - `Microsoft.Azure.Functions.Worker.Sdk.Analyzers`
 
 ---
 
@@ -143,7 +163,14 @@ The Pit of Success: in stark contrast to a summit, a peak, or a journey across a
 
 # Recommendation: Code Generators
 
-- Like Roslyn An
+- Next level Roslyn
+
+---
+
+# Recommendation: Secure your Software Supply Chain
+
+- Update Dependencies
+  - Update nugets each sprint
 
 ---
 
@@ -168,9 +195,27 @@ The Pit of Success: in stark contrast to a summit, a peak, or a journey across a
 
 ---
 
+# Unit Test Tooling
+
+- Continuous Testing Tools
+  - NCrunch
+  - Resharper*/Rider*
+  - Visual Studio*
+  - `dotnet watch`
+
+\* = specific licenses
+
+---
+
+# Cleanup Code
+- `dotnet format`
+  - https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-format
+
+---
+
 # Ahead of Time (AoT) Compilation
 
-- Can probably skip it for your apps
+- Should probably skip it for your apps
 - Consider it for public NuGets
 
 ---
