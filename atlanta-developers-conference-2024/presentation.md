@@ -33,69 +33,32 @@ with AL Rodriguez
 
 # Pit of Success
 
-
-```
-The Pit of Success: in stark contrast to a summit, a peak, or a journey across a desert to find victory through many trials and surprises, we want our customers to simply fall into winning practices by using our platform and frameworks. To the extent that we make it easy to get into trouble we fail.
+"The Pit of Success: in stark contrast to a summit, a peak, or a journey across a desert to find victory through many trials and surprises, we want our customers to simply fall into winning practices by using our platform and frameworks. To the extent that we make it easy to get into trouble we fail."
            
 -Rico Mariani, MS Research MindSwap Oct 2003.
-```
+
 
 - https://blog.codinghorror.com/falling-into-the-pit-of-success/
 
 ---
 
-# Why a Pit of Success
+# Why a Pit of Success?
 
 - Shift-Left
 - More work now, less work later
 
 ---
 
-# Recommendation: Nullable References Types (NRTs)
+# Recommendations
 
-- Stop yelling at me!
-  - They're good! I swear.
-- Not as hard as Rust!
-- Some code hassle can be mitigated
-
----
-
-# What are NRTs?
-
-- Nullable Reference Types
-- Compiler says to check for null
-- If something can be null
-  - Compiler warning is made
-  - Or add code to specify it can be null
+- Some build on each other
+- Your call to use or not
+- Don't yell at me
 
 ---
 
-# Code Sample
-
-```csharp
-```
-
----
-
-# Mitigating Extra Code for NRTs
-
-- Attributes
-  - `[NotNullWhen]`, `[MemberNotNullWhen]`, etc
-    - Avoid [NotNull] when possible. Useful for IoC
-    - Full List: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/nullable-analysis
-- `required` keyword can reduce attributes
-
----
-
-# Check at Periphery of App
-
-- Add to entities coming into your code
-- Requiring data should be default
-  - Not always possible, more thinking now (shift-left)
-
---- 
-
-# Recommendation: Treat Warnings as Errors
+# Recommendation: 
+## Treat Warnings as Errors
 
 - Don't compile if warning found
   - Ex: Not using method return
@@ -111,18 +74,176 @@ The Pit of Success: in stark contrast to a summit, a peak, or a journey across a
 
 ---
 
-# Recommendation: Static Code Analysis
+# Recommendation:
+## Nullable References Types (NRTs)
 
-- Check Code for common 
-- Sometimes fixes
+- Stop yelling at me!
+  - They're good! I swear.
+- Not as hard as Rust!
+- Some code hassle can be mitigated
 
 ---
 
-# .editorconfig File
+# What are NRTs?
+
+- Nullable Reference Types
+- Compiler check for null value at Compile  Time
+- As Developer, we say code can be or will not be null
+- If something can be null when it's used
+  - Compiler warning is made
+
+---
+
+# Sample NRT Usage
+
+```csharp
+public void SomeMethod()
+{
+  var userId = LoadUserId(_context);
+  Console.WriteLine(userId);
+}
+
+private string? LoadUserId(HttpContext context)
+{
+  ...
+}
+```
+
+---
+
+# Mitigating Extra Code for NRTs
+
+- Attributes
+  - `[NotNullWhen]`, `[MemberNotNullWhen]`, etc
+  - Full List: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/nullable-analysis
+- `required` keyword on properties can reduce attributes
+
+---
+
+# Demo: NRT Attribute Example
+
+```csharp
+public void SomeMethod()
+{
+  if(TryLoadUserId(_context, out bool? userId))
+  {
+    Console.WriteLine(userId);
+  }
+}
+
+public bool TryLoadUserId(HttpContext context, [NotNullWhen(true)]out bool? userId)
+{
+  ...
+}
+```
+---
+
+# Demo: DataAnnotations POCO Keyword Example
+
+```csharp
+public class MyWebRequest
+{
+  [Required(AllowEmptyStrings = false)]
+  public string? Name { get; set; }
+}
+
+public void SomeMethod(MyWebRequest myReq)
+{
+  Console.WriteLine(myReq!.Name);
+}
+```
+
+---
+
+# Demo: Required DataAnnotations POCO Keyword Example
+
+```csharp
+public class MyWebRequest
+{
+  [Required(AllowEmptyStrings = false)]
+  public required string Name { get; set; }
+}
+
+public void SomeMethod(MyWebRequest myReq)
+{
+  Console.WriteLine(myReq.Name);
+}
+```
+
+---
+
+# Check at "Ingress of the App"
+
+- Add to entities coming into your code
+  - HTTP Requests
+  - External Service Calls
+  - Database Calls*
+- Require data should be default
+  - Not always possible, more thinking now (shift-left)
+
+--- 
+
+# Nullable References Types Finds Bugs
+
+- See Title
+
+---
+
+# Recommendation: 
+## Static Code Analysis
+
+- Checks for common code issues
+  - Sometimes fixes
+- Enforce styling rules
+
+---
+
+# `.editorconfig` File
 
 - Extensible/ Open Standard / Configurable / etc
 - Single file checked into source control
+- Different languages have different levels of support for it
+  - C# support is really good
+- https://editorconfig.org
 
+---
+
+```
+# C# files
+[*.cs]
+
+#### Core EditorConfig Options ####
+
+# Indentation and spacing
+indent_size = 4
+indent_style = space
+tab_width = 4
+
+# New line preferences
+end_of_line = crlf
+insert_final_newline = true
+
+# Language keywords vs BCL types preferences
+dotnet_style_predefined_type_for_locals_parameters_members = true:error
+dotnet_style_predefined_type_for_member_access = true:error
+
+# Parentheses preferences
+dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity:error
+dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:error
+dotnet_style_parentheses_in_other_operators = never_if_unnecessary:silent
+#dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:error
+
+# Expression-level preferences
+csharp_style_deconstructed_variable_declaration = true:suggestion
+dotnet_style_coalesce_expression = true:suggestion
+
+# Loops should be simplified with "LINQ" expressions
+dotnet_diagnostic.S3267.severity = suggestion
+csharp_style_namespace_declarations=file_scoped:error
+dotnet_diagnostic.S3903.severity=error
+dotnet_diagnostic.S4041.severity=error
+dotnet_diagnostic.SA1403.severity=error
+```
 ---
 
 # Roslyn Analyzers
@@ -168,13 +289,17 @@ The Pit of Success: in stark contrast to a summit, a peak, or a journey across a
 
 ---
 
-# Recommendation: Code Generators
+# Recommendation: 
+## Codify Code Patterns
 
-- Next level Roslyn
+- C# Code Generators
+  - Next level Roslyn
+
 
 ---
 
-# Recommendation: Secure your Software Supply Chain
+# Recommendation: 
+## Secure your Software Supply Chain
 
 - Update Dependencies
   - Update nugets each sprint
@@ -197,12 +322,16 @@ The Pit of Success: in stark contrast to a summit, a peak, or a journey across a
 
 # .NET Aspire
 
+- The New Hotness
 - Handy for local feedback
-- Set config with service discovery instead of hard coding
+- Also tries to setup a Pit of Success for devs
+  - Set config with service discovery instead of hard coding
+  - Good defaults for Observability (OpenTelemetry!)
 
 ---
 
-# Unit Test Tooling
+# Recommendation: 
+## Continuous Testing
 
 - Continuous Testing Tools
   - NCrunch
@@ -210,20 +339,15 @@ The Pit of Success: in stark contrast to a summit, a peak, or a journey across a
   - Visual Studio*
   - `dotnet watch`
 
-\* = specific licenses
+\* = certain licenses of that product
 
 ---
 
-# Cleanup Code
-- `dotnet format`
-  - https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-format
-
----
-
+# Non-Recommendation: 
 # Ahead of Time (AoT) Compilation
 
 - Should probably skip it for your apps
-- Consider it for public NuGets
+- Consider it for NuGets
 
 ---
 
