@@ -80,7 +80,7 @@ with AL Rodriguez
 - Stop yelling at me!
   - They're good! I swear.
 - Not as hard as Rust!
-- Some code hassle can be mitigated
+- A lof of code hassle can be mitigated
 
 ---
 
@@ -88,9 +88,15 @@ with AL Rodriguez
 
 - Nullable Reference Types
 - Compiler check for null value at Compile  Time
-- As Developer, we say code can be or will not be null
+- As Developer, we say code can-be or will-not-be null
 - If something can be null when it's used
   - Compiler warning is made
+
+```xml
+<PropertyGroup>
+  <Nullable>enable</Nullable>
+<PropertyGroup>
+```
 
 ---
 
@@ -100,7 +106,7 @@ with AL Rodriguez
 public void SomeMethod()
 {
   var userId = LoadUserId(_context);
-  Console.WriteLine(userId);
+  Console.WriteLine(userId);//Generates Compiler Warning
 }
 
 private string? LoadUserId(HttpContext context)
@@ -108,7 +114,6 @@ private string? LoadUserId(HttpContext context)
   ...
 }
 ```
-
 ---
 
 # Mitigating Extra Code for NRTs
@@ -125,15 +130,17 @@ private string? LoadUserId(HttpContext context)
 ```csharp
 public void SomeMethod()
 {
+  //No Compiler Warning because if() check on the variable
   if(TryLoadUserId(_context, out bool? userId))
   {
     Console.WriteLine(userId);
   }
 }
 
-public bool TryLoadUserId(HttpContext context, [NotNullWhen(true)]out bool? userId)
+public bool TryLoadUserId(HttpContext context, [NotNullWhen(true)]out string? userId)
 {
-  ...
+  userId = "abc";
+  return true;
 }
 ```
 ---
@@ -280,6 +287,14 @@ dotnet_diagnostic.SA1403.severity=error
 
 ---
 
+# Recommendation: 
+## Codify Code Patterns
+
+- Don't rely on humans to always do things right
+- PRs only go so far
+
+---
+
 # Custom Roslyn Analyzers
 
 - Make your own
@@ -289,13 +304,50 @@ dotnet_diagnostic.SA1403.severity=error
 
 ---
 
-# Recommendation: 
-## Codify Code Patterns
+# C# Code Generators
 
-- C# Code Generators
-  - Next level Roslyn
+- "Next level Roslyn"
+- Already used by the .NET Team heavily for AoT stuff
 
+---
 
+# Common Interface Example
+
+```csharp
+public interface IUserManager
+{
+  ValueTask UpdateNameAsync(string name);
+}
+
+public class UserManager : IUserManager
+{
+  public async ValueTask UpdateNameAsync(string name)
+  {
+    ...
+  }
+}
+
+//Register with IoC Container
+builder.Services.AddScoped<IUserManager, UserManager>();
+
+```
+---
+# Generated Interface Example
+
+```csharp
+[GenerateSimpleInterface]
+public class UserManager : IUserManager
+{
+  public async ValueTask UpdateNameAsync(string name)
+  {
+    ...
+  }
+}
+
+//Register with IoC Container
+builder.Services.AddScoped<IUserManager, UserManager>();
+
+```
 ---
 
 # Recommendation: 
@@ -320,7 +372,8 @@ dotnet_diagnostic.SA1403.severity=error
 
 ---
 
-# .NET Aspire
+# Recommendation: 
+## Use .NET Aspire
 
 - The New Hotness
 - Handy for local feedback
