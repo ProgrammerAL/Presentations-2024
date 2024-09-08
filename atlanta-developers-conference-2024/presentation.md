@@ -64,6 +64,11 @@ with AL Rodriguez
   - Ex: Not using method return
 - Single Line in `*.csproj` file
 - Can disable individual warnings
+- Later recommendations built on this
+
+---
+
+# How to Enable Warnings as Error in CsProj
 
 ```xml
 <PropertyGroup>
@@ -205,6 +210,50 @@ public void SomeMethod(MyWebRequest myReq)
 
 ---
 
+# External Tools
+
+- SonarSource / SonarQube / SonarCloud
+- CodeMaid
+- FxCop
+
+---
+
+# Roslyn Analyzers
+
+- Compiler analyzes your code
+  - Built-in ones
+  - Add with NuGets
+  - Build your own
+- May include code fixes
+
+---
+
+# Built-In Roslyn Analyzers
+
+```xml
+<PropertyGroup>
+  <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
+  <EnableNETAnalyzers>true</EnableNETAnalyzers>
+  <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+  <EnableRequestDelegateGenerator>true</EnableRequestDelegateGenerator>
+  <EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
+</PropertyGroup>
+```
+
+- Note: `Microsoft.CodeAnalysis.NetAnalyzers` Package or `<EnableNETAnalyzers>` replaced FxCop
+
+---
+
+# Add Analyzers with NuGet Packages
+
+- `*.Analyzers` package
+  - `XUnit.Analyzers`
+  - `Roslynator.Analyzers`
+  - `Microsoft.Azure.Functions.Worker.Sdk.Analyzers`
+  - `SonarAnalyzer.CSharp`
+
+---
+
 # `.editorconfig` File
 
 - Extensible/ Open Standard / Configurable / etc
@@ -240,51 +289,17 @@ dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:error
 dotnet_style_parentheses_in_other_operators = never_if_unnecessary:silent
 #dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:error
 
-# Expression-level preferences
+# Built-In Error Codes
 csharp_style_deconstructed_variable_declaration = true:suggestion
 dotnet_style_coalesce_expression = true:suggestion
 
-# Loops should be simplified with "LINQ" expressions
+# Specific Error Codes
 dotnet_diagnostic.S3267.severity = suggestion
 csharp_style_namespace_declarations=file_scoped:error
 dotnet_diagnostic.S3903.severity=error
 dotnet_diagnostic.S4041.severity=error
 dotnet_diagnostic.SA1403.severity=error
 ```
----
-
-# Roslyn Analyzers
-
-- Built-in ones
-- Add with NuGets
-- Build your own
-- May include code fixes
-
----
-
-# Built-In Roslyn Analyzers
-
-```xml
-<PropertyGroup>
-  <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
-  <EnableNETAnalyzers>true</EnableNETAnalyzers>
-  <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-  <EnableRequestDelegateGenerator>true</EnableRequestDelegateGenerator>
-  <EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
-</PropertyGroup>
-```
-
-- Note: `Microsoft.CodeAnalysis.NetAnalyzers` Package or `<EnableNETAnalyzers>` replaced FxCop
-
----
-
-# Add Analyzers with NuGet Packages
-
-- `*.Analyzers` package
-  - `XUnit.Analyzers`
-  - `Roslynator.Analyzers`
-  - `Microsoft.Azure.Functions.Worker.Sdk.Analyzers`
-
 ---
 
 # Recommendation: 
@@ -401,6 +416,17 @@ builder.Services.AddScoped<IUserManager, UserManager>();
 
 - Should probably skip it for your apps
 - Consider it for NuGets
+
+---
+
+# Review
+
+- Warnings as Errors
+- Nullable Reference Types
+- Static Code Analysis
+- Codify Patterns
+- Secure Supply Chain
+- Continuous Testing
 
 ---
 
