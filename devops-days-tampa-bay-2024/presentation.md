@@ -22,17 +22,14 @@ aka @ProgrammerAL
 
 ---
 
-# YAML is Everywhere
+# YAML
 
-- A Domain Specific Language (DSL)
-- Custom to each provider
-
----
-
-# YAML "Runs" in the cloud
-
-- Long feedback loops
-- Can't test it locally
+- YAML is different everywhere
+  - A Domain Specific Language (DSL)
+  - Custom to each provider
+- YAML "Runs" in the cloud
+  - Long feedback loops
+  - Can't test locally
 
 ---
 

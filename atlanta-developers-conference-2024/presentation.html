@@ -138,7 +138,7 @@
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-csharp"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">SomeMethod</span>()</span>
 {
   <span class="hljs-comment">//No Compiler Warning because if() check on the variable</span>
-  <span class="hljs-keyword">if</span>(TryLoadUserId(_context, <span class="hljs-keyword">out</span> <span class="hljs-built_in">bool</span>? userId))
+  <span class="hljs-keyword">if</span>(TryLoadUserId(_context, <span class="hljs-keyword">out</span> <span class="hljs-built_in">string</span>? userId))
   {
     Console.WriteLine(userId);
   }
@@ -180,7 +180,7 @@
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="16" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="16" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="36">
-<h1 id="check-at-ingress-of-the-app">Check at &quot;Ingress of the App&quot;</h1>
+<h1 id="check-for-null-at-ingress-of-the-app">Check for Null at &quot;Ingress of the App&quot;</h1>
 <ul>
 <li>Add to entities coming into your code
 <ul>
@@ -220,12 +220,14 @@
 <li>SonarSource / SonarQube / SonarCloud</li>
 <li>CodeMaid</li>
 <li>FxCop</li>
+<li>Rider / Resharper</li>
+<li>.NET</li>
 </ul>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="20" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="20" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="36">
 <h1 id="roslyn-analyzers">Roslyn Analyzers</h1>
 <ul>
-<li>Compiler analyzes your code
+<li>Scan code at compile time
 <ul>
 <li>Built-in ones</li>
 <li>Add with NuGets</li>

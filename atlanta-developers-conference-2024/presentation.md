@@ -136,7 +136,7 @@ private string? LoadUserId(HttpContext context)
 public void SomeMethod()
 {
   //No Compiler Warning because if() check on the variable
-  if(TryLoadUserId(_context, out bool? userId))
+  if(TryLoadUserId(_context, out string? userId))
   {
     Console.WriteLine(userId);
   }
@@ -184,7 +184,7 @@ public void SomeMethod(MyWebRequest myReq)
 
 ---
 
-# Check at "Ingress of the App"
+# Check for Null at "Ingress of the App"
 
 - Add to entities coming into your code
   - HTTP Requests
@@ -215,12 +215,14 @@ public void SomeMethod(MyWebRequest myReq)
 - SonarSource / SonarQube / SonarCloud
 - CodeMaid
 - FxCop
+- Rider / Resharper
+- .NET
 
 ---
 
 # Roslyn Analyzers
 
-- Compiler analyzes your code
+- Scan code at compile time
   - Built-in ones
   - Add with NuGets
   - Build your own
@@ -232,8 +234,8 @@ public void SomeMethod(MyWebRequest myReq)
 
 ```xml
 <PropertyGroup>
-  <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
   <EnableNETAnalyzers>true</EnableNETAnalyzers>
+  <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
   <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   <EnableRequestDelegateGenerator>true</EnableRequestDelegateGenerator>
   <EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
