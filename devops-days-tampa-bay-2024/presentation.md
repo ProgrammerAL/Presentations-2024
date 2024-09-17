@@ -22,14 +22,18 @@ aka @ProgrammerAL
 
 ---
 
-# YAML
+# YAML is a DSL
 
-- YAML is different everywhere
-  - A Domain Specific Language (DSL)
+- Domain Specific Language (DSL)
+- It's different everywhere
   - Custom to each provider
-- YAML "Runs" in the cloud
-  - Long feedback loops
-  - Can't test locally
+
+---
+
+# YAML "Runs" in the cloud
+
+- Long feedback loops
+- Can't test locally
 
 ---
 
@@ -65,27 +69,37 @@ jobs:
       - name: Cake - Build
         run: dotnet run --project build/build/Build.csproj -- --configuration=${{ env.CONFIGURATION }} --srcDirectoryPath=${{ env.SRC_DIRECTORY_PATH }} --BuildArtifactsPath=${{ env.BUILD_ARTIFACTS_PATH }}
 
-      - name: Upload Artifacts
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: "${{ env.SRC_DIRECTORY_PATH }}/build-out/assets.zip"
-          asset_name: assets.zip
-          asset_content_type: application/zip
-
       - name: Cake - Deploy
         run: dotnet run --project ${{ github.workspace }}/deploy/deploy/Deploy.csproj -- --configuration=${{ env.CONFIGURATION }} --WorkspacePath=${{ github.workspace }} --BuildArtifactsPath=${{ env.BUILD_ARTIFACTS_PATH }}
 ```
 
 ---
 
-# Automation Task: Automate Manual Processes for Deployment
+# Automate Manual Processes for Deployment
 
-- Cosmos DB Indexes
-  - Work with Devs to know what indexes should be enabled/disabled
+- Find manual processes and automate them
+  - Easy right?
+
+---
+
+# Azure Cosmos DB
+
+- Document Database
+- HTTP Requests
+
+---
+
+# Cosmos DB Charges per Operation
+
+- Every request has a Request Unit charge
+- More work == More Expensive
+
+---
+
+# CosmosDb Index Everything
+
+- All properties indexed by default
+- Bigger document == More Work == More Expensive
 
 ---
 
@@ -104,6 +118,26 @@ jobs:
   ]
 }
 ```
+---
+
+# Automation Task: Stop pushing Index Updates Manually
+
+- Devs add new property that should be indexed
+  - Manually updated in each environment
+  - Manually tracked in tickets
+
+---
+
+# Fix with Custom Solution
+
+- Devs:
+  - Add custom code to solution
+  - Specify what properties should be indexed
+    - Default to not indexed
+- DevOps:
+  - Scan compiled code for indexes during build
+    - Generate metadata.json file
+  - Upload index properties to CosmosDB during deploy
 
 ---
 
