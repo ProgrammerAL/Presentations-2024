@@ -12,7 +12,8 @@
 <h1 id="doing-devops-like-a-dev">Doing DevOps like a Dev</h1>
 <p>with Senior Azure Cloud Engineer at Microsoft<br />
 AL Rodriguez<br />
-aka @ProgrammerAL</p>
+aka @ProgrammerAL<br />
+aka ProgrammerAL.com</p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="2" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="2" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="19">
 <h1 id="dev--automation">Dev == Automation</h1>
@@ -60,28 +61,18 @@ aka @ProgrammerAL</p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="6" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="6" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="19">
 <h1 id="example-github-actions-with-c-cake">Example: GitHub Actions with C# Cake</h1>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">Build</span> <span class="hljs-string">and</span> <span class="hljs-string">Deploy</span>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-yaml"><span class="hljs-attr">steps:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v2</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Setup</span> <span class="hljs-string">.NET</span>
+    <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/setup-dotnet@v1</span>
+    <span class="hljs-attr">with:</span>
+      <span class="hljs-attr">dotnet-version:</span> <span class="hljs-string">${{</span> <span class="hljs-string">env.DOTNET_VERSION</span> <span class="hljs-string">}}</span>
 
-<span class="hljs-attr">on:</span>
-  <span class="hljs-attr">push:</span>
-    <span class="hljs-attr">branches:</span> [<span class="hljs-string">main</span>]
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Cake</span> <span class="hljs-bullet">-</span> <span class="hljs-string">Build</span>
+    <span class="hljs-attr">run:</span> <span class="hljs-string">dotnet</span> <span class="hljs-string">run</span> <span class="hljs-string">--project</span> <span class="hljs-string">build/build/Build.csproj</span>
 
-<span class="hljs-attr">jobs:</span>
-  <span class="hljs-attr">build-and-publish:</span>
-    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span>
-
-    <span class="hljs-attr">steps:</span>
-      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v2</span>
-      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Setup</span> <span class="hljs-string">.NET</span>
-        <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/setup-dotnet@v1</span>
-        <span class="hljs-attr">with:</span>
-          <span class="hljs-attr">dotnet-version:</span> <span class="hljs-string">${{</span> <span class="hljs-string">env.DOTNET_VERSION</span> <span class="hljs-string">}}</span>
-
-      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Cake</span> <span class="hljs-bullet">-</span> <span class="hljs-string">Build</span>
-        <span class="hljs-attr">run:</span> <span class="hljs-string">dotnet</span> <span class="hljs-string">run</span> <span class="hljs-string">--project</span> <span class="hljs-string">build/build/Build.csproj</span> <span class="hljs-string">--</span> <span class="hljs-string">--configuration=${{</span> <span class="hljs-string">env.CONFIGURATION</span> <span class="hljs-string">}}</span> <span class="hljs-string">--srcDirectoryPath=${{</span> <span class="hljs-string">env.SRC_DIRECTORY_PATH</span> <span class="hljs-string">}}</span> <span class="hljs-string">--BuildArtifactsPath=${{</span> <span class="hljs-string">env.BUILD_ARTIFACTS_PATH</span> <span class="hljs-string">}}</span>
-
-      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Cake</span> <span class="hljs-bullet">-</span> <span class="hljs-string">Deploy</span>
-        <span class="hljs-attr">run:</span> <span class="hljs-string">dotnet</span> <span class="hljs-string">run</span> <span class="hljs-string">--project</span> <span class="hljs-string">${{</span> <span class="hljs-string">github.workspace</span> <span class="hljs-string">}}/deploy/deploy/Deploy.csproj</span> <span class="hljs-string">--</span> <span class="hljs-string">--configuration=${{</span> <span class="hljs-string">env.CONFIGURATION</span> <span class="hljs-string">}}</span> <span class="hljs-string">--WorkspacePath=${{</span> <span class="hljs-string">github.workspace</span> <span class="hljs-string">}}</span> <span class="hljs-string">--BuildArtifactsPath=${{</span> <span class="hljs-string">env.BUILD_ARTIFACTS_PATH</span> <span class="hljs-string">}}</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Cake</span> <span class="hljs-bullet">-</span> <span class="hljs-string">Deploy</span>
+    <span class="hljs-attr">run:</span> <span class="hljs-string">dotnet</span> <span class="hljs-string">run</span> <span class="hljs-string">--project</span> <span class="hljs-string">${{</span> <span class="hljs-string">github.workspace</span> <span class="hljs-string">}}/deploy/deploy/Deploy.csproj</span>
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="7" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="7" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="19">
@@ -109,7 +100,7 @@ aka @ProgrammerAL</p>
 </ul>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="10" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="19">
-<h1 id="cosmosdb-index-everything">CosmosDb Index Everything</h1>
+<h1 id="cosmos-db-indexes-everything">Cosmos DB Indexes Everything</h1>
 <ul>
 <li>All properties indexed by default</li>
 <li>Bigger document == More Work == More Expensive</li>
@@ -131,7 +122,7 @@ aka @ProgrammerAL</p>
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="12" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="12" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="19">
-<h1 id="automation-task-stop-pushing-index-updates-manually">Automation Task: Stop pushing Index Updates Manually</h1>
+<h1 id="devs-manage-indexes-manually">Devs Manage Indexes Manually</h1>
 <ul>
 <li>Devs add new property that should be indexed
 <ul>
@@ -161,7 +152,7 @@ aka @ProgrammerAL</p>
 <li>Generate metadata.json file</li>
 </ul>
 </li>
-<li>Upload index properties to CosmosDB during deploy</li>
+<li>Upload index properties to Cosmos DB during deploy</li>
 </ul>
 </li>
 </ul>
@@ -192,42 +183,26 @@ aka @ProgrammerAL</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-csharp"><span class="hljs-keyword">var</span> assemblyPath = Directory.GetFiles(binPath, DbContextAssemblyFileName, SearchOption.AllDirectories).Single();
 <span class="hljs-keyword">var</span> assembly = Assembly.LoadFrom(assemblyPath);
 
-<span class="hljs-keyword">var</span> mapper = <span class="hljs-keyword">new</span> CosmosDbIndexMapper();
-<span class="hljs-keyword">var</span> dbMappedIndexes = mapper.MapIndexes(assembly);
-
-<span class="hljs-keyword">var</span> metadata = <span class="hljs-keyword">new</span> ApiBuildMetadata
-(
-    Version: context.Version,
-    BuildDate: DateTime.UtcNow,
-    BuildConfiguration: context.BuildConfiguration
-);
+<span class="hljs-keyword">var</span> dbMappedIndexes = <span class="hljs-keyword">new</span> CosmosDbIndexMapper().MapIndexes(assembly);
 
 <span class="hljs-keyword">var</span> cosmosDbMetadata = <span class="hljs-keyword">new</span> ApiCosmosDbMetadata(dbMappedIndexes);
 
-File.WriteAllText(<span class="hljs-string">$&quot;<span class="hljs-subst">{context.ArcadeMachineManagementApiPaths.BuildMetadataOutputPath}</span>/build-metadata.json&quot;</span>, JsonSerializer.Serialize(metadata));
 File.WriteAllText(<span class="hljs-string">$&quot;<span class="hljs-subst">{context.ArcadeMachineManagementApiPaths.BuildMetadataOutputPath}</span>/cosmos-db-indexes-metadata.json&quot;</span>, JsonSerializer.Serialize(cosmosDbMetadata));
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="16" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="16" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="19">
-<h1 id="cicd-deployment-pushes-cosmosdb-indexes">CI/CD Deployment Pushes CosmosDB Indexes</h1>
+<h1 id="deploy-pushes-cosmosdb-indexes">Deploy Pushes CosmosDB Indexes</h1>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-csharp"><span class="hljs-keyword">var</span> filePath = File.ReadAllText(deploymentPackagesConfig.ArcadeMachineManagementServiceCosmosMetadata);
-<span class="hljs-keyword">var</span> metadata = System.Text.Json.JsonSerializer.Deserialize&lt;ApiCosmosDbMetadata&gt;(filePath, <span class="hljs-keyword">new</span> System.Text.Json.JsonSerializerOptions
-{
-    PropertyNameCaseInsensitive = <span class="hljs-literal">true</span>,
-});
+<span class="hljs-keyword">var</span> metadata = System.Text.Json.JsonSerializer.Deserialize&lt;ApiCosmosDbMetadata&gt;(filePath);
 
-<span class="hljs-keyword">if</span> (metadata <span class="hljs-keyword">is</span> <span class="hljs-literal">null</span>)
-{ 
-    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Exception(<span class="hljs-string">&quot;Could not deserialize cosmos db metadata&quot;</span>);
-}
-
-DbMappedIndexes = metadata.Indexes;
+PushIndexesToCosmosDb(metadata.Indexes);
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="17" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="17" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="19">
 <h1 id="key-takeaways">Key Takeaways</h1>
 <ul>
 <li>More automation</li>
+<li>Mode code</li>
 <li>Less config/DSLs</li>
 </ul>
 </section>
@@ -235,7 +210,7 @@ DbMappedIndexes = metadata.Indexes;
 <h1 id="me-al">Me (AL)</h1>
 <ul>
 <li>@ProgrammerAL</li>
-<li>programmerAL.com</li>
+<li>ProgrammerAL.com</li>
 <li>Senior Azure Cloud Engineer at Microsoft</li>
 </ul>
 </section>
