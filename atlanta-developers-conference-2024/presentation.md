@@ -419,14 +419,6 @@ builder.Services.AddScoped<IUserManager, UserManager>();
 
 ---
 
-# Non-Recommendation: 
-# Ahead of Time (AoT) Compilation
-
-- Should probably skip it for your apps
-- Consider it for NuGets
-
----
-
 # Review
 
 - Warnings as Errors
