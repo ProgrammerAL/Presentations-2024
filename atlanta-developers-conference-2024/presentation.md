@@ -33,6 +33,7 @@ with AL Rodriguez
 - Discuss features of C#/.NET to enforce code quality
   - Setup a Pit of Success
 - Present ***Recommendations***
+- All Free
 - Please limit your yelling
 
 ---
