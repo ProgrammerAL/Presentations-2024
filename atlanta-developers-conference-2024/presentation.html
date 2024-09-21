@@ -45,6 +45,7 @@
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="6" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="6" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="36">
 <h1 id="why-a-pit-of-success">Why a Pit of Success?</h1>
 <ul>
+<li>Guard Rails</li>
 <li>Shift-Left</li>
 <li>More work now, less work later</li>
 </ul>
@@ -61,13 +62,13 @@
 <h1 id="recommendation">Recommendation:</h1>
 <h2 id="treat-warnings-as-errors">Treat Warnings as Errors</h2>
 <ul>
+<li>&quot;Strict Mode&quot;</li>
 <li>Don't compile if warning found
 <ul>
 <li>Ex: Not using method return</li>
 </ul>
 </li>
 <li>Single Line in <code>*.csproj</code> file</li>
-<li>Can disable individual warnings</li>
 <li>Later recommendations built on this</li>
 </ul>
 </section>
@@ -96,13 +97,8 @@
 <h1 id="what-are-nrts">What are NRTs?</h1>
 <ul>
 <li>Nullable Reference Types</li>
-<li>Compiler check for null value at Compile  Time</li>
-<li>As Developer, we say code can-be or will-not-be null</li>
-<li>If something can be null when it's used
-<ul>
-<li>Compiler warning is made</li>
-</ul>
-</li>
+<li>Compiler check for null value at Compile Time</li>
+<li>Compiler Warning when compiler thinks something <strong><em>can be</em></strong> null</li>
 </ul>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">PropertyGroup</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">Nullable</span>&gt;</span>enable<span class="hljs-tag">&lt;/<span class="hljs-name">Nullable</span>&gt;</span>
@@ -119,7 +115,12 @@
 
 <span class="hljs-keyword">private</span> <span class="hljs-built_in">string</span>? LoadUserId(HttpContext context)
 {
-  ...
+  <span class="hljs-keyword">if</span>(context <span class="hljs-keyword">is</span> <span class="hljs-literal">null</span>)
+  {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+  }
+
+  <span class="hljs-keyword">return</span> context.ParseUserId();
 }
 </code></pre>
 </section>
@@ -294,15 +295,9 @@ tab_width = 4
 end_of_line = crlf
 insert_final_newline = true
 
-# Language keywords vs BCL types preferences
-dotnet_style_predefined_type_for_locals_parameters_members = true:error
-dotnet_style_predefined_type_for_member_access = true:error
-
 # Parentheses preferences
 dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity:error
-dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:error
 dotnet_style_parentheses_in_other_operators = never_if_unnecessary:silent
-#dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:error
 
 # Built-In Error Codes
 csharp_style_deconstructed_variable_declaration = true:suggestion
@@ -310,9 +305,6 @@ dotnet_style_coalesce_expression = true:suggestion
 
 # Specific Error Codes
 dotnet_diagnostic.S3267.severity = suggestion
-csharp_style_namespace_declarations=file_scoped:error
-dotnet_diagnostic.S3903.severity=error
-dotnet_diagnostic.S4041.severity=error
 dotnet_diagnostic.SA1403.severity=error
 </code></pre>
 </section>
@@ -340,7 +332,7 @@ dotnet_diagnostic.SA1403.severity=error
 </ul>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="28" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="28" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="36">
-<h1 id="c-code-generators">C# Code Generators</h1>
+<h1 id="source-generators">Source Generators</h1>
 <ul>
 <li>&quot;Next level Roslyn&quot;</li>
 <li>Already used by the .NET Team heavily for AoT stuff</li>
@@ -357,13 +349,12 @@ dotnet_diagnostic.SA1403.severity=error
 {
   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> ValueTask <span class="hljs-title">UpdateNameAsync</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> name</span>)</span>
   {
-    ...
+    <span class="hljs-keyword">await</span> Task.CompletedTask;
   }
 }
 
 <span class="hljs-comment">//Register with IoC Container</span>
 builder.Services.AddScoped&lt;IUserManager, UserManager&gt;();
-
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="30" data-paginate="true" data-theme="gaia" lang="en-US" data-marpit-pagination="30" style="--paginate:true;--theme:gaia;" data-marpit-pagination-total="36">
@@ -373,7 +364,7 @@ builder.Services.AddScoped&lt;IUserManager, UserManager&gt;();
 {
   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> ValueTask <span class="hljs-title">UpdateNameAsync</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> name</span>)</span>
   {
-    ...
+    <span class="hljs-keyword">await</span> Task.CompletedTask;
   }
 }
 

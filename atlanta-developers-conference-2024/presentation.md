@@ -51,6 +51,7 @@ with AL Rodriguez
 
 # Why a Pit of Success?
 
+- Guard Rails
 - Shift-Left
 - More work now, less work later
 
@@ -67,10 +68,10 @@ with AL Rodriguez
 # Recommendation: 
 ## Treat Warnings as Errors
 
+- "Strict Mode"
 - Don't compile if warning found
   - Ex: Not using method return
 - Single Line in `*.csproj` file
-- Can disable individual warnings
 - Later recommendations built on this
 
 ---
@@ -99,10 +100,8 @@ with AL Rodriguez
 # What are NRTs?
 
 - Nullable Reference Types
-- Compiler check for null value at Compile  Time
-- As Developer, we say code can-be or will-not-be null
-- If something can be null when it's used
-  - Compiler warning is made
+- Compiler check for null value at Compile Time
+- Compiler Warning when compiler thinks something __*can be*__ null
 
 ```xml
 <PropertyGroup>
@@ -123,7 +122,12 @@ public void SomeMethod()
 
 private string? LoadUserId(HttpContext context)
 {
-  ...
+  if(context is null)
+  {
+    return null;
+  }
+
+  return context.ParseUserId();
 }
 ```
 ---
@@ -288,15 +292,9 @@ tab_width = 4
 end_of_line = crlf
 insert_final_newline = true
 
-# Language keywords vs BCL types preferences
-dotnet_style_predefined_type_for_locals_parameters_members = true:error
-dotnet_style_predefined_type_for_member_access = true:error
-
 # Parentheses preferences
 dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity:error
-dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:error
 dotnet_style_parentheses_in_other_operators = never_if_unnecessary:silent
-#dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:error
 
 # Built-In Error Codes
 csharp_style_deconstructed_variable_declaration = true:suggestion
@@ -304,9 +302,6 @@ dotnet_style_coalesce_expression = true:suggestion
 
 # Specific Error Codes
 dotnet_diagnostic.S3267.severity = suggestion
-csharp_style_namespace_declarations=file_scoped:error
-dotnet_diagnostic.S3903.severity=error
-dotnet_diagnostic.S4041.severity=error
 dotnet_diagnostic.SA1403.severity=error
 ```
 ---
@@ -328,7 +323,7 @@ dotnet_diagnostic.SA1403.severity=error
 
 ---
 
-# C# Code Generators
+# Source Generators
 
 - "Next level Roslyn"
 - Already used by the .NET Team heavily for AoT stuff
@@ -347,13 +342,12 @@ public class UserManager : IUserManager
 {
   public async ValueTask UpdateNameAsync(string name)
   {
-    ...
+    await Task.CompletedTask;
   }
 }
 
 //Register with IoC Container
 builder.Services.AddScoped<IUserManager, UserManager>();
-
 ```
 ---
 # Generated Interface Example
@@ -364,7 +358,7 @@ public class UserManager : IUserManager
 {
   public async ValueTask UpdateNameAsync(string name)
   {
-    ...
+    await Task.CompletedTask;
   }
 }
 
