@@ -11,6 +11,7 @@ author: Al Rodriguez
 with Senior Azure Cloud Engineer at Microsoft
 AL Rodriguez
 aka @ProgrammerAL
+aka ProgrammerAL.com
 
 ---
 
@@ -49,28 +50,18 @@ aka @ProgrammerAL
 # Example: GitHub Actions with C# Cake
 
 ```yaml
-name: Build and Deploy
+steps:
+  - uses: actions/checkout@v2
+  - name: Setup .NET
+    uses: actions/setup-dotnet@v1
+    with:
+      dotnet-version: ${{ env.DOTNET_VERSION }}
 
-on:
-  push:
-    branches: [main]
+  - name: Cake - Build
+    run: dotnet run --project build/build/Build.csproj
 
-jobs:
-  build-and-publish:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
-      - name: Cake - Build
-        run: dotnet run --project build/build/Build.csproj -- --configuration=${{ env.CONFIGURATION }} --srcDirectoryPath=${{ env.SRC_DIRECTORY_PATH }} --BuildArtifactsPath=${{ env.BUILD_ARTIFACTS_PATH }}
-
-      - name: Cake - Deploy
-        run: dotnet run --project ${{ github.workspace }}/deploy/deploy/Deploy.csproj -- --configuration=${{ env.CONFIGURATION }} --WorkspacePath=${{ github.workspace }} --BuildArtifactsPath=${{ env.BUILD_ARTIFACTS_PATH }}
+  - name: Cake - Deploy
+    run: dotnet run --project ${{ github.workspace }}/deploy/deploy/Deploy.csproj
 ```
 
 ---
@@ -96,7 +87,7 @@ jobs:
 
 ---
 
-# CosmosDb Index Everything
+# Cosmos DB Indexes Everything
 
 - All properties indexed by default
 - Bigger document == More Work == More Expensive
@@ -120,7 +111,7 @@ jobs:
 ```
 ---
 
-# Automation Task: Stop pushing Index Updates Manually
+# Devs Manage Indexes Manually
 
 - Devs add new property that should be indexed
   - Manually updated in each environment
@@ -137,7 +128,7 @@ jobs:
 - DevOps:
   - Scan compiled code for indexes during build
     - Generate metadata.json file
-  - Upload index properties to CosmosDB during deploy
+  - Upload index properties to Cosmos DB during deploy
 
 ---
 
@@ -170,39 +161,22 @@ public class UserEntity
 var assemblyPath = Directory.GetFiles(binPath, DbContextAssemblyFileName, SearchOption.AllDirectories).Single();
 var assembly = Assembly.LoadFrom(assemblyPath);
 
-var mapper = new CosmosDbIndexMapper();
-var dbMappedIndexes = mapper.MapIndexes(assembly);
-
-var metadata = new ApiBuildMetadata
-(
-    Version: context.Version,
-    BuildDate: DateTime.UtcNow,
-    BuildConfiguration: context.BuildConfiguration
-);
+var dbMappedIndexes = new CosmosDbIndexMapper().MapIndexes(assembly);
 
 var cosmosDbMetadata = new ApiCosmosDbMetadata(dbMappedIndexes);
 
-File.WriteAllText($"{context.ArcadeMachineManagementApiPaths.BuildMetadataOutputPath}/build-metadata.json", JsonSerializer.Serialize(metadata));
 File.WriteAllText($"{context.ArcadeMachineManagementApiPaths.BuildMetadataOutputPath}/cosmos-db-indexes-metadata.json", JsonSerializer.Serialize(cosmosDbMetadata));
 ```
 
 ---
 
-# CI/CD Deployment Pushes CosmosDB Indexes
+# Deploy Pushes CosmosDB Indexes
 
 ```csharp
 var filePath = File.ReadAllText(deploymentPackagesConfig.ArcadeMachineManagementServiceCosmosMetadata);
-var metadata = System.Text.Json.JsonSerializer.Deserialize<ApiCosmosDbMetadata>(filePath, new System.Text.Json.JsonSerializerOptions
-{
-    PropertyNameCaseInsensitive = true,
-});
+var metadata = System.Text.Json.JsonSerializer.Deserialize<ApiCosmosDbMetadata>(filePath);
 
-if (metadata is null)
-{ 
-    throw new Exception("Could not deserialize cosmos db metadata");
-}
-
-DbMappedIndexes = metadata.Indexes;
+PushIndexesToCosmosDb(metadata.Indexes);
 ```
 
 ---
@@ -210,6 +184,7 @@ DbMappedIndexes = metadata.Indexes;
 # Key Takeaways
 
 - More automation
+- Mode code
 - Less config/DSLs
 
 ---
@@ -217,7 +192,7 @@ DbMappedIndexes = metadata.Indexes;
 # Me (AL)
 
 - @ProgrammerAL
-- programmerAL.com
+- ProgrammerAL.com
 - Senior Azure Cloud Engineer at Microsoft
 
 ---
