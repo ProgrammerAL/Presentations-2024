@@ -36,7 +36,7 @@ public record FeedbackFunctionsProjectPaths(
         var csprojFile = projectDir + $"/{projectName}.csproj";
         var outDir = projectDir + $"/bin/{buildConfiguration}/cake-build-output";
         var zipOutDir = buildArtifactsPath;
-        var zipOutFilePath = zipOutDir + $"/feedback-api.zip";
+        var zipOutFilePath = zipOutDir + $"/feedback-functions.zip";
 
         return new FeedbackFunctionsProjectPaths(
             csprojFile,
