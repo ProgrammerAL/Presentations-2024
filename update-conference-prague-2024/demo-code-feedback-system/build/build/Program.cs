@@ -36,9 +36,9 @@ public class BuildContext : FrostingContext
         : base(context)
     {
         Target = context.Argument("target", "Default");
-        BuildConfiguration = context.Argument<string>("configuration");
+        BuildConfiguration = context.Argument<string>("buildConfiguration");
         SrcDirectoryPath = context.Argument<string>("srcDirectoryPath");
-        BuildArtifactsPath = context.Argument<string>("BuildArtifactsPath");
+        BuildArtifactsPath = context.Argument<string>("buildArtifactsPath");
 
         WebClientPaths = WebsitePaths.LoadFromContext(context, BuildConfiguration, SrcDirectoryPath, BuildArtifactsPath);
         AzFunctionsPaths = FeedbackFunctionsProjectPaths.LoadFromContext(context, BuildConfiguration, SrcDirectoryPath, BuildArtifactsPath);
