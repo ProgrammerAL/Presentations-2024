@@ -9,7 +9,6 @@ public record WebsitePaths(
     public static WebsitePaths LoadFromContext(ICakeContext context, string buildConfiguration, string srcDirectory, string buildArtifactsPath)
     {
         var projectName = "FeedbackWebApp";
-        srcDirectory += $"/{projectName}";
         var projectDir = srcDirectory + $"/{projectName}";
         var cprojFile = projectDir + $"/{projectName}.csproj";
         var outDir = projectDir + $"/bin/{buildConfiguration}/cake-build-output";
@@ -34,7 +33,7 @@ public record FeedbackFunctionsProjectPaths(
     {
         var projectName = "FeedbackFunctionsApp";
         var projectDir = srcDirectory + $"/{projectName}";
-        var csprojFile = projectDir + $"/{projectName}/{projectName}.csproj";
+        var csprojFile = projectDir + $"/{projectName}.csproj";
         var outDir = projectDir + $"/bin/{buildConfiguration}/cake-build-output";
         var zipOutDir = buildArtifactsPath;
         var zipOutFilePath = zipOutDir + $"/feedback-api.zip";
