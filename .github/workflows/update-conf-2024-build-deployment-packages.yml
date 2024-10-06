@@ -26,11 +26,8 @@ jobs:
         with:
           node-version: 18.3.0
 
-        # Install Aspire workload - We don't use it for anything when deployed, but the Aspire Dashboard does get compiled by the Cake app. Install the workload just to make our lives a little easier.
       - name: Install .NET WASM Tools Workload
         run: dotnet workload install wasm-tools
-      - name: Install .NET Aspire Workload
-        run: dotnet workload install aspire
 
       - name: Cake Frosting Build
         run: dotnet run --project ${{ env.CODE_DIRECTORY_PATH }}/build/build/Build.csproj -- --buildConfiguration=${{ env.CONFIGURATION }} --srcDirectoryPath=${{ env.SRC_DIRECTORY_PATH }} --buildArtifactsPath=${{ env.BUILD_ARTIFACTS_PATH }}
@@ -46,9 +43,23 @@ jobs:
           draft: false
           prerelease: true
 
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v4
+      - name: Upload Artifact - API
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: website
-          path: ${{ env.BUILD_ARTIFACTS_PATH }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: "${{ env.SRC_DIRECTORY_PATH }}/FeedbackFunctionsApp/bin/${{ env.CONFIGURATION }}/cake-publish-output/feedback-functions.zip"
+          asset_name: feedback-functions.zip
+          asset_content_type: application/zip
 
+      - name: Upload Artifact - Web Client
+        id: upload-release-asset-web-client
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: "${{ env.SRC_DIRECTORY_PATH }}/FeedbackWebApp/bin/${{ env.CONFIGURATION }}/cake-publish-output/feedback-web-client.zip"
+          asset_name: feedback-web-client.zip
+          asset_content_type: application/zip
