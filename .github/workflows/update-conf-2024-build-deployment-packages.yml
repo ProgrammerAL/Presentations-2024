@@ -32,7 +32,7 @@ jobs:
         run: dotnet workload install aspire
 
       - name: Cake Frosting Build
-        run: dotnet run --project build/build/Build.csproj -- --BuildConfiguration=${{ env.CONFIGURATION }} --WorkspacePath=${{ github.workspace }} --Version=${{ github.run_id }} --GithubContainerServer=${{ env.GITHUB_CONTAINER_SERVER }} --GithubAuthToken=${{ secrets.GITHUB_TOKEN }}
+        run: dotnet run --project ${{ env.SRC_DIRECTORY_PATH }}/build/build/Build.csproj -- --BuildConfiguration=${{ env.CONFIGURATION }} --WorkspacePath=${{ github.workspace }} --Version=${{ github.run_id }}
 
       - name: Create Release
         id: create_release
