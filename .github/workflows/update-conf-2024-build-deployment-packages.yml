@@ -11,8 +11,8 @@ jobs:
     env:
       CONFIGURATION: Release
       DOTNET_VERSION: 8.x.x
-      SRC_DIRECTORY_PATH: ${{ github.workspace }}/update-conference-prague-2024/demo-code-feedback-system/src/
-      NUGET_CONFIG_FILE_PATH: ${{ github.workspace }}/update-conference-prague-2024/demo-code-feedback-system/src/nuget.config
+      SRC_DIRECTORY_PATH: ${{ github.workspace }}/update-conference-prague-2024/demo-code-feedback-system
+      BUILD_ARTIFACTS_PATH: ${{ github.workspace }}/build_artifacts
 
     steps:
       - uses: actions/checkout@v2
@@ -32,7 +32,7 @@ jobs:
         run: dotnet workload install aspire
 
       - name: Cake Frosting Build
-        run: dotnet run --project ${{ env.SRC_DIRECTORY_PATH }}/build/build/Build.csproj -- --BuildConfiguration=${{ env.CONFIGURATION }} --WorkspacePath=${{ github.workspace }} --Version=${{ github.run_id }}
+        run: dotnet run --project ${{ env.SRC_DIRECTORY_PATH }}/build/build/Build.csproj -- --BuildConfiguration=${{ env.CONFIGURATION }} --srcDirectoryPath=${{ github.SRC_DIRECTORY_PATH }} --BuildArtifactsPath=${{ github.run_id }}
 
       - name: Create Release
         id: create_release
@@ -45,23 +45,9 @@ jobs:
           draft: false
           prerelease: true
 
-      - name: Upload Artifact - API
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: "${{ env.SRC_DIRECTORY_PATH }}/FeedbackFunctionsApp/bin/${{ env.CONFIGURATION }}/cake-publish-output/feedback-functions.zip"
-          asset_name: feedback-functions.zip
-          asset_content_type: application/zip
+          name: website
+          path: ${{ env.BUILD_ARTIFACTS_PATH }}
 
-      - name: Upload Artifact - Web Client
-        id: upload-release-asset-web-client
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: "${{ env.SRC_DIRECTORY_PATH }}/FeedbackWebApp/bin/${{ env.CONFIGURATION }}/cake-publish-output/feedback-web-client.zip"
-          asset_name: feedback-web-client.zip
-          asset_content_type: application/zip
