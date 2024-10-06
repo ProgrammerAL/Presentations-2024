@@ -1,0 +1,67 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    env:
+      CONFIGURATION: Release
+      DOTNET_VERSION: 8.x.x
+      SRC_DIRECTORY_PATH: ${{ github.workspace }}/update-conference-prague-2024/demo-code-feedback-system/src/
+      NUGET_CONFIG_FILE_PATH: ${{ github.workspace }}/update-conference-prague-2024/demo-code-feedback-system/src/nuget.config
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.3.0
+
+        # Install Aspire workload - We don't use it for anything when deployed, but the Aspire Dashboard does get compiled by the Cake app. Install the workload just to make our lives a little easier.
+      - name: Install .NET WASM Tools Workload
+        run: dotnet workload install wasm-tools
+      - name: Install .NET Aspire Workload
+        run: dotnet workload install aspire
+
+      - name: Cake Frosting Build
+        run: dotnet run --project build/build/Build.csproj -- --BuildConfiguration=${{ env.CONFIGURATION }} --WorkspacePath=${{ github.workspace }} --Version=${{ github.run_id }} --GithubContainerServer=${{ env.GITHUB_CONTAINER_SERVER }} --GithubAuthToken=${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.run_id }}
+          release_name: Release ${{ github.run_id }}
+          draft: false
+          prerelease: true
+
+      - name: Upload Artifact - API
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: "${{ env.SRC_DIRECTORY_PATH }}/FeedbackFunctionsApp/bin/${{ env.CONFIGURATION }}/cake-publish-output/feedback-functions.zip"
+          asset_name: feedback-functions.zip
+          asset_content_type: application/zip
+
+      - name: Upload Artifact - Web Client
+        id: upload-release-asset-web-client
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: "${{ env.SRC_DIRECTORY_PATH }}/FeedbackWebApp/bin/${{ env.CONFIGURATION }}/cake-publish-output/feedback-web-client.zip"
+          asset_name: feedback-web-client.zip
+          asset_content_type: application/zip

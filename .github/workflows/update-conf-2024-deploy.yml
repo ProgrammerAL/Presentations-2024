@@ -1,0 +1,84 @@
+name: Deploy
+
+on:
+  workflow_call:
+    inputs:
+      release_tag_id:
+        description: "Release Tag"
+        required: true
+        type: string
+      pulumi_stack_name:
+        description: "Name of Pulumi Stack to run"
+        required: true
+        type: string
+      environment_name:
+        description: "Which environment to run the deployment for"
+        required: true
+        type: string
+    secrets:
+      pulumi_access_token:
+        required: true
+      arm_client_id:
+        required: true
+      arm_client_secret:
+        required: true
+      arm_tenant_id:
+        required: true
+      arm_subscription_id:
+        required: true
+      packages_read_token:
+        required: true
+jobs:
+  deploy-pulumi-and-artifacts:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment_name }}
+    env:
+      CONFIGURATION: Release
+      DOTNET_VERSION: 8.x.x
+      ARM_CLIENT_ID: ${{ secrets.arm_client_id }}
+      ARM_CLIENT_SECRET: ${{ secrets.arm_client_secret }}
+      ARM_TENANT_ID: ${{ secrets.arm_tenant_id }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.arm_subscription_id }}
+      ARTIFACT_DOWNLOAD_PATH: ${{ github.workspace }}/release_artifacts
+      ROOT_DIRECTORY_PATH: ${{ github.workspace }}/update-conference-prague-2024/demo-code-feedback-system/
+      PULUMI_PATH: ${{ github.workspace }}/update-conference-prague-2024/demo-code-feedback-system/infra
+      PULUMI_ACCESS_TOKEN: ${{ secrets.pulumi_access_token }}
+      PULUMI_PROJECT_FILE_PATH: ${{ github.workspace }}/update-conference-prague-2024/demo-code-feedback-system/infra/PulumiInfra.csproj
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ inputs.release_tag_id }}
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Log in to Azure CLI so the Pulumi run custom commands
+        uses: azure/login@v1
+        with:
+          creds: '{"clientId":"${{ secrets.ARM_CLIENT_ID }}","clientSecret":"${{ secrets.ARM_CLIENT_SECRET }}","subscriptionId":"${{ secrets.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.ARM_TENANT_ID }}"}'
+
+      - name: Download Artifact - Web Client
+        uses: robinraju/release-downloader@v1.3
+        with:
+          repository: "ProgrammerAL/Presentations-2024"
+          tag: "${{ inputs.release_tag_id }}"
+          fileName: feedback-web-client.zip
+          out-file-path: ${{ env.ARTIFACT_DOWNLOAD_PATH }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Download Artifact - Web Client
+        uses: robinraju/release-downloader@v1.3
+        with:
+          repository: "ProgrammerAL/Presentations-2024"
+          tag: "${{ inputs.release_tag_id }}"
+          fileName: feedback-functions.zip
+          out-file-path: ${{ env.ARTIFACT_DOWNLOAD_PATH }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install Pulumi
+        uses: pulumi/setup-pulumi@v2
+
+      - name: Cake Frosting - Deploy
+        run: dotnet run --project ${{ env.ROOT_DIRECTORY_PATH }}/deploy/deploy/Deploy.csproj -- --configuration=${{ env.CONFIGURATION }} --PulumiStackName=${{ inputs.pulumi_stack_name }} --ReleaseVersion=${{ inputs.release_tag_id }} --WorkspacePath=${{ github.workspace }}
