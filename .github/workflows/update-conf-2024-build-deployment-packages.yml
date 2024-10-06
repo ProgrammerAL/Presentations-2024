@@ -50,7 +50,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: "${{ env.SRC_DIRECTORY_PATH }}/FeedbackFunctionsApp/bin/${{ env.CONFIGURATION }}/cake-publish-output/feedback-functions.zip"
+          asset_path: "${{ env.BUILD_ARTIFACTS_PATH }}/feedback-functions.zip"
           asset_name: feedback-functions.zip
           asset_content_type: application/zip
 
@@ -61,6 +61,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: "${{ env.SRC_DIRECTORY_PATH }}/FeedbackWebApp/bin/${{ env.CONFIGURATION }}/cake-publish-output/feedback-web-client.zip"
+          asset_path: "${{ env.BUILD_ARTIFACTS_PATH }}/feedback-web-client.zip"
           asset_name: feedback-web-client.zip
           asset_content_type: application/zip
