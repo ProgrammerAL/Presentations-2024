@@ -36,6 +36,15 @@ with AL Rodriguez
 
 ---
 
+# Where did it come from?
+
+- I'm a developer
+  - We Automate Things
+- I had to make CI/CD pipelines
+- I had to automate infrastructure
+
+---
+
 # Why C# for the Entire Stack?
 
 - ".NET Everywhere"
