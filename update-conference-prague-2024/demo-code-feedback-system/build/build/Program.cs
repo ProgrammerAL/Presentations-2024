@@ -76,8 +76,7 @@ public sealed class BuildTask : FrostingTask<BuildContext>
     {
         var buildFuncs = new[]
         {
-            () => BuildDotnetApp(context, context.AppPaths.AzFunctionsProject.CsprojFile),
-            () => BuildDotnetApp(context, context.AppPaths.WebClientProject.CsprojFile),
+            () => BuildDotnetApp(context, context.AppPaths.SlnFile),
         };
 
         var runner = Parallel.ForEach(buildFuncs, func => func());
@@ -93,7 +92,7 @@ public sealed class BuildTask : FrostingTask<BuildContext>
 
         context.DotNetBuild(pathToProj, new DotNetBuildSettings
         {
-            NoRestore = true,
+            NoRestore = false,
             Configuration = context.BuildConfiguration
         });
     }

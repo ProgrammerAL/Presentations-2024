@@ -10,7 +10,7 @@ public record AppPaths(
 {
     public static AppPaths LoadFromContext(ICakeContext context, string buildConfiguration, string srcDirectory, string buildArtifactsPath)
     {
-        var slnFile = $"{srcDirectory}/Feedback.sln";
+        var slnFile = $"{srcDirectory}/FeedbackApp.sln";
         var unitTestsCsProj = $"{srcDirectory}/UnitTests/UnitTests.csproj";
 
         var azFunctionsProject = new DotNetProject(
