@@ -1,47 +1,36 @@
 ﻿using Cake.Core;
 
-public record WebsitePaths(
-    string CsprojFile,
-    string OutDir,
-    string ZipOutDir,
-    string ZipOutFilePath)
+using static AppPaths;
+
+public record AppPaths(
+    string SlnFile,
+    string UnitTestsCsProj,
+    DotNetProject AzFunctionsProject,
+    DotNetProject WebClientProject)
 {
-    public static WebsitePaths LoadFromContext(ICakeContext context, string buildConfiguration, string srcDirectory, string buildArtifactsPath)
+    public static AppPaths LoadFromContext(ICakeContext context, string buildConfiguration, string srcDirectory, string buildArtifactsPath)
     {
-        var projectName = "FeedbackWebApp";
-        var projectDir = srcDirectory + $"/{projectName}";
-        var cprojFile = projectDir + $"/{projectName}.csproj";
-        var outDir = projectDir + $"/bin/{buildConfiguration}/cake-build-output";
-        var zipOutDir = buildArtifactsPath;
-        var zipOutFilePath = zipOutDir + $"/feedback-web-client.zip";
+        var slnFile = $"{srcDirectory}/Feedback.sln";
+        var unitTestsCsProj = $"{srcDirectory}/UnitTests/UnitTests.csproj";
 
-        return new WebsitePaths(
-            cprojFile,
-            outDir,
-            zipOutDir,
-            zipOutFilePath);
+        var azFunctionsProject = new DotNetProject(
+            CsprojFile: $"{srcDirectory}/FeedbackFunctionsApp/FeedbackFunctionsApp.csproj",
+            OutDir: $"{srcDirectory}/FeedbackFunctionsApp/bin/{buildConfiguration}/cake-build-output",
+            ZipOutDir: buildArtifactsPath,
+            ZipOutFilePath:  $"{buildArtifactsPath}/feedback-web-client.zip");
+
+        var webClientProject = new DotNetProject(
+            CsprojFile: $"{srcDirectory}/FeedbackWebApp/FeedbackWebApp.csproj",
+            OutDir: $"{srcDirectory}/FeedbackWebApp/bin/{buildConfiguration}/cake-build-output",
+            ZipOutDir: buildArtifactsPath,
+            ZipOutFilePath: $"{buildArtifactsPath}/feedback-functions.zip");
+
+        return new AppPaths(
+            slnFile,
+            unitTestsCsProj,
+            azFunctionsProject,
+            webClientProject);
     }
-}
 
-public record FeedbackFunctionsProjectPaths(
-    string CsprojFile, 
-    string OutDir, 
-    string ZipOutDir, 
-    string ZipOutPath)
-{
-    public static FeedbackFunctionsProjectPaths LoadFromContext(ICakeContext context, string buildConfiguration, string srcDirectory, string buildArtifactsPath)
-    {
-        var projectName = "FeedbackFunctionsApp";
-        var projectDir = srcDirectory + $"/{projectName}";
-        var csprojFile = projectDir + $"/{projectName}.csproj";
-        var outDir = projectDir + $"/bin/{buildConfiguration}/cake-build-output";
-        var zipOutDir = buildArtifactsPath;
-        var zipOutFilePath = zipOutDir + $"/feedback-functions.zip";
-
-        return new FeedbackFunctionsProjectPaths(
-            csprojFile,
-            outDir,
-            zipOutDir,
-            zipOutFilePath);
-    }
+    public record DotNetProject(string CsprojFile, string OutDir, string ZipOutDir, string ZipOutFilePath);
 }

@@ -12,6 +12,8 @@ using System.Threading;
 using Cake.Common.Tools.DotNet.Build;
 using Cake.Common.Tools.DotNet.Publish;
 using System.Collections.Generic;
+using Cake.Common.Tools.DotNet.Test;
+using System.Net;
 
 public static class Program
 {
@@ -29,8 +31,7 @@ public class BuildContext : FrostingContext
     public string BuildConfiguration { get; }
     public string SrcDirectoryPath { get; }
     public string BuildArtifactsPath { get; }
-    public WebsitePaths WebClientPaths { get; }
-    public FeedbackFunctionsProjectPaths AzFunctionsPaths { get; }
+    public AppPaths AppPaths { get; }
 
     public BuildContext(ICakeContext context)
         : base(context)
@@ -40,8 +41,7 @@ public class BuildContext : FrostingContext
         SrcDirectoryPath = context.Argument<string>("srcDirectoryPath");
         BuildArtifactsPath = context.Argument<string>("buildArtifactsPath");
 
-        WebClientPaths = WebsitePaths.LoadFromContext(context, BuildConfiguration, SrcDirectoryPath, BuildArtifactsPath);
-        AzFunctionsPaths = FeedbackFunctionsProjectPaths.LoadFromContext(context, BuildConfiguration, SrcDirectoryPath, BuildArtifactsPath);
+        AppPaths = AppPaths.LoadFromContext(context, BuildConfiguration, SrcDirectoryPath, BuildArtifactsPath);
     }
 }
 
@@ -63,7 +63,8 @@ public sealed class CleanTask : FrostingTask<BuildContext>
 {
     public override void Run(BuildContext context)
     {
-        context.CleanDirectory(context.WebClientPaths.OutDir);
+        context.CleanDirectory(context.AppPaths.AzFunctionsProject.OutDir);
+        context.CleanDirectory(context.AppPaths.WebClientProject.OutDir);
     }
 }
 
@@ -75,8 +76,8 @@ public sealed class BuildTask : FrostingTask<BuildContext>
     {
         var buildFuncs = new[]
         {
-            () => BuildDotnetApp(context, context.WebClientPaths.CsprojFile),
-            () => BuildDotnetApp(context, context.AzFunctionsPaths.CsprojFile),
+            () => BuildDotnetApp(context, context.AppPaths.AzFunctionsProject.CsprojFile),
+            () => BuildDotnetApp(context, context.AppPaths.WebClientProject.CsprojFile),
         };
 
         var runner = Parallel.ForEach(buildFuncs, func => func());
@@ -104,24 +105,23 @@ public sealed class RunUnitTestsTask : FrostingTask<BuildContext>
 {
     public override void Run(BuildContext context)
     {
-        //TODO: Add some tests
-        //var testSettings = new DotNetTestSettings()
-        //{
-        //    Configuration = context.BuildConfiguration,
-        //    NoBuild = true,
-        //    ArgumentCustomization = (args) => args.Append("/p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --logger trx")
-        //};
+        var testSettings = new DotNetTestSettings()
+        {
+            Configuration = context.BuildConfiguration,
+            NoBuild = true,
+            ArgumentCustomization = (args) => args.Append("/p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --logger trx")
+        };
 
-        //var runTestsFuncs = new[]
-        //{
-        //    () => context.DotNetTest(context.WebClientPaths.UnitTestProj, testSettings),
-        //};
+        var runTestsFuncs = new[]
+        {
+            () => context.DotNetTest(context.AppPaths.UnitTestsCsProj, testSettings),
+        };
 
-        //var runner = Parallel.ForEach(runTestsFuncs, func => func());
-        //while (!runner.IsCompleted)
-        //{
-        //    Thread.Sleep(100);
-        //}
+        var runner = Parallel.ForEach(runTestsFuncs, func => func());
+        while (!runner.IsCompleted)
+        {
+            Thread.Sleep(100);
+        }
     }
 }
 
@@ -133,8 +133,8 @@ public sealed class PublishApplicationsTask : FrostingTask<BuildContext>
     {
         var buildFuncs = new List<Action>
         {
-            () => PublishWebClient(context),
-            () => PublishAzureFunctionsProject(context, context.AzFunctionsPaths),
+            () => PublishWebClient(context, context.AppPaths.WebClientProject),
+            () => PublishAzureFunctionsProject(context, context.AppPaths.AzFunctionsProject),
         };
 
         var runner = Parallel.ForEach(buildFuncs, func => func());
@@ -144,59 +144,59 @@ public sealed class PublishApplicationsTask : FrostingTask<BuildContext>
         }
     }
 
-    private void PublishWebClient(BuildContext context)
+    private void PublishWebClient(BuildContext context, AppPaths.DotNetProject webClient)
     {
         var settings = new DotNetPublishSettings()
         {
             NoRestore = true,
             NoBuild = true,
             Configuration = context.BuildConfiguration,
-            OutputDirectory = context.WebClientPaths.OutDir,
+            OutputDirectory = webClient.OutDir,
         };
 
-        context.DotNetPublish(context.WebClientPaths.CsprojFile, settings);
+        context.DotNetPublish(webClient.CsprojFile, settings);
 
         //Now that the code is published, create the compressed folder
-        if (!Directory.Exists(context.WebClientPaths.ZipOutDir))
+        if (!Directory.Exists(webClient.ZipOutDir))
         {
-            _ = Directory.CreateDirectory(context.WebClientPaths.ZipOutDir);
+            _ = Directory.CreateDirectory(webClient.ZipOutDir);
         }
 
-        if (File.Exists(context.WebClientPaths.ZipOutFilePath))
+        if (File.Exists(webClient.ZipOutFilePath))
         {
-            File.Delete(context.WebClientPaths.ZipOutFilePath);
+            File.Delete(webClient.ZipOutFilePath);
         }
 
-        ZipFile.CreateFromDirectory(context.WebClientPaths.OutDir, context.WebClientPaths.ZipOutFilePath);
-        context.Log.Information($"Output web app zip file to: {context.WebClientPaths.ZipOutFilePath}");
+        ZipFile.CreateFromDirectory(webClient.OutDir, webClient.ZipOutFilePath);
+        context.Log.Information($"Output web app zip file to: {webClient.ZipOutFilePath}");
     }
 
-    private void PublishAzureFunctionsProject(BuildContext context, FeedbackFunctionsProjectPaths apiPaths)
+    private void PublishAzureFunctionsProject(BuildContext context, AppPaths.DotNetProject funcsProj)
     {
         var settings = new DotNetPublishSettings()
         {
             NoRestore = false,
             NoBuild = false,
             Configuration = context.BuildConfiguration,
-            OutputDirectory = apiPaths.OutDir,
+            OutputDirectory = funcsProj.OutDir,
             Runtime = "linux-x64",
         };
 
-        context.DotNetPublish(apiPaths.CsprojFile, settings);
+        context.DotNetPublish(funcsProj.CsprojFile, settings);
 
         //Now that the code is published, create the compressed folder
-        if (!Directory.Exists(apiPaths.ZipOutDir))
+        if (!Directory.Exists(funcsProj.ZipOutDir))
         {
-            _ = Directory.CreateDirectory(apiPaths.ZipOutDir);
+            _ = Directory.CreateDirectory(funcsProj.ZipOutDir);
         }
 
-        if (File.Exists(apiPaths.ZipOutPath))
+        if (File.Exists(funcsProj.ZipOutFilePath))
         {
-            File.Delete(apiPaths.ZipOutPath);
+            File.Delete(funcsProj.ZipOutFilePath);
         }
 
-        ZipFile.CreateFromDirectory(apiPaths.OutDir, apiPaths.ZipOutPath);
-        context.Log.Information($"Output functions zip file to: {apiPaths.ZipOutPath}");
+        ZipFile.CreateFromDirectory(funcsProj.OutDir, funcsProj.ZipOutFilePath);
+        context.Log.Information($"Output functions zip file to: {funcsProj.ZipOutFilePath}");
     }
 }
 
