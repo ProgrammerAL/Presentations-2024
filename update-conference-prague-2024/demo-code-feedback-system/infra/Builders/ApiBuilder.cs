@@ -14,6 +14,7 @@ using Pulumi.AzureNative.Storage;
 using Pulumi.AzureNative.Web;
 using Pulumi.AzureNative.Web.Inputs;
 
+using PulumiInfra.Builders.AzureResourceGroup;
 using PulumiInfra.Config;
 
 using AzureNative = Pulumi.AzureNative;
@@ -28,7 +29,7 @@ public record ApiResources(ApiResources.ServiceStorageInfra ServiceStorage, ApiR
 
 public record ApiBuilder(
     GlobalConfig GlobalConfig,
-    ResourceGroup ResourceGroup,
+    AzureResourceGroupInfrasatructure ResourceGroupInfra,
     PersistentStorageResources PersistenceResources)
 {
     public ApiResources Build()
@@ -44,7 +45,7 @@ public record ApiBuilder(
     {
         var storageAccount = new StorageAccount("funcsstorage", new StorageAccountArgs
         {
-            ResourceGroupName = ResourceGroup.Name,
+            ResourceGroupName = ResourceGroupInfra.ResourceGroupInfra.ResourceGroup.Name,
             Sku = new AzureNative.Storage.Inputs.SkuArgs
             {
                 Name = AzureNative.Storage.SkuName.Standard_LRS,
@@ -66,7 +67,7 @@ public record ApiBuilder(
         {
             AccountName = storageAccount.Name,
             PublicAccess = PublicAccess.None,
-            ResourceGroupName = ResourceGroup.Name,
+            ResourceGroupName = ResourceGroupInfra.ResourceGroupInfra.ResourceGroup.Name,
         });
 
         var functionsBlob = new Blob("functions-blob", new BlobArgs
@@ -74,7 +75,7 @@ public record ApiBuilder(
             AccountName = storageAccount.Name,
             ContainerName = functionsContainer.Name,
             AccessTier = BlobAccessTier.Hot,
-            ResourceGroupName = ResourceGroup.Name,
+            ResourceGroupName = ResourceGroupInfra.ResourceGroupInfra.ResourceGroup.Name,
             Source = new FileArchive(GlobalConfig.ApiConfig.FunctionsPackagePath),
             BlobName = "functions.zip",
         });
@@ -90,7 +91,7 @@ public record ApiBuilder(
         //Create the App Service Plan
         var appServicePlan = new AppServicePlan("functions-app-service-plan", new AppServicePlanArgs
         {
-            ResourceGroupName = ResourceGroup.Name,
+            ResourceGroupName = ResourceGroupInfra.ResourceGroupInfra.ResourceGroup.Name,
             Kind = "Linux",
             Sku = new SkuDescriptionArgs
             {
@@ -162,7 +163,7 @@ public record ApiBuilder(
         var webApp = new WebApp("functions-app", new WebAppArgs
         {
             Kind = "FunctionApp",
-            ResourceGroupName = ResourceGroup.Name,
+            ResourceGroupName = ResourceGroupInfra.ResourceGroupInfra.ResourceGroup.Name,
             ServerFarmId = appServicePlan.Id,
             HttpsOnly = true,
             SiteConfig = functionAppSiteConfig,

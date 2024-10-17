@@ -8,6 +8,7 @@
 	<LangVersion>latest</LangVersion><EnableNETAnalyzers>true</EnableNETAnalyzers><EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild></PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Pulumi.AzureAD" Version="6.0.1" />
 		<PackageReference Include="Pulumi" Version="3.67.1" />
 		<PackageReference Include="Pulumi.AzureNative" Version="2.64.3" />
 	</ItemGroup>

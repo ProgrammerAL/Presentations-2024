@@ -12,7 +12,8 @@ namespace PulumiInfra.Config;
 public record GlobalConfig(
     ServiceConfig ServiceConfig,
     ApiConfig ApiConfig,
-    StaticSiteConfig StaticSiteConfig
+    StaticSiteConfig StaticSiteConfig,
+    ResourceUsersConfig ResourceUsersConfig
     )
 {
     public static async Task<GlobalConfig> LoadAsync(Pulumi.Config config)
@@ -35,7 +36,8 @@ public record GlobalConfig(
         return new GlobalConfig(
             ServiceConfig: config.RequireObject<ServiceConfigDto>("service-config").GenerateValidConfigObject(),
             ApiConfig: apiConfig.GenerateValidConfigObject(),
-            StaticSiteConfig: staticSiteConfig.GenerateValidConfigObject()
+            StaticSiteConfig: staticSiteConfig.GenerateValidConfigObject(),
+            ResourceUsersConfig: config.RequireObject<ResourceUsersConfigDto>("resource-users-config").GenerateValidConfigObject()
             );
     }
 }

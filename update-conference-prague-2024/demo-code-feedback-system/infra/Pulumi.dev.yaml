@@ -6,4 +6,8 @@ config:
   update-conf-2024:service-config: 
     Version: dev-version-123
     Environment: dev
-  pulumi:template: azure-csharp
+  update-conf-2024:resource-users-config:
+    GroupName: dev-users
+    Users:
+    - AL@programmeral.com
+pulumi:template: azure-csharp

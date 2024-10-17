@@ -13,6 +13,7 @@ using Pulumi.AzureNative.Authorization;
 using Pulumi.AzureNative.Resources;
 using Pulumi.AzureNative.Storage;
 
+using PulumiInfra.Builders.AzureResourceGroup;
 using PulumiInfra.Config;
 
 using AzureNative = Pulumi.AzureNative;
@@ -26,7 +27,7 @@ public record PersistentStorageResources(PersistentStorageResources.PersistentSt
 
 public record PersistentStorageBuilder(
     GlobalConfig GlobalConfig,
-    ResourceGroup ResourceGroup)
+    AzureResourceGroupInfrasatructure ResourceGroupInfra)
 {
     public PersistentStorageResources Build()
     {
@@ -38,7 +39,7 @@ public record PersistentStorageBuilder(
     {
         var storageAccount = new StorageAccount("persistentstg", new StorageAccountArgs
         {
-            ResourceGroupName = ResourceGroup.Name,
+            ResourceGroupName = ResourceGroupInfra.ResourceGroupInfra.ResourceGroup.Name,
             Sku = new AzureNative.Storage.Inputs.SkuArgs
             {
                 Name = AzureNative.Storage.SkuName.Standard_LRS,

@@ -55,7 +55,7 @@ with AL Rodriguez
 
 # Define "Everywhere"
 
-- Frontend - Blazor (Server and WASM) / Razor / Desktop (WinForms, WPF, Avalonia, Uno Platform)
+- Frontend - Blazor (Server and WASM) / Razor / MAUI / Desktop (WinForms, WPF, Avalonia, Uno Platform)
 - Backend - ASP.NET
 - Testing - Unit/Integration/Performance
 - CI/CD - Cake, Nuke Build
@@ -83,13 +83,28 @@ with AL Rodriguez
 
 # Full Stack App
 
+- ASP.NET Core
+- ASP.NET MVC / Blazor / MAUI / Desktop
+
+---
+
+# Full Stack in C#
+
 - 
 
 ---
 
 # CI/CD
 
-- 
+- Pipelines built with a DSL
+  - Usually YAML
+
+---
+
+# Run Code from YAML
+
+- YAML can run CLI tools
+- Call external code from YAML
 
 ---
 

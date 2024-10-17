@@ -12,18 +12,16 @@ return await Pulumi.Deployment.RunAsync(async () =>
     var pulumiConfig = new Config();
     var globalConfig = await GlobalConfig.LoadAsync(pulumiConfig);
 
-    var resourceGroup = new ResourceGroup(globalConfig.ApiConfig.ResourceGroupName, new ResourceGroupArgs
-    {
-        Location = globalConfig.ApiConfig.Location
-    });
+    var resourceGroupBuilder = new AzureResourceGroupStackBuilder(globalConfig);
+    var resourceGroupResources = resourceGroupBuilder.GenerateResources();
 
-    var persistentStorageBuilder = new PersistentStorageBuilder(globalConfig, resourceGroup);
+    var persistentStorageBuilder = new PersistentStorageBuilder(globalConfig, resourceGroupResources);
     var persistenceResources = persistentStorageBuilder.Build();
 
-    var apiBuilder = new ApiBuilder(globalConfig, resourceGroup, persistenceResources);
+    var apiBuilder = new ApiBuilder(globalConfig, resourceGroupResources, persistenceResources);
     var apiResources = apiBuilder.Build();
 
-    var staticSiteBuilder = new StaticSiteBuilder(globalConfig, resourceGroup, apiResources);
+    var staticSiteBuilder = new StaticSiteBuilder(globalConfig, resourceGroupResources, apiResources);
     var staticSiteResources = staticSiteBuilder.Build();
 
     return new Dictionary<string, object?>

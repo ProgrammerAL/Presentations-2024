@@ -16,6 +16,7 @@ using Pulumi.AzureNative.Storage;
 using Pulumi.AzureNative.Web;
 using Pulumi.AzureNative.Web.Inputs;
 
+using PulumiInfra.Builders.AzureResourceGroup;
 using PulumiInfra.Config;
 using PulumiInfra.Utilities;
 
@@ -32,7 +33,7 @@ public record StaticSiteResources(SiteStorageInfra StorageInfra)
 
 public record StaticSiteBuilder(
     GlobalConfig GlobalConfig,
-    ResourceGroup ResourceGroup,
+    AzureResourceGroupInfrasatructure ResourceGroupInfra,
     ApiResources ApiResources)
 {
     public StaticSiteResources Build()
@@ -45,7 +46,7 @@ public record StaticSiteBuilder(
     {
         var storageAccount = new StorageAccount("sitestorage", new StorageAccountArgs
         {
-            ResourceGroupName = ResourceGroup.Name,
+            ResourceGroupName = ResourceGroupInfra.ResourceGroupInfra.ResourceGroup.Name,
             AllowBlobPublicAccess = true,
             Sku = new AzureNative.Storage.Inputs.SkuArgs
             {
@@ -65,7 +66,7 @@ public record StaticSiteBuilder(
 
         var siteStorageAccount = new StorageAccountStaticWebsite("staticsiteaccount", new StorageAccountStaticWebsiteArgs
         {
-            ResourceGroupName = ResourceGroup.Name,
+            ResourceGroupName = ResourceGroupInfra.ResourceGroupInfra.ResourceGroup.Name,
             IndexDocument = "index.html",
             Error404Document = "index.html",
             AccountName = storageAccount.Name
@@ -88,7 +89,7 @@ public record StaticSiteBuilder(
                     AccountName = storageAccount.Name,
                     ContainerName = "$web",
                     AccessTier = BlobAccessTier.Hot,
-                    ResourceGroupName = ResourceGroup.Name,
+                    ResourceGroupName = ResourceGroupInfra.ResourceGroupInfra.ResourceGroup.Name,
                     Source = new FileAsset(fullFilePath),
                     ContentType = FileUtilities.DetermineFileContentType(fullFilePath),
                     BlobName = relativeFilePath,
