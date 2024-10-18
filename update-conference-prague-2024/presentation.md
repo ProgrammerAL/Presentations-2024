@@ -28,6 +28,34 @@ with AL Rodriguez
 
 ---
 
+# In the old days...
+
+Image of Dev throwing work over to Operations
+
+---
+
+# Now with DevOps!
+
+Image of Dev throwing work over to DevOps throwing work over to SRE throwing work over to Operations
+
+---
+
+# We're Developers
+
+- We write code
+- We solve problems
+- We automate things
+
+---
+
+# As Developers We Are...
+
+- Opinionated about tooling
+- Opinionated about how we solve problems
+- Opinionated
+
+---
+
 # What is "Entire Stack" programming?
 
 - I made it up
