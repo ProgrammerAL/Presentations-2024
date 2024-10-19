@@ -28,15 +28,20 @@ with AL Rodriguez
 
 ---
 
-# In the old days...
-
-Image of Dev throwing work over to Operations
+![bg 80%](presentation-images/devs-and-ops.png)
 
 ---
 
-# Now with DevOps!
+![bg 80%](presentation-images/devs-and-ops-oops.png)
 
-Image of Dev throwing work over to DevOps throwing work over to SRE throwing work over to Operations
+---
+
+![bg 80%](presentation-images/ideal-devops.png)
+
+---
+
+![bg 80%](presentation-images/devs-and-devops-and-ops-and-sre.png)
+
 
 ---
 
