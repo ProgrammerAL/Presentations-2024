@@ -185,16 +185,14 @@ with AL Rodriguez
 
 # UI Testing
 
-- Simulate a real user
-  - Verify UI reactions
+- Simulate/Verify real user interactions
 - A type of Integration testing
 
 ---
 
 # Playwright
 
-- Web UI Testing
-- Better than Selenium (opinion)
+- Open Source from Microsoft
 - Use your choice of programming language*
   - C# FTW!
 
