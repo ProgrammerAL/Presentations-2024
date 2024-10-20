@@ -24,18 +24,20 @@ public class BuildContext : FrostingContext
     public string WorkspacePath { get; }
     public string PulumiPath { get; }
     public string PulumiStackName { get; }
+    public string ReleaseVersion { get; }
     public string UnzippedArtifactsDir { get; }
-    public string BuildArtifactsPath { get; }
+    public string ReleaseArtifactsDownloadDir { get; }
 
     public BuildContext(ICakeContext context)
         : base(context)
     {
         WorkspacePath = LoadParameter(context, nameof(WorkspacePath));
-        BuildArtifactsPath = LoadParameter(context, nameof(BuildArtifactsPath));
-        PulumiPath = WorkspacePath + "/infra/pulumi-infra-deploy";
-        UnzippedArtifactsDir = (WorkspacePath + "/unzipped_artifacts").Replace("\\", "/");
-
         PulumiStackName = LoadParameter(context, nameof(PulumiStackName));
+        ReleaseVersion = LoadParameter(context, nameof(ReleaseVersion));
+
+        PulumiPath = WorkspacePath + "/infra/pulumi-infra-deploy";
+        UnzippedArtifactsDir = WorkspacePath + "/unzipped_artifacts";
+        ReleaseArtifactsDownloadDir = WorkspacePath + "/release_artifacts";
     }
 
     private string LoadParameter(ICakeContext context, string parameterName)
@@ -56,7 +58,7 @@ public sealed class UnzipAssetsTask : FrostingTask<BuildContext>
 
     private void ExtractArchive(string zipName, BuildContext context)
     {
-        var zipFilePath = $"{context.BuildArtifactsPath}/{zipName}.zip";
+        var zipFilePath = $"{context.ReleaseArtifactsDownloadDir}/{zipName}.zip";
         var outputPath = $"{context.UnzippedArtifactsDir}/{zipName}";
 
         context.Log.Information($"Extracting zip '{zipFilePath}' to '{outputPath}'");
@@ -68,7 +70,7 @@ public sealed class UnzipAssetsTask : FrostingTask<BuildContext>
 
     private void CopyArchive(string zipName, BuildContext context)
     {
-        var zipFilePath = $"{context.BuildArtifactsPath}/{zipName}.zip";
+        var zipFilePath = $"{context.ReleaseArtifactsDownloadDir}/{zipName}.zip";
         var outputPath = $"{context.UnzippedArtifactsDir}/{zipName}.zip";
 
         context.Log.Information($"Copying zip '{zipFilePath}' to '{outputPath}'");

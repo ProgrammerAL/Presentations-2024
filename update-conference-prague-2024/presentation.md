@@ -214,6 +214,7 @@ with AL Rodriguez
 # Review
 
 - Use platform-specific stuff to do platform-specific stuff
+- Use C# FTW!
 
 ---
 
