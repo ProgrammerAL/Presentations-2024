@@ -46,39 +46,6 @@ public class BuildContext : FrostingContext
     }
 }
 
-[TaskName(nameof(UnzipAssetsTask))]
-public sealed class UnzipAssetsTask : FrostingTask<BuildContext>
-{
-    public override void Run(BuildContext context)
-    {
-        _ = Directory.CreateDirectory(context.UnzippedArtifactsDir);
-
-        ExtractArchive("programmer-al-site", context);
-    }
-
-    private void ExtractArchive(string zipName, BuildContext context)
-    {
-        var zipFilePath = $"{context.ReleaseArtifactsDownloadDir}/{zipName}.zip";
-        var outputPath = $"{context.UnzippedArtifactsDir}/{zipName}";
-
-        context.Log.Information($"Extracting zip '{zipFilePath}' to '{outputPath}'");
-
-        using var fileStream = File.OpenRead(zipFilePath);
-        using var archive = new ZipArchive(fileStream);
-        archive.ExtractToDirectory(outputPath);
-    }
-
-    private void CopyArchive(string zipName, BuildContext context)
-    {
-        var zipFilePath = $"{context.ReleaseArtifactsDownloadDir}/{zipName}.zip";
-        var outputPath = $"{context.UnzippedArtifactsDir}/{zipName}.zip";
-
-        context.Log.Information($"Copying zip '{zipFilePath}' to '{outputPath}'");
-        File.Copy(sourceFileName: zipFilePath, destFileName: outputPath);
-    }
-}
-
-[IsDependentOn(typeof(UnzipAssetsTask))]
 [TaskName(nameof(UpdatePulumiConfigTask))]
 public sealed class UpdatePulumiConfigTask : FrostingTask<BuildContext>
 {
