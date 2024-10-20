@@ -67,5 +67,4 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: Update-Conf-Deploy-Dev
-          token: ${{ secrets.TRIGGER_WORKFLOW_PAT_AL }}
           inputs: '{"release_tag_id": "${{ github.run_id }}"}'
