@@ -61,40 +61,34 @@ with AL Rodriguez
 
 ---
 
-# What is "Entire Stack" programming?
+# What's the "Entire Stack"?
 
-- I made it up
+- Frontend / Backend
+- Build
+- Deploy
+- Automated Tests
 - Doing all development in the same set of tools
-- Frontend - Backend - CI/CD - IaC - Unit/Integration/Performance Testing
-
----
-
-# Where did it come from?
-
-- I'm a developer
-  - We Automate Things
-- I had to make CI/CD pipelines
-- I had to automate infrastructure
+  - The Best Tools - C# FTW!
 
 ---
 
 # Why C# for the Entire Stack?
 
 - ".NET Everywhere"
-  - Scott Hanselman talked about it: https://www.youtube.com/watch?v=ZM6OO2lkxA4
-- ...and I like C#
+  - Scott Hanselman talked about it in 2021
+  - https://www.youtube.com/watch?v=ZM6OO2lkxA4
 
 ---
 
 # Define "Everywhere"
 
-- Frontend - Blazor (Server and WASM) / Razor / MAUI / Desktop (WinForms, WPF, Avalonia, Uno Platform)
-- Backend - ASP.NET
-- Testing - Unit/Integration/Performance
-- CI/CD - Cake, Nuke Build
-- IaC - Pulumi, Aspire*
-- IoT -  Meadow, Raspberry Pi
-- Video Games -  Unity, Godot
+- **Frontend** - Blazor (Server and WASM) / Razor / MAUI / Desktop (WinForms, WPF, Avalonia, Uno Platform)
+- **Backend** - ASP.NET, Console, Serverless
+- **Testing** - Unit/Integration/Performance
+- **CI/CD** - Cake, Nuke Build
+- **IaC** - Pulumi, Aspire*
+- **IoT** -  Meadow, GHI Electronics TinyCLR, .NET nanoFramework, Raspberry Pi
+- **Video Games** -  Unity, Godot
 
 ---
 
@@ -108,46 +102,106 @@ with AL Rodriguez
 
 # What are we going to do?
 
-- Create a Full Stack app...with C#
-- Create GitHub Actions to build/test/deploy...with C#
-- Deploy IaC...with C#
+- Build and Deploy a Full Stack app
+- Deploy Create Cloud Infrastructure
+- Run UI Tests
+- All with C# FTW!
 
 ---
 
 # Full Stack App
 
-- ASP.NET Core
-- ASP.NET MVC / Blazor / MAUI / Desktop
+- Blazor WASM
+- Azure Functions
 
 ---
 
-# Full Stack in C#
+# CI/CD Pipelines
 
-- 
-
----
-
-# CI/CD
-
-- Pipelines built with a DSL
+- Built with a Domain Specific Language
   - Usually YAML
 
 ---
 
 # Run Code from YAML
 
-- YAML can run CLI tools
-- Call external code from YAML
+- Call external CLI tool from YAML
+  - AKA `dotnet run ...`
+
+---
+
+# SDKs for CI/CD Apps
+
+- Cake
+  - AKA C# Make
+  - https://CakeBuild.net 
+- Nuke
+  - https://Nuke.build
+- Fully Open Source
+  - Free to use
+
+---
+
+# Script or Traditional App
+
+- Custom C# Script
+  - Requires extension for code editor
+- Full App like a traditional app
+  - Use your normal tools
+
+---
+
+# Cake
+
+- Cake Frosting
+  - Traditional App Style
 
 ---
 
 # IaC
 
-- Pulumi
+- Infrastructure as Code
+- Create/Read/Update/Delete Cloud Infrastructure
+
+---
+
+# Pulumi
+
+- IaC with your choice of programming language*
+  - C# FTW!
+- 3rd Party tool
+  - Has own pricing, generaous free tier
+- API very similar to cloud specific API
+
+---
+
+# UI Testing
+
+- Simulate a real user
+  - Verify UI reactions
+- A type of Integration testing
+
+---
+
+# Playwright
+
+- Web UI Testing
+- Better than Selenium (opinion)
+- Use your choice of programming language*
+  - C# FTW!
 
 ---
 
 # Demo Time
+
+- Full Stack App
+- GitHub Action - Build
+  - Cake
+- GitHub Action - Deploy
+  - Cake
+  - Pulumi
+- GitHub Action
+  - Selenium UI Tests
 
 ---
 
