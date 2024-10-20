@@ -1,4 +1,4 @@
-name: Build
+name: Update-Conf-Build
 
 on:
   workflow_dispatch:
@@ -62,3 +62,10 @@ jobs:
           asset_path: "${{ env.BUILD_ARTIFACTS_PATH }}/feedback-web-client.zip"
           asset_name: feedback-web-client.zip
           asset_content_type: application/zip
+
+      - name: Repository Dispatch - Trigger Dev Deployment
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Update-Conf-Deploy-Dev
+          token: ${{ secrets.TRIGGER_WORKFLOW_PAT_AL }}
+          inputs: '{"release_tag_id": "${{ github.run_id }}"}'

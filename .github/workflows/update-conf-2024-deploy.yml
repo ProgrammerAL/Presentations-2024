@@ -1,4 +1,4 @@
-name: Deploy
+name: Update-Conf-Deploy
 
 on:
   workflow_call:
@@ -80,11 +80,3 @@ jobs:
 
       - name: Cake Frosting - Deploy
         run: dotnet run --project ${{ env.ROOT_DIRECTORY_PATH }}/deploy/deploy/Deploy.csproj -- --configuration=${{ env.CONFIGURATION }} --PulumiStackName=${{ inputs.pulumi_stack_name }} --ReleaseVersion=${{ inputs.release_tag_id }} --WorkspacePath=${{ github.workspace }}
-
-      - name: Repository Dispatch - Trigger Dev Deployment
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: Deploy-Dev
-          token: ${{ secrets.TRIGGER_WORKFLOW_PAT_AL }}
-          inputs: '{"release_tag_id": "${{ github.run_id }}"}'
-
