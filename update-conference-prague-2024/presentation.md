@@ -175,6 +175,14 @@ with AL Rodriguez
 
 ---
 
+# Aspire
+
+- Not all resources supported (yet)
+- Not recommended for production use (yet)
+  - Local dev loop only (for now)
+
+---
+
 # UI Testing
 
 - Simulate a real user
