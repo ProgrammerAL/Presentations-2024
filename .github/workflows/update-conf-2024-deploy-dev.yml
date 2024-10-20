@@ -12,7 +12,7 @@ on:
 
 jobs:
   deploy-pulumi-and-artifacts:
-    uses: ./.github/workflows/deploy.yml
+    uses: ./.github/workflows/update-conf-2024-deploy.yml
     with:
       release_tag_id: ${{ github.event.inputs.release_tag_id }}
       pulumi_stack_name: dev
