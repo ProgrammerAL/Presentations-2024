@@ -23,6 +23,5 @@ jobs:
       arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
       arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
       arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      packages_read_token: ${{ secrets.PACKAGES_READ_WRITE_TOKEN }}
           
 
