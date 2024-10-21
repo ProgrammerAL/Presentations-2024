@@ -1,5 +1,5 @@
 config:
-  update-conf-2024:azure-resource-group-name: dev-feedback-rg
+  update-conf-2024:azure-resource-group-name: dev-update-conf-2024-feedback-rg
   update-conf-2024:functions-package-path: local
   update-conf-2024:location: eastus2
   update-conf-2024:static-site-path: local
