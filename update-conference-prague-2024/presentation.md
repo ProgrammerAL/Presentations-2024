@@ -6,7 +6,7 @@ theme: gaia
 author: Al Rodriguez
 ---
 
-# Entire Stack C#
+# Entire Stack C# (FTW!)
 
 with AL Rodriguez
 
@@ -73,7 +73,7 @@ with AL Rodriguez
 
 - **Frontend** - Blazor (Server and WASM) / Razor / MAUI / Desktop (WinForms, WPF, Avalonia, Uno Platform)
 - **Backend** - ASP.NET, Console, Serverless
-- **Testing** - Unit/Integration/Performance
+- **Testing** - Unit/Integration/UI/Performance
 - **CI/CD** - Cake, Nuke Build
 - **IaC** - Pulumi, Aspire*
 - **IoT** -  Meadow, GHI Electronics TinyCLR, .NET nanoFramework, Raspberry Pi
@@ -81,7 +81,7 @@ with AL Rodriguez
 
 ---
 
-# What's the "Entire Stack"?
+# C# for the "Entire Stack"
 
 - Frontend / Backend
 - Build

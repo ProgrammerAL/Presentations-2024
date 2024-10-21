@@ -76,7 +76,7 @@ public record AzureResourceGroupStackBuilder(
         //Assign group to be able to read everything in the resource group
         _ = new AzureNative.Authorization.RoleAssignment("arcade-device-management-resource-group-reader-role-assignment", new AzureNative.Authorization.RoleAssignmentArgs
         {
-            PrincipalId = adGroupsInfra.Group.Id,
+            PrincipalId = adGroupsInfra.Group.ObjectId,
             PrincipalType = AzureNative.Authorization.PrincipalType.Group,
             RoleDefinitionId = AzureAdRoleIdUtilities.GenerateAzureReaderRoleId(GlobalConfig.ApiConfig.ClientConfig.SubscriptionId),
             Scope = resourceGroupInfra.ResourceGroup.Id
