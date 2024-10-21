@@ -1,10 +1,10 @@
 config:
   update-conf-2024:azure-resource-group-name: dev-feedback-rg
-  update-conf-2024:functions-package-path: ../src/published-apps/functions.zip
+  update-conf-2024:functions-package-path: local
   update-conf-2024:location: eastus
-  update-conf-2024:static-site-path: ../src/published-apps/webapp
+  update-conf-2024:static-site-path: local
   update-conf-2024:service-config: 
-    Version: dev-version-123
+    Version: local
     Environment: dev
   update-conf-2024:resource-users-config:
     GroupName: dev-users

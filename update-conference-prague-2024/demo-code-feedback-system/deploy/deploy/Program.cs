@@ -89,6 +89,7 @@ public sealed class UpdatePulumiConfigTask : FrostingTask<BuildContext>
 
         configFileText = UpdateConfigValue("update-conf-2024:functions-package-path: ", $"{context.ReleaseArtifactsDownloadDir}/feedback-functions.zip", configFileText);
         configFileText = UpdateConfigValue("update-conf-2024:static-site-path: ", $"{context.UnzippedArtifactsDir}/feedback-web-client", configFileText);
+        configFileText = UpdateConfigValue("Version: ", context.ReleaseVersion, configFileText);
 
         File.WriteAllText(configFilePath, configFileText);
         context.Log.Information("Pulumi Config: \n" + configFileText);
