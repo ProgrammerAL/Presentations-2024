@@ -61,7 +61,7 @@ public record AzureResourceGroupStackBuilder(
 
             var groupMember = new GroupMember(memberName, new()
             {
-                GroupObjectId = group.Id,
+                GroupObjectId = group.ObjectId,
                 MemberObjectId = user.ObjectId
             });
 

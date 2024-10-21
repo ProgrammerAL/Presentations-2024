@@ -61,18 +61,7 @@ with AL Rodriguez
 
 ---
 
-# What's the "Entire Stack"?
-
-- Frontend / Backend
-- Build
-- Deploy
-- Automated Tests
-- Doing all development in the same set of tools
-  - The Best Tools - C# FTW!
-
----
-
-# Why C# for the Entire Stack?
+# .NET is Everywhere
 
 - ".NET Everywhere"
   - Scott Hanselman talked about it in 2021
@@ -89,6 +78,17 @@ with AL Rodriguez
 - **IaC** - Pulumi, Aspire*
 - **IoT** -  Meadow, GHI Electronics TinyCLR, .NET nanoFramework, Raspberry Pi
 - **Video Games** -  Unity, Godot
+
+---
+
+# What's the "Entire Stack"?
+
+- Frontend / Backend
+- Build
+- Deploy
+- Automated Tests
+- Doing all development in the same set of tools
+  - The Best Tools - C# FTW!
 
 ---
 
@@ -213,8 +213,9 @@ with AL Rodriguez
 
 # Review
 
-- Use platform-specific stuff to do platform-specific stuff
-- Use C# FTW!
+- Use platform-specific stuff for platform-specific stuff
+  - Use C# for everything else
+- Use C#...FTW!
 
 ---
 
