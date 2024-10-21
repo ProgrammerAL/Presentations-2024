@@ -6,7 +6,9 @@
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<LangVersion>latest</LangVersion>
 		<RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
-	<EnableNETAnalyzers>true</EnableNETAnalyzers><EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild></PropertyGroup>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Cake.Frosting" Version="4.0.0" />
 		<PackageReference Include="Pulumi.Automation" Version="3.67.1" />
