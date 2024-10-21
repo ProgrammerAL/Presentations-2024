@@ -25,8 +25,8 @@ public class BuildContext : FrostingContext
     public string PulumiPath { get; }
     public string PulumiStackName { get; }
     public string ReleaseVersion { get; }
-    public string UnzippedArtifactsDir { get; }
     public string ReleaseArtifactsDownloadDir { get; }
+    public string UnzippedArtifactsDir { get; }
 
     public BuildContext(ICakeContext context)
         : base(context)
@@ -35,9 +35,9 @@ public class BuildContext : FrostingContext
         PulumiStackName = LoadParameter(context, nameof(PulumiStackName));
         ReleaseVersion = LoadParameter(context, nameof(ReleaseVersion));
 
-        PulumiPath = WorkspacePath + "/infra/pulumi-infra-deploy";
+        PulumiPath = LoadParameter(context, nameof(PulumiPath));
+        ReleaseArtifactsDownloadDir = LoadParameter(context, nameof(ReleaseArtifactsDownloadDir));
         UnzippedArtifactsDir = WorkspacePath + "/unzipped_artifacts";
-        ReleaseArtifactsDownloadDir = WorkspacePath + "/release_artifacts";
     }
 
     private string LoadParameter(ICakeContext context, string parameterName)
@@ -46,6 +46,39 @@ public class BuildContext : FrostingContext
     }
 }
 
+[TaskName(nameof(UnzipAssetsTask))]
+public sealed class UnzipAssetsTask : FrostingTask<BuildContext>
+{
+    public override void Run(BuildContext context)
+    {
+        _ = Directory.CreateDirectory(context.UnzippedArtifactsDir);
+
+        ExtractArchive("feedback-web-client", context);
+    }
+
+    private void ExtractArchive(string zipName, BuildContext context)
+    {
+        var zipFilePath = $"{context.ReleaseArtifactsDownloadDir}/{zipName}.zip";
+        var outputPath = $"{context.UnzippedArtifactsDir}/{zipName}";
+
+        context.Log.Information($"Extracting zip '{zipFilePath}' to '{outputPath}'");
+
+        using var fileStream = File.OpenRead(zipFilePath);
+        using var archive = new ZipArchive(fileStream);
+        archive.ExtractToDirectory(outputPath);
+    }
+
+    private void CopyArchive(string zipName, BuildContext context)
+    {
+        var zipFilePath = $"{context.ReleaseArtifactsDownloadDir}/{zipName}.zip";
+        var outputPath = $"{context.UnzippedArtifactsDir}/{zipName}.zip";
+
+        context.Log.Information($"Copying zip '{zipFilePath}' to '{outputPath}'");
+        File.Copy(sourceFileName: zipFilePath, destFileName: outputPath);
+    }
+}
+
+[IsDependentOn(typeof(UnzipAssetsTask))]
 [TaskName(nameof(UpdatePulumiConfigTask))]
 public sealed class UpdatePulumiConfigTask : FrostingTask<BuildContext>
 {
@@ -54,8 +87,8 @@ public sealed class UpdatePulumiConfigTask : FrostingTask<BuildContext>
         var configFilePath = $"{context.PulumiPath}/Pulumi.{context.PulumiStackName}.yaml";
         var configFileText = File.ReadAllText(configFilePath);
 
-        configFileText = UpdateConfigValue("update-conf-2024:unzipped-artifacts-dir: ", context.UnzippedArtifactsDir, configFileText);
-        configFileText = UpdateConfigValue("update-conf-2024:root-run-path: ", context.WorkspacePath, configFileText);
+        configFileText = UpdateConfigValue("update-conf-2024:functions-package-path: ", $"{context.ReleaseArtifactsDownloadDir}/feedback-functions.zip", configFileText);
+        configFileText = UpdateConfigValue("update-conf-2024:static-site-path: ", $"{context.UnzippedArtifactsDir}/feedback-web-client", configFileText);
 
         File.WriteAllText(configFilePath, configFileText);
         context.Log.Information("Pulumi Config: \n" + configFileText);
