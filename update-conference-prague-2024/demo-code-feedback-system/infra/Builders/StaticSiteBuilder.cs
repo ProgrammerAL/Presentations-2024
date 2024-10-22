@@ -74,11 +74,12 @@ public record StaticSiteBuilder(
 
         _ = ApiResources.Function.HttpsEndpoint.Apply(apiEndpoint =>
         {
-            var appsettingsFilePath = $"{GlobalConfig.StaticSiteConfig.StaticSitePath}/appsettings.json";
+            var wwwRootPath = $"{GlobalConfig.StaticSiteConfig.StaticSitePath}/wwwroot";
+            var appsettingsFilePath = $"{wwwRootPath}/appsettings.json";
             WriteConfigFiles(appsettingsFilePath, apiEndpoint);
 
             //Create Pulumi entries for each file to upload
-            var fullSearchPath = Path.GetFullPath(GlobalConfig.StaticSiteConfig.StaticSitePath);
+            var fullSearchPath = Path.GetFullPath(wwwRootPath);
             var allFiles = Directory.EnumerateFiles(fullSearchPath, searchPattern: "*", SearchOption.AllDirectories);
             foreach (var fullFilePath in allFiles)
             {
