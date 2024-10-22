@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using Cake.Common.Tools.DotNet;
+using Cake.Common.Tools.DotNet.Build;
 using Cake.Common.Tools.DotNet.Restore;
 using Cake.Common.Tools.DotNet.Test;
 using Cake.Core;
@@ -152,23 +154,48 @@ public sealed class RunSeleniumTestsTask : AsyncFrostingTask<BuildContext>
     public override async Task RunAsync(BuildContext context)
     {
         await WriteConfigAsync(context);
-        await RunTestsAsync(context);
+        CompileTests(context);
+        RunPlaywrightSetup(context);
+        RunTests(context);
     }
 
-    private async Task RunTestsAsync(BuildContext context)
+    private void CompileTests(BuildContext context)
+    {
+        var testSettings = new DotNetBuildSettings()
+        {
+            Configuration = "Debug",
+            NoRestore = false
+        };
+
+        var projectPath = $"{context.PlaywrightTestsPath}/UiTests.csproj";
+        context.DotNetBuild(projectPath, testSettings);
+    }
+
+    private void RunPlaywrightSetup(BuildContext context)
+    {
+        var startArgs = new ProcessStartInfo("pwsh", "bin/Debug/net8.0/playwright.ps1 install")
+        {
+            RedirectStandardOutput = true,
+        };
+        var process = Process.Start(startArgs);
+        _ = process!.WaitForExit(TimeSpan.FromMinutes(10));
+
+        var output = process.StandardOutput.ReadToEnd();
+        context.Log.Information($"playwright run output: {output}");
+    }
+
+    private void RunTests(BuildContext context)
     {
         var testSettings = new DotNetTestSettings()
         {
             Configuration = "Debug",
-            NoBuild = false,
-            NoRestore = false,
+            NoBuild = true,
+            NoRestore = true,
             ArgumentCustomization = (args) => args.Append("/p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --logger trx")
         };
 
         var projectPath = $"{context.PlaywrightTestsPath}/UiTests.csproj";
         context.DotNetTest(projectPath, testSettings);
-
-        await Task.CompletedTask;
     }
 
     private async ValueTask WriteConfigAsync(BuildContext context)
