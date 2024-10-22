@@ -35,8 +35,6 @@ public class BuildContext : FrostingContext
     public string ReleaseArtifactsDownloadDir { get; }
     public string UnzippedArtifactsDir { get; }
 
-    public UpResult? PulumiUpResult { get; set; }
-
     public BuildContext(ICakeContext context)
         : base(context)
     {
@@ -141,9 +139,9 @@ public sealed class PulumiDeployTask : AsyncFrostingTask<BuildContext>
 
         context.Log.Information($"Pulumi Up starting...");
 
-        context.PulumiUpResult = await pulumiStack.UpAsync();
+        var result = await pulumiStack.UpAsync();
         context.Log.Information($"Pulumi Up completed");
-        Utilities.LogPulumiResult(context, context.PulumiUpResult);
+        Utilities.LogPulumiResult(context, result);
     }
 }
 
@@ -153,7 +151,7 @@ public sealed class RunSeleniumTestsTask : AsyncFrostingTask<BuildContext>
 {
     public override async Task RunAsync(BuildContext context)
     {
-        WriteConfig(context);
+        await WriteConfigAsync(context);
         await RunTestsAsync(context);
     }
 
@@ -173,22 +171,25 @@ public sealed class RunSeleniumTestsTask : AsyncFrostingTask<BuildContext>
         await Task.CompletedTask;
     }
 
-    private void WriteConfig(BuildContext context)
+    private async ValueTask WriteConfigAsync(BuildContext context)
     {
         var fullStackName = $"ProgrammerAL/{context.PulumiStackName}";
 
         context.Log.Information($"Loading stack {fullStackName} from path '{context.PulumiPath}' to get outputs");
 
-        var stackOutputs = context.PulumiUpResult!.Outputs;
+        var stackArgs = new LocalProgramArgs(fullStackName, context.PulumiPath);
+        var pulumiStack = await LocalWorkspace.SelectStackAsync(stackArgs);
+        var stackOutputs = await pulumiStack.GetOutputsAsync();
         var staticSiteEndpoint = stackOutputs["StaticSiteHttpsEndpoint"].Value.ToString() ?? throw new Exception($"Pulumi output 'StaticSiteHttpsEndpoint' is null for stack '{fullStackName}'");
+
 
         // Write the config file
         var filePath = $"{context.PlaywrightTestsPath}/.runsettings";
         var runsettingsXml = XElement.Load(filePath);
-        var baseUrlElement = runsettingsXml.Element("RunSettings")
-            !.Element("TestRunParameters")
+        var baseUrlElement = runsettingsXml
+            .Element("TestRunParameters")
             !.Elements("Parameter")
-            .Single(x => x.Attribute("baseUrl") != null);
+            .Single(x => string.Equals(x.Attribute("name")?.Value, "baseUrl"));
         baseUrlElement.Value = staticSiteEndpoint;
 
         File.WriteAllText(filePath, runsettingsXml.ToString());
