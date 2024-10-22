@@ -188,8 +188,18 @@ public sealed class RunSeleniumTestsTask : AsyncFrostingTask<BuildContext>
         var stackArgs = new LocalProgramArgs(fullStackName, context.PulumiPath);
         var pulumiStack = await LocalWorkspace.SelectStackAsync(stackArgs);
         var stackOutputs = await pulumiStack.GetOutputsAsync();
-        var staticSiteEndpoint = stackOutputs["StaticSiteHttpsEndpoint"].Value.ToString() ?? throw new Exception($"Pulumi output 'StaticSiteHttpsEndpoint' is null for stack '{fullStackName}'");
 
+        string? staticSiteEndpoint = null;
+
+        if (stackOutputs.TryGetValue("StaticSiteHttpsEndpoint", out var staticSiteEndpointOutput))
+        {
+            staticSiteEndpoint = staticSiteEndpointOutput.Value.ToString();
+        }
+
+        if (string.IsNullOrWhiteSpace(staticSiteEndpoint))
+        {
+            throw new Exception($"Pulumi output 'StaticSiteHttpsEndpoint' is null for stack '{fullStackName}'");
+        }
 
         // Write the config file
         var filePath = $"{context.PlaywrightTestsPath}/.runsettings";
@@ -200,7 +210,9 @@ public sealed class RunSeleniumTestsTask : AsyncFrostingTask<BuildContext>
             .Single(x => string.Equals(x.Attribute("name")?.Value, "baseUrl"));
         baseUrlElement.Value = staticSiteEndpoint;
 
-        File.WriteAllText(filePath, runsettingsXml.ToString());
+        var runsettingsString = runsettingsXml.ToString();
+        context.Log.Information($"Writing runsettings file to '{filePath}' with content: {Environment.NewLine}{runsettingsString}");
+        File.WriteAllText(filePath, runsettingsString);
     }
 }
 
