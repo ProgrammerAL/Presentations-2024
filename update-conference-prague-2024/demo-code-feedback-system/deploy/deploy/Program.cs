@@ -35,6 +35,8 @@ public class BuildContext : FrostingContext
     public string ReleaseArtifactsDownloadDir { get; }
     public string UnzippedArtifactsDir { get; }
 
+    public UpResult? PulumiUpResult { get; set; }
+
     public BuildContext(ICakeContext context)
         : base(context)
     {
@@ -139,9 +141,9 @@ public sealed class PulumiDeployTask : AsyncFrostingTask<BuildContext>
 
         context.Log.Information($"Pulumi Up starting...");
 
-        var result = await pulumiStack.UpAsync();
+        context.PulumiUpResult = await pulumiStack.UpAsync();
         context.Log.Information($"Pulumi Up completed");
-        Utilities.LogPulumiResult(context, result);
+        Utilities.LogPulumiResult(context, context.PulumiUpResult);
     }
 }
 
@@ -151,7 +153,7 @@ public sealed class RunSeleniumTestsTask : AsyncFrostingTask<BuildContext>
 {
     public override async Task RunAsync(BuildContext context)
     {
-        await WriteConfigAsync(context);
+        WriteConfig(context);
         await RunTestsAsync(context);
     }
 
@@ -171,17 +173,14 @@ public sealed class RunSeleniumTestsTask : AsyncFrostingTask<BuildContext>
         await Task.CompletedTask;
     }
 
-    private async ValueTask WriteConfigAsync(BuildContext context)
+    private void WriteConfig(BuildContext context)
     {
         var fullStackName = $"ProgrammerAL/{context.PulumiStackName}";
 
         context.Log.Information($"Loading stack {fullStackName} from path '{context.PulumiPath}' to get outputs");
 
-        var stackArgs = new LocalProgramArgs(fullStackName, context.PulumiPath);
-        var pulumiStack = await LocalWorkspace.SelectStackAsync(stackArgs);
-        var stackOutputs = await pulumiStack.GetOutputsAsync();
+        var stackOutputs = context.PulumiUpResult!.Outputs;
         var staticSiteEndpoint = stackOutputs["StaticSiteHttpsEndpoint"].Value.ToString() ?? throw new Exception($"Pulumi output 'StaticSiteHttpsEndpoint' is null for stack '{fullStackName}'");
-
 
         // Write the config file
         var filePath = $"{context.PlaywrightTestsPath}/.runsettings";
