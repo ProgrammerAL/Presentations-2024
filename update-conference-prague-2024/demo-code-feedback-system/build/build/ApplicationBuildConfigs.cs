@@ -17,13 +17,13 @@ public record AppPaths(
             CsprojFile: $"{srcDirectory}/FeedbackFunctionsApp/FeedbackFunctionsApp.csproj",
             OutDir: $"{srcDirectory}/FeedbackFunctionsApp/bin/{buildConfiguration}/cake-build-output",
             ZipOutDir: buildArtifactsPath,
-            ZipOutFilePath:  $"{buildArtifactsPath}/feedback-web-client.zip");
+            ZipOutFilePath:  $"{buildArtifactsPath}/feedback-functions.zip");
 
         var webClientProject = new DotNetProject(
             CsprojFile: $"{srcDirectory}/FeedbackWebApp/FeedbackWebApp.csproj",
             OutDir: $"{srcDirectory}/FeedbackWebApp/bin/{buildConfiguration}/cake-build-output",
             ZipOutDir: buildArtifactsPath,
-            ZipOutFilePath: $"{buildArtifactsPath}/feedback-functions.zip");
+            ZipOutFilePath: $"{buildArtifactsPath}/feedback-web-client.zip");
 
         return new AppPaths(
             slnFile,
