@@ -33,6 +33,7 @@ public class BuildContext : FrostingContext
     public string PulumiPath { get; }
     public string PulumiStackName { get; }
     public string PlaywrightTestsPath { get; }
+    public string PlaywrightBrowser { get; }
     public string ReleaseVersion { get; }
     public string ReleaseArtifactsDownloadDir { get; }
     public string UnzippedArtifactsDir { get; }
@@ -45,6 +46,7 @@ public class BuildContext : FrostingContext
         ReleaseVersion = LoadParameter(context, nameof(ReleaseVersion));
         PulumiPath = LoadParameter(context, nameof(PulumiPath));
         PlaywrightTestsPath = LoadParameter(context, nameof(PlaywrightTestsPath));
+        PlaywrightBrowser = LoadParameter(context, nameof(PlaywrightBrowser));
 
         ReleaseArtifactsDownloadDir = LoadParameter(context, nameof(ReleaseArtifactsDownloadDir));
         UnzippedArtifactsDir = WorkspacePath + "/unzipped_artifacts";
@@ -154,48 +156,27 @@ public sealed class RunSeleniumTestsTask : AsyncFrostingTask<BuildContext>
     public override async Task RunAsync(BuildContext context)
     {
         await WriteConfigAsync(context);
-        CompileTests(context);
-        RunPlaywrightSetup(context);
-        RunTests(context);
+        await RunTestsAsync(context);
     }
 
-    private void CompileTests(BuildContext context)
-    {
-        var testSettings = new DotNetBuildSettings()
-        {
-            Configuration = "Debug",
-            NoRestore = false
-        };
-
-        var projectPath = $"{context.PlaywrightTestsPath}/UiTests.csproj";
-        context.DotNetBuild(projectPath, testSettings);
-    }
-
-    private void RunPlaywrightSetup(BuildContext context)
-    {
-        var startArgs = new ProcessStartInfo("pwsh", "bin/Debug/net8.0/playwright.ps1 install")
-        {
-            RedirectStandardOutput = true,
-        };
-        var process = Process.Start(startArgs);
-        _ = process!.WaitForExit(TimeSpan.FromMinutes(10));
-
-        var output = process.StandardOutput.ReadToEnd();
-        context.Log.Information($"playwright run output: {output}");
-    }
-
-    private void RunTests(BuildContext context)
+    private async Task RunTestsAsync(BuildContext context)
     {
         var testSettings = new DotNetTestSettings()
         {
             Configuration = "Debug",
-            NoBuild = true,
-            NoRestore = true,
-            ArgumentCustomization = (args) => args.Append("/p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --logger trx")
+            NoBuild = false,
+            NoRestore = false,
+            ArgumentCustomization = (args) => args.Append("/p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --logger trx"),
+            EnvironmentVariables = new Dictionary<string, string>
+            {
+                { "BROWSER", context.PlaywrightBrowser }
+            }
         };
 
         var projectPath = $"{context.PlaywrightTestsPath}/UiTests.csproj";
         context.DotNetTest(projectPath, testSettings);
+
+        await Task.CompletedTask;
     }
 
     private async ValueTask WriteConfigAsync(BuildContext context)
