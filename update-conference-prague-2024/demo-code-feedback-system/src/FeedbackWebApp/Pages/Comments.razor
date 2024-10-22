@@ -8,18 +8,23 @@
     <div class="row">
         <p>Enter Comments:</p>
         <textarea @bind=@FeedbackText
-                  cols="40"
-                  rows="5"
-                  disabled="@(PageState == PageStateType.Submitting)"></textarea>
+                id="comments-area"
+                cols="40"
+                rows="5"
+                disabled="@(PageState == PageStateType.Submitting)"></textarea>
     </div>
     <div class="row p-2">
         @if (PageState == PageStateType.Submitting)
         {
             <p>Submitting...</p>
         }
-        else
+        else if(PageState == PageStateType.Initial)
         {
             <button @onclick="SubmitFeedbackAsync" class="btn-primary">Submit</button>
+        }
+        else if(PageState == PageStateType.Submitted)
+        {
+            <p id="comment-confirmation">Comment submitted</p>
         }
     </div>
 
@@ -41,14 +46,15 @@
     {
         await UpdatePageStateAsync(PageStateType.Submitting);
         var result = await FeedbackHttpClient.SubmitCommentsAsync(FeedbackText);
-        await UpdatePageStateAsync(PageStateType.Initial);
 
         if (result.IsSuccessStatusCode)
         {
+            await UpdatePageStateAsync(PageStateType.Submitted);
             FeedbackText = "";
         }
         else
         {
+            await UpdatePageStateAsync(PageStateType.Initial);
             ErrorResult = await result.Content.ReadAsStringAsync();
         }
     }
@@ -63,6 +69,7 @@
     public enum PageStateType
     {
         Initial,
-        Submitting
+        Submitting,
+        Submitted
     }
 }

@@ -1,8 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
+using Cake.Common.Tools.DotNet;
+using Cake.Common.Tools.DotNet.Restore;
+using Cake.Common.Tools.DotNet.Test;
 using Cake.Core;
 using Cake.Core.Diagnostics;
 using Cake.Frosting;
@@ -24,6 +30,7 @@ public class BuildContext : FrostingContext
     public string WorkspacePath { get; }
     public string PulumiPath { get; }
     public string PulumiStackName { get; }
+    public string PlaywrightTestsPath { get; }
     public string ReleaseVersion { get; }
     public string ReleaseArtifactsDownloadDir { get; }
     public string UnzippedArtifactsDir { get; }
@@ -34,8 +41,9 @@ public class BuildContext : FrostingContext
         WorkspacePath = LoadParameter(context, nameof(WorkspacePath));
         PulumiStackName = LoadParameter(context, nameof(PulumiStackName));
         ReleaseVersion = LoadParameter(context, nameof(ReleaseVersion));
-
         PulumiPath = LoadParameter(context, nameof(PulumiPath));
+        PlaywrightTestsPath = LoadParameter(context, nameof(PlaywrightTestsPath));
+
         ReleaseArtifactsDownloadDir = LoadParameter(context, nameof(ReleaseArtifactsDownloadDir));
         UnzippedArtifactsDir = WorkspacePath + "/unzipped_artifacts";
     }
@@ -137,8 +145,59 @@ public sealed class PulumiDeployTask : AsyncFrostingTask<BuildContext>
     }
 }
 
-[TaskName("Default")]
 [IsDependentOn(typeof(PulumiDeployTask))]
+[TaskName(nameof(RunSeleniumTestsTask))]
+public sealed class RunSeleniumTestsTask : AsyncFrostingTask<BuildContext>
+{
+    public override async Task RunAsync(BuildContext context)
+    {
+        await WriteConfigAsync(context);
+        await RunTestsAsync(context);
+    }
+
+    private async Task RunTestsAsync(BuildContext context)
+    {
+        var testSettings = new DotNetTestSettings()
+        {
+            Configuration = "Debug",
+            NoBuild = false,
+            NoRestore = false,
+            ArgumentCustomization = (args) => args.Append("/p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --logger trx")
+        };
+
+        var projectPath = $"{context.PlaywrightTestsPath}/UiTests.csproj";
+        context.DotNetTest(projectPath, testSettings);
+
+        await Task.CompletedTask;
+    }
+
+    private async ValueTask WriteConfigAsync(BuildContext context)
+    {
+        var fullStackName = $"ProgrammerAL/{context.PulumiStackName}";
+
+        context.Log.Information($"Loading stack {fullStackName} from path '{context.PulumiPath}' to get outputs");
+
+        var stackArgs = new LocalProgramArgs(fullStackName, context.PulumiPath);
+        var pulumiStack = await LocalWorkspace.SelectStackAsync(stackArgs);
+        var stackOutputs = await pulumiStack.GetOutputsAsync();
+        var staticSiteEndpoint = stackOutputs["StaticSiteHttpsEndpoint"].Value.ToString() ?? throw new Exception($"Pulumi output 'StaticSiteHttpsEndpoint' is null for stack '{fullStackName}'");
+
+
+        // Write the config file
+        var filePath = $"{context.PlaywrightTestsPath}/.runsettings";
+        var runsettingsXml = XElement.Load(filePath);
+        var baseUrlElement = runsettingsXml.Element("RunSettings")
+            !.Element("TestRunParameters")
+            !.Elements("Parameter")
+            .Single(x => x.Attribute("baseUrl") != null);
+        baseUrlElement.Value = staticSiteEndpoint;
+
+        File.WriteAllText(filePath, runsettingsXml.ToString());
+    }
+}
+
+[TaskName("Default")]
+[IsDependentOn(typeof(RunSeleniumTestsTask))]
 public class DefaultTask : FrostingTask
 {
 }

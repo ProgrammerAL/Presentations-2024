@@ -42,6 +42,7 @@ jobs:
       PULUMI_PATH: ${{ github.workspace }}/update-conference-prague-2024/demo-code-feedback-system/infra
       PULUMI_ACCESS_TOKEN: ${{ secrets.pulumi_access_token }}
       PULUMI_PROJECT_FILE_PATH: ${{ github.workspace }}/update-conference-prague-2024/demo-code-feedback-system/infra/PulumiInfra.csproj
+      PLAYWRIGHT_TESTS_PATH: ${{ github.workspace }}/update-conference-prague-2024/demo-code-feedback-system/src/UiTests
 
     steps:
       - uses: actions/checkout@v2
@@ -75,4 +76,4 @@ jobs:
         uses: pulumi/setup-pulumi@v2
 
       - name: Cake Frosting - Deploy
-        run: dotnet run --project ${{ env.ROOT_DIRECTORY_PATH }}/deploy/deploy/Deploy.csproj -- --configuration=${{ env.CONFIGURATION }} --PulumiStackName=${{ inputs.pulumi_stack_name }} --ReleaseVersion=${{ inputs.release_tag_id }} --WorkspacePath=${{ github.workspace }} --ReleaseArtifactsDownloadDir=${{ env.ARTIFACT_DOWNLOAD_PATH }} --PulumiPath=${{ env.PULUMI_PATH }}
+        run: dotnet run --project ${{ env.ROOT_DIRECTORY_PATH }}/deploy/deploy/Deploy.csproj -- --configuration=${{ env.CONFIGURATION }} --PulumiStackName=${{ inputs.pulumi_stack_name }} --ReleaseVersion=${{ inputs.release_tag_id }} --WorkspacePath=${{ github.workspace }} --ReleaseArtifactsDownloadDir=${{ env.ARTIFACT_DOWNLOAD_PATH }} --PulumiPath=${{ env.PULUMI_PATH }} --PlaywrightTestsPath=${{ env.PLAYWRIGHT_TESTS_PATH }}
