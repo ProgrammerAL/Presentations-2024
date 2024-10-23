@@ -42,7 +42,6 @@ with AL Rodriguez
 
 ![bg 80%](presentation-images/devs-and-devops-and-ops-and-sre.png)
 
-
 ---
 
 # We're Developers
@@ -128,6 +127,11 @@ with AL Rodriguez
 - Call external CLI tool from YAML
   - AKA `dotnet run ...`
 
+```YAML
+- name: Cake Frosting Build
+  run: dotnet run --project /build/build/Build.csproj -- --buildConfiguration=Release
+```
+
 ---
 
 # SDKs for CI/CD Apps
@@ -175,8 +179,9 @@ with AL Rodriguez
 
 ---
 
-# Aspire
+# Aspire*
 
+- We're not using it
 - Not all resources supported (yet)
 - Not recommended for production use (yet)
   - Local dev loop only (for now)

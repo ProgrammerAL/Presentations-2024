@@ -161,12 +161,14 @@ public sealed class RunSeleniumTestsTask : AsyncFrostingTask<BuildContext>
 
     private async Task RunTestsAsync(BuildContext context)
     {
+        var runsettingsFilePath = $"{context.PlaywrightTestsPath}/.runsettings";
+
         var testSettings = new DotNetTestSettings()
         {
             Configuration = BuildContext.UiTestsBuildConfiguration,
             NoBuild = false,
             NoRestore = false,
-            ArgumentCustomization = (args) => args.Append("/p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --logger trx"),
+            ArgumentCustomization = (args) => args.Append($"/p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --logger trx --settings {runsettingsFilePath}"),
             EnvironmentVariables = new Dictionary<string, string>
             {
                 { "BROWSER", context.PlaywrightBrowser }
