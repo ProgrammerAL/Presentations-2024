@@ -49,13 +49,13 @@
 
         if (result.IsSuccessStatusCode)
         {
-            await UpdatePageStateAsync(PageStateType.Submitted);
             FeedbackText = "";
+            await UpdatePageStateAsync(PageStateType.Submitted);
         }
         else
         {
-            await UpdatePageStateAsync(PageStateType.Initial);
             ErrorResult = await result.Content.ReadAsStringAsync();
+            await UpdatePageStateAsync(PageStateType.Initial);
         }
     }
 
@@ -64,7 +64,6 @@
         PageState = newValue;
         await InvokeAsync(StateHasChanged);
     }
-
 
     public enum PageStateType
     {

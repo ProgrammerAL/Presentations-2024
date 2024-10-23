@@ -1,3 +1,4 @@
+using Microsoft.Playwright;
 using Microsoft.Playwright.MSTest;
 
 namespace UiTests;
@@ -8,8 +9,7 @@ public class FeedbackTests : PageTest
     [TestMethod]
     public async Task WhenCommentsProvided_SubmitSuccessful()
     {
-        var url = $"{TestContext.Properties["baseUrl"]}/comments";
-        await Page.GotoAsync(url);
+        await Page.GotoAsync("/comments");
 
         var commentsArea = Page.Locator("textarea[id='comments-area']");
         await commentsArea.FillAsync($"Comment from WhenCommentsProvided_SubmitSuccessful - {DateTime.UtcNow}");
@@ -17,5 +17,13 @@ public class FeedbackTests : PageTest
         await Page.ClickAsync("button[id='submit-btn']");
 
         await Expect(Page.Locator("p[id='comment-confirmation']")).ToBeVisibleAsync();
+    }
+
+    public override BrowserNewContextOptions ContextOptions()
+    {
+        return new BrowserNewContextOptions()
+        {
+            BaseURL = TestContext.Properties["baseUrl"]!.ToString(),
+        };
     }
 }

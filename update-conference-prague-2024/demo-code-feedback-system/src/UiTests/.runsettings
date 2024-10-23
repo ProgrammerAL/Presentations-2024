@@ -5,4 +5,9 @@
 		<Parameter name="baseUrl" value="https://sitestorage7a5bcbd5.z20.web.core.windows.net" />
 	</TestRunParameters>
 
+	<!-- Playwright -->
+	<Playwright>
+		<!--In milliseconds-->
+		<ExpectTimeout>60000</ExpectTimeout>
+	</Playwright>
 </RunSettings>
