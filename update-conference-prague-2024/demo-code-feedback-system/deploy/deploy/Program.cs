@@ -208,7 +208,7 @@ public sealed class RunSeleniumTestsTask : AsyncFrostingTask<BuildContext>
             .Element("TestRunParameters")
             !.Elements("Parameter")
             .Single(x => string.Equals(x.Attribute("name")?.Value, "baseUrl"));
-        baseUrlElement.Value = staticSiteEndpoint;
+        baseUrlElement.Attribute("value")!.Value = staticSiteEndpoint;
 
         var runsettingsString = runsettingsXml.ToString();
         context.Log.Information($"Writing runsettings file to '{filePath}' with content: {Environment.NewLine}{runsettingsString}");
