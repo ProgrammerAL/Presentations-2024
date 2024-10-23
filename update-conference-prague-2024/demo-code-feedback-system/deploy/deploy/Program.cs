@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using Cake.Common.Tools.DotNet;
-using Cake.Common.Tools.DotNet.Build;
-using Cake.Common.Tools.DotNet.Restore;
 using Cake.Common.Tools.DotNet.Test;
 using Cake.Core;
 using Cake.Core.Diagnostics;
@@ -29,6 +27,8 @@ public static class Program
 
 public class BuildContext : FrostingContext
 {
+    public const string UiTestsBuildConfiguration = "Debug";
+
     public string WorkspacePath { get; }
     public string PulumiPath { get; }
     public string PulumiStackName { get; }
@@ -163,7 +163,7 @@ public sealed class RunSeleniumTestsTask : AsyncFrostingTask<BuildContext>
     {
         var testSettings = new DotNetTestSettings()
         {
-            Configuration = "Debug",
+            Configuration = BuildContext.UiTestsBuildConfiguration,
             NoBuild = false,
             NoRestore = false,
             ArgumentCustomization = (args) => args.Append("/p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --logger trx"),
