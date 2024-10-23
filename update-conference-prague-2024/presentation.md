@@ -91,7 +91,7 @@ with AL Rodriguez
 
 ---
 
-# What do we get from Entire Stack C#?
+# Why Entire Stack C#?
 
 - Tools Familiarity
 - Local debugging and testing
@@ -141,8 +141,6 @@ with AL Rodriguez
   - https://CakeBuild.net 
 - Nuke Build
   - https://Nuke.build
-- Fully Open Source
-  - Free to use
 
 ---
 
@@ -159,6 +157,7 @@ with AL Rodriguez
 
 - Cake Frosting
   - Traditional App Style
+- Task based
 
 ---
 

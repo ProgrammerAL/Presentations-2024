@@ -20,7 +20,7 @@
         }
         else if(PageState == PageStateType.Initial)
         {
-            <button @onclick="SubmitFeedbackAsync" class="btn-primary">Submit</button>
+            <button id="submit-btn" @onclick="SubmitFeedbackAsync" class="btn-primary">Submit</button>
         }
         else if(PageState == PageStateType.Submitted)
         {

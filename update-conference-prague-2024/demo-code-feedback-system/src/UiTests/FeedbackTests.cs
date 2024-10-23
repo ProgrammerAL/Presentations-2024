@@ -11,9 +11,11 @@ public class FeedbackTests : PageTest
         var url = $"{TestContext.Properties["baseUrl"]}/comments";
         await Page.GotoAsync(url);
 
-        await Page.GetByTestId("comments-area").First.FillAsync($"Comment from WhenCommentsProvided_SubmitSuccessful - {DateTime.UtcNow}");
-        await Page.ClickAsync("Submit");
+        var commentsArea = Page.Locator("textarea[id='comments-area']");
+        await commentsArea.FillAsync($"Comment from WhenCommentsProvided_SubmitSuccessful - {DateTime.UtcNow}");
 
-        await Expect(Page.GetByTestId("comment-confirmation")).ToBeVisibleAsync();
+        await Page.ClickAsync("button[id='submit-btn']");
+
+        await Expect(Page.Locator("p[id='comment-confirmation']")).ToBeVisibleAsync();
     }
 }

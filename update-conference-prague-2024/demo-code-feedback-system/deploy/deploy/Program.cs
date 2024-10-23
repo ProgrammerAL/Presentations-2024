@@ -27,7 +27,7 @@ public static class Program
 
 public class BuildContext : FrostingContext
 {
-    public const string UiTestsBuildConfiguration = "Debug";
+    public const string UiTestsBuildConfiguration = "Release";
 
     public string WorkspacePath { get; }
     public string PulumiPath { get; }
