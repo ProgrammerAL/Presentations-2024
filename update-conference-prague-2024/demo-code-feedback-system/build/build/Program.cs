@@ -92,7 +92,7 @@ public sealed class BuildTask : FrostingTask<BuildContext>
 
         context.DotNetBuild(pathToProj, new DotNetBuildSettings
         {
-            NoRestore = false,
+            NoRestore = true,
             Configuration = context.BuildConfiguration
         });
     }

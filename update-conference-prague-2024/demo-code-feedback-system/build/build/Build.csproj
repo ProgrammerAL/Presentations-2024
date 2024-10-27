@@ -6,10 +6,11 @@
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<LangVersion>latest</LangVersion>
 		<RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
-	<EnableNETAnalyzers>true</EnableNETAnalyzers><EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild></PropertyGroup>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    </PropertyGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Cake.Frosting" Version="4.0.0" />
-		<PackageReference Include="Cake.GitHub" Version="1.0.0" />
-		<PackageReference Include="Cake.Npm" Version="4.0.0" />
 	</ItemGroup>
 </Project>

@@ -80,17 +80,6 @@ with AL Rodriguez
 
 ---
 
-# C# for the "Entire Stack"
-
-- Frontend / Backend
-- Build
-- Deploy
-- Automated Tests
-- Doing all development in the same set of tools
-  - The Best Tools - C# FTW!
-
----
-
 # Why Entire Stack C#?
 
 - Tools Familiarity
@@ -122,7 +111,7 @@ with AL Rodriguez
 
 ---
 
-# Run Code from YAML
+# Run C# from YAML
 
 - Call external CLI tool from YAML
   - AKA `dotnet run ...`
@@ -134,7 +123,7 @@ with AL Rodriguez
 
 ---
 
-# SDKs for CI/CD Apps
+# C# SDKs for CI/CD Apps
 
 - Cake
   - AKA C# Make
@@ -210,7 +199,6 @@ with AL Rodriguez
 - GitHub Action - Deploy
   - Cake
   - Pulumi
-- GitHub Action
   - Selenium UI Tests
 
 ---
