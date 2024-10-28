@@ -44,19 +44,12 @@ with AL Rodriguez
 
 ---
 
-# We're Developers
+# We Write Code
 
-- We write code
 - We solve problems
 - We automate things
-
----
-
-# As Developers We Are...
-
-- Opinionated about tooling
-- Opinionated about how we solve problems
-- Opinionated
+- We are Opinionated
+  - C# FTW!
 
 ---
 
@@ -80,7 +73,7 @@ with AL Rodriguez
 
 ---
 
-# Why Entire Stack C#?
+# Why the Entire Stack with C#?
 
 - Tools Familiarity
 - Local debugging and testing
@@ -91,7 +84,7 @@ with AL Rodriguez
 # What are we going to do?
 
 - Build and Deploy a Full Stack app
-- Deploy Create Cloud Infrastructure
+- Create Cloud Infrastructure
 - Run UI Tests
 - All with C# FTW!
 
@@ -99,8 +92,10 @@ with AL Rodriguez
 
 # Full Stack App
 
-- Blazor WASM
-- Azure Functions
+- Frontend
+  - Blazor WASM
+- Backend
+  - Azure Functions
 
 ---
 
@@ -199,7 +194,7 @@ with AL Rodriguez
 - GitHub Action - Deploy
   - Cake
   - Pulumi
-  - Selenium UI Tests
+  - Playwright UI Tests
 
 ---
 
