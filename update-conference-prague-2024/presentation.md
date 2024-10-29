@@ -202,6 +202,7 @@ with AL Rodriguez
 
 - Use platform-specific stuff for platform-specific stuff
   - Use C# for everything else
+- Automate More
 - Use C#...FTW!
 
 ---
