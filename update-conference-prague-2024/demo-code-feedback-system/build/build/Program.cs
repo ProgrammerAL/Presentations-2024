@@ -86,11 +86,11 @@ public sealed class BuildTask : FrostingTask<BuildContext>
         }
     }
 
-    private void BuildDotnetApp(BuildContext context, string pathToProj)
+    private void BuildDotnetApp(BuildContext context, string pathToSln)
     {
-        context.DotNetRestore(pathToProj);
+        context.DotNetRestore(pathToSln);
 
-        context.DotNetBuild(pathToProj, new DotNetBuildSettings
+        context.DotNetBuild(pathToSln, new DotNetBuildSettings
         {
             NoRestore = true,
             Configuration = context.BuildConfiguration

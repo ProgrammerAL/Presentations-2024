@@ -162,7 +162,7 @@ with AL Rodriguez
 
 ---
 
-# Aspire*
+# .NET Aspire*
 
 - We're not using it
 - Not all resources supported (yet)

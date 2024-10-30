@@ -150,8 +150,8 @@ public sealed class PulumiDeployTask : AsyncFrostingTask<BuildContext>
 }
 
 [IsDependentOn(typeof(PulumiDeployTask))]
-[TaskName(nameof(RunSeleniumTestsTask))]
-public sealed class RunSeleniumTestsTask : AsyncFrostingTask<BuildContext>
+[TaskName(nameof(RunPlaywrightTestsTask))]
+public sealed class RunPlaywrightTestsTask : AsyncFrostingTask<BuildContext>
 {
     public override async Task RunAsync(BuildContext context)
     {
@@ -219,7 +219,7 @@ public sealed class RunSeleniumTestsTask : AsyncFrostingTask<BuildContext>
 }
 
 [TaskName("Default")]
-[IsDependentOn(typeof(RunSeleniumTestsTask))]
+[IsDependentOn(typeof(RunPlaywrightTestsTask))]
 public class DefaultTask : FrostingTask
 {
 }
