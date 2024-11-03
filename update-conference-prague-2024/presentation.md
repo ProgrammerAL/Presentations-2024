@@ -14,15 +14,11 @@ with AL Rodriguez
 
 ---
 
-![bg](presentation-images/sponsors.png)
-
----
-
 # Me (AL)
 
 - @ProgrammerAL
 - ProgrammerAL.com
-- Senior Customer Experience Engineer (Azure ACE) at Microsoft
+- Developer, Developer, Developer
 
 ![bg right 80%](presentation-images/presentation_link_qrcode.png)
 
