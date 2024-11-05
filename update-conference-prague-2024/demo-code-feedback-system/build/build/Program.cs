@@ -74,23 +74,9 @@ public sealed class BuildTask : FrostingTask<BuildContext>
 {
     public override void Run(BuildContext context)
     {
-        var buildFuncs = new[]
-        {
-            () => BuildDotnetApp(context, context.AppPaths.SlnFile),
-        };
+        context.DotNetRestore(context.AppPaths.SlnFile);
 
-        var runner = Parallel.ForEach(buildFuncs, func => func());
-        while (!runner.IsCompleted)
-        {
-            Thread.Sleep(100);
-        }
-    }
-
-    private void BuildDotnetApp(BuildContext context, string pathToSln)
-    {
-        context.DotNetRestore(pathToSln);
-
-        context.DotNetBuild(pathToSln, new DotNetBuildSettings
+        context.DotNetBuild(context.AppPaths.SlnFile, new DotNetBuildSettings
         {
             NoRestore = true,
             Configuration = context.BuildConfiguration
@@ -110,17 +96,7 @@ public sealed class RunUnitTestsTask : FrostingTask<BuildContext>
             NoBuild = true,
             ArgumentCustomization = (args) => args.Append("/p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --logger trx")
         };
-
-        var runTestsFuncs = new[]
-        {
-            () => context.DotNetTest(context.AppPaths.UnitTestsCsProj, testSettings),
-        };
-
-        var runner = Parallel.ForEach(runTestsFuncs, func => func());
-        while (!runner.IsCompleted)
-        {
-            Thread.Sleep(100);
-        }
+        context.DotNetTest(context.AppPaths.UnitTestsCsProj, testSettings);
     }
 }
 

@@ -124,15 +124,6 @@ with AL Rodriguez
 
 ---
 
-# Script or Traditional App
-
-- Custom C# Script
-  - Requires extension for code editor
-- Full App like a traditional app
-  - Use your normal tools
-
----
-
 # Cake
 
 - Cake Frosting
@@ -162,7 +153,7 @@ with AL Rodriguez
 
 - We're not using it
 - Not all resources supported (yet)
-- Not recommended for production use (yet)
+- Not recommended for deploying to production (yet)
   - Local dev loop only (for now)
 
 ---
