@@ -12,5 +12,5 @@ $vsExePath = "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/ID
 
 & "c:/ZoomIt/ZoomIt.exe"
 
-Start-Process -FilePath MSEdge -ArgumentList "$presentationPath/presentation.html", "https://github.com/ProgrammerAL/Presentations-2024/actions", "https://app.pulumi.com/ProgrammerAl/update-conf-2024/dev", "https://portal.azure.com/#browse/resourcegroups"
+Start-Process -FilePath MSEdge -ArgumentList "https://programmeral.com/posts/20241114_UpdateConf2024", "https://github.com/ProgrammerAL/Presentations-2024/actions", "https://app.pulumi.com/ProgrammerAl/update-conf-2024/dev", "https://portal.azure.com/#browse/resourcegroups"
 
