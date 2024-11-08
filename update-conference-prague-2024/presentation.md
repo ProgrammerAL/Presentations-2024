@@ -40,15 +40,6 @@ with AL Rodriguez
 
 ---
 
-# We Write Code
-
-- We solve problems
-- We automate things
-- We are Opinionated
-  - C# FTW!
-
----
-
 # .NET is Everywhere
 
 - ".NET Everywhere"
@@ -64,8 +55,8 @@ with AL Rodriguez
 - **Testing** - Unit/Integration/UI/Performance
 - **CI/CD** - Cake, Nuke Build
 - **IaC** - Pulumi, Aspire*
-- **IoT** -  Meadow, GHI Electronics TinyCLR, .NET nanoFramework, Raspberry Pi
 - **Video Games** -  Unity, Godot
+- **IoT** -  Meadow, GHI Electronics TinyCLR, .NET nanoFramework, Raspberry Pi
 
 ---
 
@@ -74,6 +65,7 @@ with AL Rodriguez
 - Tools Familiarity
 - Local debugging and testing
 - Developer Performance
+- C# FTW!
 
 ---
 
@@ -83,6 +75,10 @@ with AL Rodriguez
 - Create Cloud Infrastructure
 - Run UI Tests
 - All with C# FTW!
+
+---
+
+![bg 90%](presentation-images/full-diagram.png)
 
 ---
 
@@ -108,7 +104,7 @@ with AL Rodriguez
   - AKA `dotnet run ...`
 
 ```YAML
-- name: Cake Frosting Build
+- name: Cake Frosting Build in C# FTW
   run: dotnet run --project /build/build/Build.csproj -- --buildConfiguration=Release
 ```
 
@@ -124,11 +120,7 @@ with AL Rodriguez
 
 ---
 
-# Cake
-
-- Cake Frosting
-  - Traditional App Style
-- Task based
+![bg 90%](presentation-images/full-diagram.png)
 
 ---
 
@@ -144,7 +136,7 @@ with AL Rodriguez
 - IaC with your choice of programming language*
   - C# FTW!
 - 3rd Party tool
-  - Has own pricing, generaous free tier
+  - Has own pricing, generaous free offering
 - API very similar to cloud specific API
 
 ---
@@ -155,6 +147,10 @@ with AL Rodriguez
 - Not all resources supported (yet)
 - Not recommended for deploying to production (yet)
   - Local dev loop only (for now)
+
+---
+
+![bg 90%](presentation-images/full-diagram.png)
 
 ---
 
@@ -173,15 +169,7 @@ with AL Rodriguez
 
 ---
 
-# Demo Time
-
-- Full Stack App
-- GitHub Action - Build
-  - Cake
-- GitHub Action - Deploy
-  - Cake
-  - Pulumi
-  - Playwright UI Tests
+![bg 90%](presentation-images/full-diagram.png)
 
 ---
 

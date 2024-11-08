@@ -60,6 +60,12 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
+      - name: Install Pulumi
+        uses: pulumi/setup-pulumi@v2
+
+      - name: Install Playwright Browsers - Chromium
+        run: npx playwright install --with-deps chromium
+
       - name: Download Artifact - Web Client
         uses: robinraju/release-downloader@v1.3
         with:
@@ -77,12 +83,6 @@ jobs:
           fileName: feedback-functions.zip
           out-file-path: ${{ env.ARTIFACT_DOWNLOAD_PATH }}
           token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install Pulumi
-        uses: pulumi/setup-pulumi@v2
-
-      - name: Install Playwright Browsers - Chromium
-        run: npx playwright install --with-deps chromium
 
       - name: Cake Frosting - Deploy
         run: dotnet run --project ${{ env.ROOT_DIRECTORY_PATH }}/deploy/deploy/Deploy.csproj -- --configuration=${{ env.CONFIGURATION }} --PulumiStackName=${{ inputs.pulumi_stack_name }} --ReleaseVersion=${{ inputs.release_tag_id }} --WorkspacePath=${{ github.workspace }} --ReleaseArtifactsDownloadDir=${{ env.ARTIFACT_DOWNLOAD_PATH }} --PulumiPath=${{ env.PULUMI_PATH }} --PlaywrightTestsPath=${{ env.PLAYWRIGHT_TESTS_PATH }} --PlaywrightBrowser=chromium
