@@ -1,0 +1,27 @@
+name: Update-Conf-Deploy-Conf-Live
+
+concurrency: dev
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag_id:
+        description: "Release Tag"
+        required: true
+        type: string
+
+jobs:
+  deploy-pulumi-and-artifacts:
+    uses: ./.github/workflows/update-conf-2024-deploy.yml
+    with:
+      release_tag_id: ${{ github.event.inputs.release_tag_id }}
+      pulumi_stack_name: conf
+      environment_name: conf
+    secrets:
+      pulumi_access_token: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+      arm_client_id: ${{ secrets.ARM_CLIENT_ID }}
+      arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
+      arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
+      arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          
+
