@@ -32,7 +32,7 @@ jobs:
     environment: ${{ inputs.environment_name }}
     env:
       CONFIGURATION: Release
-      DOTNET_VERSION: 8.x.x
+      DOTNET_VERSION: 9.x.x
       NODE_VERSION: 14.x
       ARM_CLIENT_ID: ${{ secrets.arm_client_id }}
       ARM_CLIENT_SECRET: ${{ secrets.arm_client_secret }}

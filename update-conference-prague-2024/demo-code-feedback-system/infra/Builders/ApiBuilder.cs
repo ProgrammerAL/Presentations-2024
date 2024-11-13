@@ -106,7 +106,7 @@ public record ApiBuilder(
 
         var functionAppSiteConfig = new SiteConfigArgs
         {
-            LinuxFxVersion = "DOTNET-ISOLATED|8.0",
+            LinuxFxVersion = "DOTNET-ISOLATED|9.0",
             Cors = new CorsSettingsArgs
             {
                 AllowedOrigins = new[] { "*" }

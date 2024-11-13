@@ -9,7 +9,7 @@ jobs:
     permissions: write-all    
     env:
       CONFIGURATION: Release
-      DOTNET_VERSION: 8.x.x
+      DOTNET_VERSION: 9.x.x
       CODE_DIRECTORY_PATH: ${{ github.workspace }}/update-conference-prague-2024/demo-code-feedback-system
       SRC_DIRECTORY_PATH: ${{ github.workspace }}/update-conference-prague-2024/demo-code-feedback-system/src
       BUILD_ARTIFACTS_PATH: ${{ github.workspace }}/build_artifacts
