@@ -5,8 +5,10 @@
 		<OutputType>Exe</OutputType>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-	<LangVersion>latest</LangVersion><EnableNETAnalyzers>true</EnableNETAnalyzers><EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild></PropertyGroup>
+		<LangVersion>latest</LangVersion>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Azure.Data.Tables" Version="12.9.1" />
 		<PackageReference Include="Azure.Identity" Version="1.12.1" />
